@@ -1,7 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+#include "../includes/minishell.h"
 
 // Interface comum para todos os comandos, para um comando ser compátivel
 // Ele deve atender essa premissa
@@ -11,16 +8,16 @@ typedef struct {
 } Command;
 
 // Adaptador para o comando "echo"
-void echo_adapter(const char* arg)
+void    echo_adapter(const char* arg)
 {
     printf("%s\n", arg);
 }
 
 // Adaptador para o comando "pwd"
-void pwd_adapter(const char* arg)
+void    pwd_adapter(const char* arg)
 {
     char* dir = getcwd(NULL, 0);
-    printf("%s\n", dir);
+    printf("%s - %s\n", dir, arg);
     free(dir);
 }
 
@@ -33,7 +30,7 @@ Command commands[] = {
 
 // Função para buscar o adaptador de um comando pelo nome
 // função responsável por procurar qual foi o comando digitado e chamar suas funções
-Command* find_command(const char* name)
+Command*    find_command(const char* name)
 {
     int i;
     int num_commands = sizeof(commands) / sizeof(Command);
@@ -49,24 +46,26 @@ Command* find_command(const char* name)
     return NULL;
 }
 
-int main() {
+int main()
+{
     while (1)
     {
-        printf("> ");
         char input[256];
+        char* command_name;
+        char* command_arg;
+
+        printf("> ");
         fgets(input, sizeof(input), stdin);
         input[strcspn(input, "\n")] = 0; // remove o caractere de nova linha
-
-        char* command_name = strtok(input, " ");
-        char* command_arg = strtok(NULL, "");
-
+        command_name = strtok(input, " ");
+        command_arg = strtok(NULL, "");
         Command* command = find_command(command_name);
-        if (command == NULL) {
-            printf("Comando não encontrado\n");
-            continue;
+        if (command == NULL)
+        {
+            ft_printf("Comando não encontrado\n");
+            continue ;
         }
-
         command->execute(command_arg);
     }
-    return 0;
+    return (0);
 }
