@@ -1,3 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c.                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: antthoma <antthoma@student.42sp.org.br>    +#+  +:+       +#+        */
+/*       calbert  <calbert@student.42sp.org.br>   +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
+/*   Updated: 2023/04/26 00:17:13 by antthoma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
 #include "../includes/minishell.h"
 
 // Interface comum para todos os comandos, para um comando ser compátivel
@@ -6,20 +19,6 @@ typedef struct {
     const char* name;
     void (*execute)(const char*);
 } Command;
-
-// Adaptador para o comando "echo"
-void    echo_adapter(const char* arg)
-{
-    printf("%s\n", arg);
-}
-
-// Adaptador para o comando "pwd"
-void    pwd_adapter(const char* arg)
-{
-    char* dir = getcwd(NULL, 0);
-    printf("%s - %s\n", dir, arg);
-    free(dir);
-}
 
 // Lista de comandos suportados, sempre que adicionarmos um novo adaptador
 // precisamos alimentar a lista e está pronto
@@ -33,12 +32,15 @@ Command commands[] = {
 Command*    find_command(const char* name)
 {
     int i;
-    int num_commands = sizeof(commands) / sizeof(Command);
+    int num_commands;
+    
+    num_commands = sizeof(commands) / sizeof(Command);
 
     i = 0;
     while (i < num_commands)
     {
-        if (strcmp(commands[i].name, name) == 0) {
+        if (strcmp(commands[i].name, name) == 0)
+        {
             return &commands[i];
         }
         i++;

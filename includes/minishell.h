@@ -10,7 +10,8 @@
 #define ANSI_COLOR_GREEN   "\x1b[32m"
 #define ANSI_COLOR_RESET   "\x1b[0m"
 
-
+void    echo_adapter(const char* arg);
+void    pwd_adapter(const char* arg);
 
 # define MAX_INT 2147483647
 # define MIN_INT -2147483648

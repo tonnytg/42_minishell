@@ -1,7 +1,9 @@
 NAME   	= minishell
 HEADER 	= $(NAME).h
 FILES 	= \
-			srcs/main.c
+			srcs/main.c				\
+			srcs/commands/echo.c	\
+			srcs/commands/pwd.c
 
 OBJS  		= $(FILES:.c=.o)
 CC 			= gcc
