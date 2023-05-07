@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h.                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: antthoma <antthoma@student.42sp.org.br>    +#+  +:+       +#+        */
+/*       calbert  <calbert@student.42sp.org.br>   +#+#+#+#+#+   +#+           */
+/*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
+/*   Updated: 2023/04/26 00:17:13 by antthoma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -6,14 +18,12 @@
 # include <stdio.h>
 # include "libft.h"
 
-#define ANSI_COLOR_RED     "\x1b[31m"
-#define ANSI_COLOR_GREEN   "\x1b[32m"
-#define ANSI_COLOR_RESET   "\x1b[0m"
+typedef struct s_command{
+	char	*name;
+	void	(*execute)(const char*);
+}	t_command;
 
-void    echo_adapter(const char* arg);
-void    pwd_adapter(const char* arg);
-
-# define MAX_INT 2147483647
-# define MIN_INT -2147483648
+void	echo_adapter(const char *arg);
+void	pwd_adapter(const char *arg);
 
 #endif

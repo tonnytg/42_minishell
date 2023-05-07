@@ -36,7 +36,8 @@ clean:
 fclean: clean
 	make -C libft fclean
 	rm $(NAME)
-	rm $(LIBS)/libft.*
+	rm includes/libft.h
+	rm -rf $(LIBS)
 
 re: fclean all
 

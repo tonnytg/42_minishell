@@ -10,64 +10,53 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../includes/minishell.h"
 
-// Interface comum para todos os comandos, para um comando ser compátivel
-// Ele deve atender essa premissa
-typedef struct {
-    const char* name;
-    void (*execute)(const char*);
-} Command;
-
-// Lista de comandos suportados, sempre que adicionarmos um novo adaptador
-// precisamos alimentar a lista e está pronto
-Command commands[] = {
-    {"echo", echo_adapter},
-    {"pwd", pwd_adapter}
-};
-
-// Função para buscar o adaptador de um comando pelo nome
-// função responsável por procurar qual foi o comando digitado e chamar suas funções
-Command*    find_command(const char* name)
+t_command	*find_command(const char *name)
 {
-    int i;
-    int num_commands;
-    
-    num_commands = sizeof(commands) / sizeof(Command);
+	int			i;
+	int			num_commands;
+	t_command	*g_commands;
 
-    i = 0;
-    while (i < num_commands)
-    {
-        if (strcmp(commands[i].name, name) == 0)
-        {
-            return &commands[i];
-        }
-        i++;
-    }
-    return NULL;
+	num_commands = 0;
+	g_commands = malloc(sizeof(t_command) * 2);
+	g_commands[num_commands].name = malloc(sizeof(char) * (strlen("echo") + 1));
+	strcpy(g_commands[num_commands].name, "echo");
+	g_commands[num_commands].execute = echo_adapter;
+	num_commands++;
+	i = 0;
+	while (i < num_commands)
+	{
+		if (strcmp(g_commands[i].name, name) == 0)
+		{
+			return (&g_commands[i]);
+		}
+		i++;
+	}
+	return (NULL);
 }
 
-int main()
+int	main(void)
 {
-    while (1)
-    {
-        char input[256];
-        char* command_name;
-        char* command_arg;
+	char	input[256];
+	char	*command_name;
+	char	*command_arg;
+	Command	*command;
 
-        printf("> ");
-        fgets(input, sizeof(input), stdin);
-        input[strcspn(input, "\n")] = 0; // remove o caractere de nova linha
-        command_name = strtok(input, " ");
-        command_arg = strtok(NULL, "");
-        Command* command = find_command(command_name);
-        if (command == NULL)
-        {
-            ft_printf("Comando não encontrado\n");
-            continue ;
-        }
-        command->execute(command_arg);
-    }
-    return (0);
+	while (1)
+	{
+		ft_printf("> ");
+		fgets(input, sizeof(input), stdin);
+		input[strcspn(input, "\n")] = 0;
+		command_name = strtok(input, " ");
+		command_arg = strtok(NULL, "");
+		command = find_command(command_name);
+		if (command == NULL)
+		{
+			ft_printf("Comando não encontrado\n");
+			continue ;
+		}
+		command->execute(command_arg);
+	}
+	return (0);
 }

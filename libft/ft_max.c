@@ -10,17 +10,23 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int max(int arr[], int len)
+#include "libft.h"
+
+int	max(int arr[], int len)
 {
-    int i = 1;
-    int max_val = arr[0];
-    while (i < len)
-    {
-        if (arr[i] > max_val)
-        {
-            max_val = arr[i];
-        }
-        i++;
-    }
-    return (max_val);
+	int	i;
+	int	*max_val;
+
+	i = 1;
+	max_val = ft_calloc(1, sizeof(int));
+	max_val = arr[0];
+	while (i < len)
+	{
+		if (arr[i] > max_val)
+		{
+			max_val = arr[i];
+		}
+		i++;
+	}
+	return (max_val);
 }

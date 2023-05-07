@@ -12,10 +12,11 @@
 
 #include "../../includes/minishell.h"
 
-// Adaptador para o comando "pwd"
-void    pwd_adapter(const char* arg)
+void	pwd_adapter(const char *arg)
 {
-    char* dir = getcwd(NULL, 0);
-    printf("%s - %s\n", dir, arg);
-    free(dir);
+	char	*dir;
+
+	dir = getcwd(NULL, 0);
+	ft_printf("%s - %s\n", dir, arg);
+	free(dir);
 }
