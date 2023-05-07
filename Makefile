@@ -24,7 +24,7 @@ $(NAME): $(OBJS)
 	gcc $(CC_ARGS) -c $< -o $@
 
 test: all
-	@make -C tests
+	make -C tests
 
 debug:
 	$(CC) $(CC_ARGS) -g $(FILES) -L $(LIBS) -lft -o srcs/$(NAME)

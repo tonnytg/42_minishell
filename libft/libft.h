@@ -88,4 +88,5 @@ size_t		ft_calc_size_base(unsigned long int n, int base);
 int			ft_strisdigit(char *str);
 int			max(int arr[], int len);
 char		*ft_char_to_bit(int dec);
+int			max_arrary(int *arr, int len);
 #endif

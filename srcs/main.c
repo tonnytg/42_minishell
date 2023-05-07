@@ -38,10 +38,10 @@ t_command	*find_command(const char *name)
 
 int	main(void)
 {
-	char	input[256];
-	char	*command_name;
-	char	*command_arg;
-	Command	*command;
+	char		input[256];
+	char		*command_name;
+	char		*command_arg;
+	t_command	*command;
 
 	while (1)
 	{
