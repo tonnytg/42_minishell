@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h.                                       :+:      :+:    :+:   */
+/*   echo.c.                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antthoma <antthoma@student.42sp.org.br>    +#+  +:+       +#+        */
 /*       calbert  <calbert@student.42sp.org.br>   +#+#+#+#+#+   +#+           */
@@ -10,20 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "../../includes/minishell.h"
 
-# include <stdlib.h>
-# include <unistd.h>
-# include <stdio.h>
-# include "libft.h"
-
-typedef struct s_command{
-	char	*name;
-	void	(*execute)(const char*);
-}	t_command;
-
-void	echo_adapter(const char *arg);
-void	pwd_adapter(const char *arg);
-
-#endif
+void	echo_adapter(const char *arg)
+{
+	ft_printf("%s\n", arg);
+}

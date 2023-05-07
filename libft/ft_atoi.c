@@ -21,7 +21,6 @@ int	ft_atoi(const char *nptr)
 	i = 0;
 	sign = 1;
 	result = 0;
-
 	while (nptr[i] == ' ' || (nptr[i] >= 9 && nptr[i] <= 13))
 		i++;
 	if (nptr[i] == '-')
@@ -36,7 +35,5 @@ int	ft_atoi(const char *nptr)
 		result = result * 10 + (nptr[i] - '0');
 		i++;
 	}
-	// TODO: Validar se é maior ou menor que 2147483647
-	// só pode converter para o int máximo ou minimo
 	return (result * sign);
 }
