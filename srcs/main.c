@@ -20,8 +20,12 @@
 void free_commands(t_command *commands, int num_commands)
 {
     int i;
-    for (i = 0; i < num_commands; i++) {
+
+	i = 0;
+    while (i < num_commands)
+	{
         free(commands[i].name);
+		i++;
     }
     free(commands);
 }
@@ -32,15 +36,15 @@ void	set_commands(t_cmds *cmds)
 	cmds->cmd = malloc(sizeof(t_command) * cmds->num_cmds);
 
 	cmds->cmd[0].name = malloc(sizeof(char) * (strlen("echo") + 1));
-	strcpy(cmds->cmd[0].name, "echo");
+	ft_strlcpy(cmds->cmd[0].name, "echo", 5);
 	cmds->cmd[0].execute = echo_adapter;
 
 	cmds->cmd[1].name = malloc(sizeof(char) * (strlen("pwd") + 1));
-	strcpy(cmds->cmd[1].name, "pwd");
+	ft_strlcpy(cmds->cmd[1].name, "pwd", 4);
 	cmds->cmd[1].execute = pwd_adapter;
 
 	cmds->cmd[2].name = malloc(sizeof(char) * (strlen("exit") + 1));
-	strcpy(cmds->cmd[2].name, "exit");
+	ft_strlcpy(cmds->cmd[2].name, "exit", 5);
 	cmds->cmd[2].execute = exit_adapter;
 }
 
@@ -51,7 +55,7 @@ t_command	*find_command(t_cmds *cmds, const char *name)
 	i = 0;
 	while (i < cmds->num_cmds)
 	{
-		if (strcmp(cmds->cmd[i].name, name) == 0)
+		if (ft_strcmp(cmds->cmd[i].name, name) == 0)
 		{
 			return (&cmds->cmd[i]);
 		}
@@ -94,9 +98,10 @@ int	main(void)
 		}
 		// execute command
 		resp = command->execute(command_arg);
+		free_commands(cmds->cmd, cmds->num_cmds);
+		ft_printf("resp:%d\n", resp);
 		if (resp == 1)
 		{
-			free_commands(cmds->cmd, cmds->num_cmds);
 			free(cmds);
 			break ;
 		}
