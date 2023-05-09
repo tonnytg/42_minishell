@@ -3,7 +3,8 @@ HEADER 	= $(NAME).h
 FILES 	= \
 			srcs/main.c				\
 			srcs/commands/echo.c	\
-			srcs/commands/pwd.c
+			srcs/commands/pwd.c		\
+			srcs/commands/exit.c
 
 OBJS  		= $(FILES:.c=.o)
 CC 			= gcc

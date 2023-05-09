@@ -12,12 +12,8 @@
 
 #include "../../includes/minishell.h"
 
-int	pwd_adapter(const char *arg)
+int exit_adapter(const char *arg)
 {
-	char	*dir;
-
-	dir = getcwd(NULL, 0);
-	ft_printf("%s - %s\n", dir, arg);
-	free(dir);
-	return (0);
+    ft_printf("args for exit: %s\n", arg);
+    return (1);
 }

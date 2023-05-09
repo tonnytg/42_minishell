@@ -20,10 +20,16 @@
 
 typedef struct s_command{
 	char	*name;
-	void	(*execute)(const char*);
+	int		(*execute)(const char*);
 }	t_command;
 
-void	echo_adapter(const char *arg);
-void	pwd_adapter(const char *arg);
+typedef struct s_commands{
+	int			num_cmds;
+	t_command	*cmd;
+}	t_cmds;
+
+int	echo_adapter(const char *arg);
+int	pwd_adapter(const char *arg);
+int	exit_adapter(const char *arg);
 
 #endif

@@ -12,7 +12,8 @@
 
 #include "../../includes/minishell.h"
 
-void	echo_adapter(const char *arg)
+int	echo_adapter(const char *arg)
 {
 	ft_printf("%s\n", arg);
+	return (0);
 }
