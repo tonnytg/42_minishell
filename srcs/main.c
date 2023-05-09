@@ -73,6 +73,9 @@ int	main(void)
 	t_cmds		*cmds;
 	int resp;
 
+	// set commands
+	cmds = ft_calloc(1, sizeof(t_cmds));
+	set_commands(cmds);
 	while (1)
 	{
 		// msg in prompt
@@ -84,10 +87,6 @@ int	main(void)
 		command_name = strtok(input, " ");
 		command_arg = strtok(NULL, "");
 
-		// set commands
-		cmds = ft_calloc(1, sizeof(t_cmds));
-		set_commands(cmds);
-
 		// find command
 		command = find_command(cmds, command_name);
 		if (command == NULL)
@@ -98,13 +97,13 @@ int	main(void)
 		}
 		// execute command
 		resp = command->execute(command_arg);
-		free_commands(cmds->cmd, cmds->num_cmds);
 		ft_printf("resp:%d\n", resp);
 		if (resp == 1)
 		{
-			free(cmds);
 			break ;
 		}
 	}
+	free_commands(cmds->cmd, cmds->num_cmds);
+	free(cmds);
 	return (0);
 }
