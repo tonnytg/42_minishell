@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c.                                            :+:      :+:    :+:   */
+/*   input.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antthoma <antthoma@student.42sp.org.br>    +#+  +:+       +#+        */
 /*       calbert  <calbert@student.42sp.org.br>   +#+#+#+#+#+   +#+           */
@@ -12,31 +12,27 @@
 
 #include "../includes/minishell.h"
 
-int	main(void)
+t_command	*find_command(t_cmds *cmds, const char *name)
 {
-	t_input		data;
-	t_command	*command;
-	t_cmds		*cmds;
-	int			resp;
+	int	i;
 
-	ft_bzero(&data, sizeof(t_input));
-	cmds = ft_calloc(1, sizeof(t_cmds));
-	set_commands(cmds);
-	while (1)
+	i = 0;
+	while (i < cmds->num_cmds)
 	{
-		read_keyboard(&data);
-		command = find_command(cmds, data.cmd_name);
-		if (command == NULL)
+		if (ft_strcmp(cmds->cmd[i].name, name) == 0)
 		{
-			ft_printf("minishell: %s: command not found\n", data.cmd_name);
-			continue ;
+			return (&cmds->cmd[i]);
 		}
-		resp = command->execute(data.cmd_arg);
-		if (resp == 1)
-		{
-			break ;
-		}
+		i++;
 	}
-	free_commands(cmds);
-	return (0);
+	return (NULL);
+}
+
+void	read_keyboard(t_input *data)
+{
+	ft_printf("> ");
+	fgets(data->input, sizeof(data->input), stdin);
+	data->input[strcspn(data->input, "\n")] = 0;
+	data->cmd_name = strtok(data->input, " ");
+	data->cmd_arg = strtok(NULL, "");
 }

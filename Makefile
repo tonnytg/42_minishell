@@ -2,6 +2,8 @@ NAME   	= minishell
 HEADER 	= $(NAME).h
 FILES 	= \
 			srcs/main.c				\
+			srcs/input.c			\
+			srcs/commands.c			\
 			srcs/commands/echo.c	\
 			srcs/commands/pwd.c		\
 			srcs/commands/exit.c
@@ -42,4 +44,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY:            all clean fclean re 
+.PHONY:            all clean fclean re
