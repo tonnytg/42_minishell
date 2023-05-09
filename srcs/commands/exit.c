@@ -12,8 +12,8 @@
 
 #include "../../includes/minishell.h"
 
-int exit_adapter(const char *arg)
+int	exit_adapter(const char *arg)
 {
-    ft_printf("args for exit: %s\n", arg);
-    return (1);
+	ft_printf("args for exit: %s\n", arg);
+	return (1);
 }

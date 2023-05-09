@@ -28,6 +28,12 @@ typedef struct s_commands{
 	t_command	*cmd;
 }	t_cmds;
 
+typedef struct s_input{
+	char		input[256];
+	char		*cmd_name;
+	char		*cmd_arg;
+}	t_input;
+
 int	echo_adapter(const char *arg);
 int	pwd_adapter(const char *arg);
 int	exit_adapter(const char *arg);
