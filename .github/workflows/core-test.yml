@@ -12,6 +12,8 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: install norminette
-      run: pip install norminette && norminette
+      run: pip install norminette
+    - name: review norminette
+      run: norminette      
     - name: make
       run: make
