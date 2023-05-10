@@ -19,6 +19,6 @@ jobs:
       run: make
     - name: test command
       run: |
-        ./minishell << EOF
+        valgrind --leak-check=full -s ./minishell << EOF
         exit
         EOF
