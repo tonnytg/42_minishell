@@ -9,7 +9,7 @@ on:
       command:
         description: 'Command to pass to minishell'
         default: 'exit'
-        required: yes
+        required: true
         type: string
 
 jobs:
