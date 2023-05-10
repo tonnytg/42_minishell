@@ -13,7 +13,27 @@ jobs:
     - uses: actions/checkout@v3
     - name: install norminette
       run: pip install norminette
+    - name: install valgrind
+      run: sudo apt-get install valgrind      
     - name: review norminette
       run: norminette      
     - name: make
-      run: make
+      run: make      
+    - name: test command exit
+      run: |
+        valgrind --leak-check=full -s ./minishell << EOF
+        exit
+        EOF
+    - name: test command echo exit
+      run: |
+        valgrind --leak-check=full -s ./minishell << EOF
+        echo "Hello World"
+        exit
+        EOF
+    - name: test command echo pwd exit
+      run: |
+        valgrind --leak-check=full -s ./minishell << EOF
+        echo "Hello World"
+        pwd
+        exit
+        EOF
