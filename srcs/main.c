@@ -34,9 +34,7 @@ int	main(void)
 		if (data.cmd_name != NULL)
 			resp = command->execute(data.cmd_arg);
 		if (resp == 1)
-		{
 			break ;
-		}
 	}
 	free_commands(cmds);
 	return (0);
