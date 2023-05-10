@@ -26,4 +26,7 @@ jobs:
     - name: make
       run: make
     - name: test command
-      run: ./minishell ${{ github.event.inputs.command }}
+      run: |
+        ./minishell << EOF
+        ${{ github.event.inputs.command }}
+        EOF
