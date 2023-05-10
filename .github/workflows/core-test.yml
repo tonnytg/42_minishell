@@ -4,6 +4,14 @@ on:
   pull_request:
     branches: [ "main" ]
 
+  workflow_call:
+    inputs:
+      command:
+        description: 'Command to pass to minishell'
+        default: 'exit'
+        required: false
+        type: string
+
 jobs:
   build:
 
@@ -17,3 +25,5 @@ jobs:
       run: norminette      
     - name: make
       run: make
+    - name: test command
+      run: ./minishell ${{ github.event.inputs.command }}
