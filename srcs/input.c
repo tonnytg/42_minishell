@@ -17,7 +17,7 @@ t_command	*find_command(t_cmds *cmds, const char *name)
 	int	i;
 
 	i = 0;
-	while (i < cmds->num_cmds)
+	while (i < cmds->num_cmds && name != NULL)
 	{
 		if (ft_strcmp(cmds->cmd[i].name, name) == 0)
 		{
