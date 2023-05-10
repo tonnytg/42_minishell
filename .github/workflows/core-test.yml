@@ -19,8 +19,14 @@ jobs:
       run: norminette      
     - name: make
       run: make      
-    - name: test command
+    - name: test command exit
       run: |
         valgrind --leak-check=full -s ./minishell << EOF
         exit
         EOF
+    - name: test command echo
+      run: |
+        valgrind --leak-check=full -s ./minishell << EOF
+        echo "Hello World"
+        exit
+        EOF        
