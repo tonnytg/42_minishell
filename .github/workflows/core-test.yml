@@ -33,4 +33,7 @@ jobs:
     - name: test command echo pwd exit
       run: |
         valgrind --leak-check=full -s ./minishell << EOF
+        echo "Hello World"
+        pwd
+        exit
         EOF
