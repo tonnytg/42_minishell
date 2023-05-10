@@ -9,7 +9,7 @@ on:
       command:
         description: 'Command to pass to minishell'
         default: 'exit'
-        required: false
+        required: yes
         type: string
 
 jobs:
@@ -28,5 +28,5 @@ jobs:
     - name: test command
       run: |
         ./minishell << EOF
-        ${{ github.event.inputs.command }}
+        ${{ inputs.command }}
         EOF
