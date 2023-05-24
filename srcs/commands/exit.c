@@ -18,37 +18,76 @@ static void print_message(const char *message, int code)
 	exit(code);
 }
 
-int	exit_adapter(const char *arg)
+static int	ft_isnumber(char *str)
 {
-	int	exit_code;
-	int	i;
+	int i;
 
-	/* NOTE: need to implements some way to count how many are in `arg`
-	 * After converts attibuit in a variable to copare on `if`.
-	 * Something like that:
-	 *  
-	 * 		int converted_arg = arg; 
-	 * 		
-	 * 		if (converted_arg > 2)
-	 * 			...
-	 * 
-	*/
-	if (arg > 2)
-		print_message("bash: exit: too many arguments", 127);
 	i = 0;
-	while (arg[1])
+	if (str[i] == '-')
+		i++;
+	while (str[i] != '\0')
 	{
-		if (!ft_isdigit(arg[i]) && (arg[i] != '-' || i != 0))
+		if (ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+static void validate_numeric_argument(char **converted_arg, int count_arg)
+{
+	int i;
+
+	i = 0;
+	if (count_arg <= 1)
+		return ;
+	while (converted_arg[1][i])
+	{
+		if (!ft_isnumber(converted_arg[i]))
 		{
-			printf("bash: exit: %s: numeric argument required\n", arg);
+			printf("bash: exit: %s: numeric argument required\n", converted_arg[i]);
 			exit(2);
 		}
+		i++;
 	}
-	exit_code = ft_atoi(arg);
+}
+
+static void free_converted_args(char **converted_arg, int count_arg)
+{
+	int i;
+
+	i = 0;
+	while (i < count_arg)
+	{
+		free(converted_arg[i]);
+		i++;
+	}
+	free(converted_arg);
+}
+
+
+int	exit_adapter(const char *arg)
+{
+	char	**converted_arg;
+	int		count_arg;
+	int		exit_code;
+
+	converted_arg = ft_split(arg, ' ');
+	count_arg = 0;
+	while (converted_arg[count_arg])
+		count_arg++;
+	if (count_arg > 1)
+		print_message("bash: exit: too many arguments", 127);
+	validate_numeric_argument(converted_arg, count_arg);
+	if (count_arg > 0)
+		exit_code = ft_atoi(converted_arg[0]);
+	else
+		exit_code = 0;
 	if(exit_code < 0)
 		exit_code = (exit_code % 256 + 256) % 256;
-	ft_printf("args for exit: %s\n", arg);
-	return (exit_code);
+	print_message("exit", exit_code);
+	free_converted_args(converted_arg, count_arg);
+	exit(exit_code);
 }
 
 /*
