@@ -26,16 +26,15 @@ int	main(void)
 	{
 		read_keyboard(&data);
 		command = find_command(cmds, data.cmd_name);
-		if (command == NULL)
+		if (command == NULL && data.cmd_name != NULL)
 		{
 			ft_printf("minishell: %s: command not found\n", data.cmd_name);
 			continue ;
 		}
-		resp = command->execute(data.cmd_arg);
+		if (data.cmd_name != NULL)
+			resp = command->execute(data.cmd_arg);
 		if (resp == 1)
-		{
 			break ;
-		}
 	}
 	free_commands(cmds);
 	return (0);
