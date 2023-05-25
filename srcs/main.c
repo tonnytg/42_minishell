@@ -20,7 +20,7 @@ int	main(void)
 	int			resp;
 
 	ft_bzero(&data, sizeof(t_input));
-	cmds = set_commands();
+	cmds = set_commands(3);
 	while (1)
 	{
 		read_keyboard(&data);

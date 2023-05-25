@@ -42,7 +42,7 @@ void		read_keyboard(t_input *data);
 t_command	*find_command(t_cmds *cmds, const char *name);
 
 /* Set commands */
-t_cmds		*set_commands();
+t_cmds		*set_commands(int num_cmds);
 void		free_commands(t_cmds *commands);
 
 /* Commands */
