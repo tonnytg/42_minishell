@@ -32,9 +32,12 @@ void	free_commands(t_cmds *commands)
 	free(commands);
 }
 
-void	set_commands(t_cmds *cmds)
+t_cmds	*set_commands(int num_cmds)
 {
-	cmds->num_cmds = 3;
+	t_cmds	*cmds;
+
+	cmds = ft_calloc(1, sizeof(t_cmds));
+	cmds->num_cmds = num_cmds;
 	cmds->cmd = malloc(sizeof(t_command) * cmds->num_cmds);
 	cmds->cmd[0].name = malloc(sizeof(char) * (strlen("echo") + 1));
 	ft_strlcpy(cmds->cmd[0].name, "echo", 5);
@@ -45,4 +48,5 @@ void	set_commands(t_cmds *cmds)
 	cmds->cmd[2].name = malloc(sizeof(char) * (strlen("exit") + 1));
 	ft_strlcpy(cmds->cmd[2].name, "exit", 5);
 	cmds->cmd[2].execute = exit_adapter;
+	return (cmds);
 }
