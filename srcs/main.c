@@ -20,8 +20,7 @@ int	main(void)
 	int			resp;
 
 	ft_bzero(&data, sizeof(t_input));
-	cmds = ft_calloc(1, sizeof(t_cmds));
-	set_commands(cmds);
+	cmds = set_commands();
 	while (1)
 	{
 		read_keyboard(&data);
@@ -33,7 +32,9 @@ int	main(void)
 		}
 		if (data.cmd_name != NULL)
 			resp = command->execute(data.cmd_arg);
-		if (resp == 1)
+		ft_printf("resp: %d\n", resp);
+		if (data.cmd_name != NULL
+			&& ft_strcmp(data.cmd_name, "exit") == 0)
 			break ;
 	}
 	free_commands(cmds);
