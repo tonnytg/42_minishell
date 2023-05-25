@@ -18,6 +18,19 @@
 # include <stdio.h>
 # include "libft.h"
 
+typedef struct s_exit_code {
+	int		code;
+	char	*msg;
+	char 	*last_cmd;
+}	t_exit_code;
+
+/* Read Keyboard command and arguments */
+typedef struct s_input{
+	char		data[256];
+	char		*cmd_name;
+	char		*cmd_args;
+}	t_input;
+
 /* Each Command */
 typedef struct s_command{
 	char	*name;
@@ -26,24 +39,22 @@ typedef struct s_command{
 
 /* Array of commands */
 typedef struct s_commands{
+	t_input		*input;
+	t_command	cmd_finded;
 	int			num_cmds;
-	t_command	*cmd;
+	t_command	*arr_cmds;
+	t_exit_code	exit_code;
 }	t_cmds;
 
-/* Read Keyboard command and arguments */
-typedef struct s_input{
-	char		input[256];
-	char		*cmd_name;
-	char		*cmd_arg;
-}	t_input;
+
 
 /* Read Keyboard */
-void		read_keyboard(t_input *data);
-t_command	*find_command(t_cmds *cmds, const char *name);
+void		read_keyboard(t_cmds *cmds);
+void		find_command(t_cmds *cmds);
 
 /* Set commands */
-t_cmds		*set_commands(int num_cmds);
-void		free_commands(t_cmds *commands);
+void		set_commands(t_cmds *cmds);
+void		free_commands(t_cmds *cmds);
 
 /* Commands */
 int			echo_adapter(const char *arg);
