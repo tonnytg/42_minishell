@@ -19,24 +19,31 @@ void	execute_cmd(t_cmds *cmds)
 	cmds->exit_code.code = cmds->cmd_finded.execute(cmds->input->cmd_args);
 }
 
+int	is_exit(t_cmds *cmds)
+{
+	if (ft_strcmp(cmds->exit_code.last_cmd, "exit") == 0)
+		return (1);
+	return (0);
+}
+
 int	main(void)
 {
 	t_cmds	*cmds;
 
-	ft_bzero(&cmds, sizeof(t_cmds));
-	ft_printf("set commands\n");
-	set_commands(cmds);
-	while (1)
-	{
-		ft_printf("read commands\n");
-		read_keyboard(cmds);
-		ft_printf("find commands\n");
-		find_command(cmds);
-		ft_printf("exec commands\n");
-		execute_cmd(cmds);
-		if (ft_strcmp(cmds->exit_code.last_cmd, "exit") == 0)
-			break ;
-	}
+	ft_bzero(&cmds, sizeof(t_cmds) * 1);
+//	ft_printf("set commands\n");
+//	set_commands(cmds);
+//	while (1)
+//	{
+//		ft_printf("read commands\n");
+//		read_keyboard(cmds);
+//		ft_printf("find commands\n");
+//		find_command(cmds);
+//		ft_printf("exec commands\n");
+//		execute_cmd(cmds);
+//		if (is_exit(cmds))
+//			break ;
+//	}
 	free_commands(cmds);
 	return (0);
 }

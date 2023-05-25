@@ -12,14 +12,14 @@
 
 #include "../../includes/minishell.h"
 
-int	count_args(const char *arg) // exit 1 a 3
+int	count_args(const char *arg)
 {
 	int	i;
 	int	count;
 
 	i = 0;
 	count = 0;
-	while (arg == NULL && arg[i] != '\0')
+	while (arg && arg[i] != '\0')
 	{
 		if (arg[i] == ' ')
 			count++;
@@ -30,8 +30,6 @@ int	count_args(const char *arg) // exit 1 a 3
 
 int	check_erros_exit(const char *arg, int count)
 {
-	int result;
-
 	if (count > 1)
 	{
 		ft_printf("minishell: exit: too many arguments\n");
@@ -43,11 +41,9 @@ int	check_erros_exit(const char *arg, int count)
 		return (2);
 	}
 	if (arg[0] == '-' && ft_isdigit(arg[1]) == 1)
-	{
-		ft_printf("atoi\n");
-		result = (exit_code % 256 + 256) % 256
-		return (result);
-	}
+		return (ft_atoi(arg));
+	if (arg != NULL)
+		return (ft_atoi(arg));
 	return (0);
 }
 
@@ -60,8 +56,7 @@ int	exit_adapter(const char *arg)
 		return (0);
 	count = 0;
 	count = count_args(arg);
-	ft_printf("arg:%s\n", arg);
 	exit_code = check_erros_exit(arg, count);
-	exit_code = ;
+	exit_code = (exit_code % 256 + 256) % 256;
 	return (exit_code);
 }
