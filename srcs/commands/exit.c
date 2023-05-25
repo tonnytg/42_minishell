@@ -41,10 +41,9 @@ int	check_erros_exit(const char *arg, int count)
 		return (2);
 	}
 	if (arg[0] == '-' && ft_isdigit(arg[1]) == 1)
-	{
-		ft_printf("atoi\n");
 		return (ft_atoi(arg));
-	}
+	if (arg != NULL)
+		return (ft_atoi(arg));
 	return (0);
 }
 
@@ -57,7 +56,6 @@ int	exit_adapter(const char *arg)
 		return (0);
 	count = 0;
 	count = count_args(arg);
-	ft_printf("arg:%s\n", arg);
 	exit_code = check_erros_exit(arg, count);
 	exit_code = (exit_code % 256 + 256) % 256;
 	return (exit_code);
