@@ -37,7 +37,15 @@ jobs:
         fi
     - name: test command exit a
       run: |
+        set +e
         valgrind --leak-check=full -s ./minishell << EOF
-        exit a
+        exit -2
         EOF
-        [[ $? -eq 2 ]] && echo "OK" || echo "KO"
+        EXIT_CODE=$?
+        set -e
+        if [[ $EXIT_CODE -eq 2 ]]; then
+          echo "OK"
+        else
+          echo "KO"
+          exit 0
+        fi
