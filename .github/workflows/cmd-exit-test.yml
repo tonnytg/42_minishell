@@ -1,0 +1,35 @@
+name: Minishell Core Test
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: install valgrind
+      run: sudo apt install valgrind
+    - name: make
+      run: make      
+    - name: test command exit
+      run: |
+        valgrind --leak-check=full -s ./minishell << EOF
+        exit
+        EOF
+        [[ $? -eq 0 ]] && echo ok || exit 1
+    - name: test command exit -2
+      run: |
+        valgrind --leak-check=full -s ./minishell << EOF
+        exit -2
+        EOF
+        [[ $? -eq 254 ]] && echo ok || exit 1
+    - name: test command exit a
+      run: |
+        valgrind --leak-check=full -s ./minishell << EOF
+        exit a
+        EOF
+        [[ $? -eq 2 ]] && echo ok || exit 1        
