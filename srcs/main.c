@@ -12,29 +12,52 @@
 
 #include "../includes/minishell.h"
 
+void	free_commands(t_cmds *cmds)
+{
+	int	i;
+
+	i = 0;
+	while (i < cmds->num_cmds)
+	{
+		free(cmds->arr_cmds[i].name);
+		i++;
+	}
+	free(cmds->arr_cmds);
+	free(cmds->cmd_finded);
+	free(cmds->input);
+	free(cmds);
+}
+
+void	execute_cmd(t_cmds *cmds)
+{
+	cmds->exit_code.last_cmd = cmds->input->cmd_name;
+	cmds->exit_code.code = cmds->cmd_finded->execute(cmds->input->cmd_args);
+}
+
+int	is_exit(t_cmds *cmds)
+{
+	if (ft_strcmp(cmds->exit_code.last_cmd, "exit") == 0)
+		return (1);
+	return (0);
+}
+
 int	main(void)
 {
-	t_input		data;
-	t_command	*command;
-	t_cmds		*cmds;
-	int			resp;
+	t_cmds	*cmds;
 
-	ft_bzero(&data, sizeof(t_input));
-	cmds = set_commands(3);
+	cmds = malloc(sizeof(t_cmds) * 1);
+	cmds->input = malloc(sizeof(t_input) * 1);
+	cmds->cmd_finded = malloc(sizeof(t_command));
+	cmds->exit_code.code = 0;
+	set_commands(cmds);
 	while (1)
 	{
-		read_keyboard(&data);
-		command = find_command(cmds, data.cmd_name);
-		if (command == NULL && data.cmd_name != NULL)
-		{
-			ft_printf("minishell: %s: command not found\n", data.cmd_name);
+		read_keyboard(cmds);
+		if (cmds->input->cmd_name == NULL)
 			continue ;
-		}
-		if (data.cmd_name != NULL)
-			resp = command->execute(data.cmd_arg);
-		ft_printf("resp: %d\n", resp);
-		if (data.cmd_name != NULL
-			&& ft_strcmp(data.cmd_name, "exit") == 0)
+		find_command(cmds);
+		execute_cmd(cmds);
+		if (is_exit(cmds))
 			break ;
 	}
 	free_commands(cmds);
