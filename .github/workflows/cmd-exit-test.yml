@@ -1,6 +1,8 @@
 name: Minishell Core Test
 
-on: push
+on:
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -20,12 +22,12 @@ jobs:
         EOF
         [[ $? -eq 0 ]] && echo "OK" || echo "KO"
     - name: test command exit -2
-      allow_failure: true
       run: |
         valgrind --leak-check=full -s ./minishell << EOF
         exit -2
         EOF
         [[ $? -eq 254 ]] && echo "OK" || echo "KO"
+        true
     - name: test command exit a
       run: |
         valgrind --leak-check=full -s ./minishell << EOF
