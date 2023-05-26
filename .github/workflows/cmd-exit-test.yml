@@ -23,10 +23,13 @@ jobs:
         [[ $? -eq 0 ]] && echo "OK" || echo "KO"
     - name: test command exit -2
       run: |
+        set +e
         valgrind --leak-check=full -s ./minishell << EOF
         exit -2
         EOF
-        if [[ $? -eq 254 ]]; then
+        EXIT_CODE=$?
+        set -e
+        if [[ $EXIT_CODE -eq 254 ]]; then
           echo "OK"
         else
           echo "KO"
