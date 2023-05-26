@@ -21,7 +21,7 @@
 typedef struct s_exit_code {
 	int		code;
 	char	*msg;
-	char 	*last_cmd;
+	char	*last_cmd;
 }	t_exit_code;
 
 /* Read Keyboard command and arguments */
@@ -40,13 +40,11 @@ typedef struct s_command{
 /* Array of commands */
 typedef struct s_commands{
 	t_input		*input;
-	t_command	cmd_finded;
+	t_command	*cmd_finded;
 	int			num_cmds;
 	t_command	*arr_cmds;
 	t_exit_code	exit_code;
 }	t_cmds;
-
-
 
 /* Read Keyboard */
 void		read_keyboard(t_cmds *cmds);

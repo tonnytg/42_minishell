@@ -12,11 +12,26 @@
 
 #include "../includes/minishell.h"
 
+void	free_commands(t_cmds *cmds)
+{
+	int	i;
+
+	i = 0;
+	while (i < cmds->num_cmds)
+	{
+		free(cmds->arr_cmds[i].name);
+		i++;
+	}
+	free(cmds->arr_cmds);
+	free(cmds->cmd_finded);
+	free(cmds->input);
+	free(cmds);
+}
+
 void	execute_cmd(t_cmds *cmds)
 {
-//	resp = command->execute(data.cmd_arg);
 	cmds->exit_code.last_cmd = cmds->input->cmd_name;
-	cmds->exit_code.code = cmds->cmd_finded.execute(cmds->input->cmd_args);
+	cmds->exit_code.code = cmds->cmd_finded->execute(cmds->input->cmd_args);
 }
 
 int	is_exit(t_cmds *cmds)
@@ -30,20 +45,21 @@ int	main(void)
 {
 	t_cmds	*cmds;
 
-	ft_bzero(&cmds, sizeof(t_cmds) * 1);
-//	ft_printf("set commands\n");
-//	set_commands(cmds);
-//	while (1)
-//	{
-//		ft_printf("read commands\n");
-//		read_keyboard(cmds);
-//		ft_printf("find commands\n");
-//		find_command(cmds);
-//		ft_printf("exec commands\n");
-//		execute_cmd(cmds);
-//		if (is_exit(cmds))
-//			break ;
-//	}
+	cmds = malloc(sizeof(t_cmds) * 1);
+	cmds->input = malloc(sizeof(t_input) * 1);
+	cmds->cmd_finded = malloc(sizeof(t_command));
+	cmds->exit_code.code = 0;
+	set_commands(cmds);
+	while (1)
+	{
+		read_keyboard(cmds);
+		if (cmds->input->cmd_name == NULL)
+			continue ;
+		find_command(cmds);
+		execute_cmd(cmds);
+		if (is_exit(cmds))
+			break ;
+	}
 	free_commands(cmds);
 	return (0);
 }

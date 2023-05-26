@@ -21,7 +21,7 @@ void	find_command(t_cmds *cmds)
 	{
 		if (ft_strcmp(cmds->arr_cmds[i].name, cmds->input->cmd_name) == 0)
 		{
-			cmds->cmd_finded = cmds->arr_cmds[i];
+			ft_memcpy(cmds->cmd_finded, &cmds->arr_cmds[i], sizeof(t_command));
 		}
 		i++;
 	}

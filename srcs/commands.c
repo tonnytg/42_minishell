@@ -18,34 +18,18 @@ Command local_commands[] = {
 	{"pwd", pwd_adapter}
 };
 */
-void	free_commands(t_cmds *cmds)
-{
-	int	i;
-
-	i = 0;
-	while (i < cmds->num_cmds)
-	{
-		free(cmds->arr_cmds[i].name);
-		i++;
-	}
-	free(cmds->arr_cmds);
-	free(cmds);
-}
 
 void	set_commands(t_cmds *cmds)
 {
-	cmds->num_cmds = 1;
-//	cmds->arr_cmds = malloc(sizeof(t_command) * cmds->num_cmds);
-//
-//	cmds->arr_cmds[0].name = malloc(sizeof(char) * (strlen("echo") + 1));
-//	ft_strlcpy(cmds->arr_cmds[0].name, "echo", 5);
-//	cmds->arr_cmds[0].execute = echo_adapter;
-//
-//	cmds->arr_cmds[1].name = malloc(sizeof(char) * (strlen("pwd") + 1));
-//	ft_strlcpy(cmds->arr_cmds[1].name, "pwd", 4);
-//	cmds->arr_cmds[1].execute = pwd_adapter;
-//
-//	cmds->arr_cmds[2].name = malloc(sizeof(char) * (strlen("exit") + 1));
-//	ft_strlcpy(cmds->arr_cmds[2].name, "exit", 5);
-//	cmds->arr_cmds[2].execute = exit_adapter;
+	cmds->num_cmds = 3;
+	cmds->arr_cmds = malloc(sizeof(t_command) * cmds->num_cmds);
+	cmds->arr_cmds[0].name = malloc(sizeof(char) * (strlen("echo") + 1));
+	ft_strlcpy(cmds->arr_cmds[0].name, "echo", 5);
+	cmds->arr_cmds[0].execute = echo_adapter;
+	cmds->arr_cmds[1].name = malloc(sizeof(char) * (strlen("pwd") + 1));
+	ft_strlcpy(cmds->arr_cmds[1].name, "pwd", 4);
+	cmds->arr_cmds[1].execute = pwd_adapter;
+	cmds->arr_cmds[2].name = malloc(sizeof(char) * (strlen("exit") + 1));
+	ft_strlcpy(cmds->arr_cmds[2].name, "exit", 5);
+	cmds->arr_cmds[2].execute = exit_adapter;
 }
