@@ -34,7 +34,7 @@ jobs:
           echo "OK"
         else
           echo "KO"
-          exit 0
+          exit 1
         fi
     - name: test command exit a
       run: |
@@ -49,5 +49,5 @@ jobs:
           echo "OK"
         else
           echo "KO"
-          exit 0
+          exit 1
         fi
