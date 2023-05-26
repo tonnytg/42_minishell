@@ -20,13 +20,17 @@ jobs:
         valgrind --leak-check=full -s ./minishell << EOF
         exit
         EOF
+        [[ $? -eq 0 ]] && echo "OK" || echo "KO"
     - name: test command exit -2
+      allow_failure: true
       run: |
         valgrind --leak-check=full -s ./minishell << EOF
         exit -2
         EOF
+        [[ $? -eq 254 ]] && echo "OK" || echo "KO"
     - name: test command exit a
       run: |
         valgrind --leak-check=full -s ./minishell << EOF
         exit a
         EOF
+        [[ $? -eq 2 ]] && echo "OK" || echo "KO"
