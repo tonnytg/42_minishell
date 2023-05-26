@@ -29,6 +29,7 @@ jobs:
         EOF
         EXIT_CODE=$?
         set -e
+        echo "Result: $EXIT_CODE"
         if [[ $EXIT_CODE -eq 254 ]]; then
           echo "OK"
         else
@@ -39,10 +40,11 @@ jobs:
       run: |
         set +e
         valgrind --leak-check=full -s ./minishell << EOF
-        exit -2
+        exit a
         EOF
         EXIT_CODE=$?
         set -e
+        echo "Result: $EXIT_CODE"
         if [[ $EXIT_CODE -eq 2 ]]; then
           echo "OK"
         else
