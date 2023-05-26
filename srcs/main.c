@@ -44,6 +44,7 @@ int	is_exit(t_cmds *cmds)
 int	main(void)
 {
 	t_cmds	*cmds;
+	int		exit_code;
 
 	cmds = malloc(sizeof(t_cmds) * 1);
 	cmds->input = malloc(sizeof(t_input) * 1);
@@ -57,9 +58,10 @@ int	main(void)
 			continue ;
 		find_command(cmds);
 		execute_cmd(cmds);
+		exit_code = cmds->exit_code.code;
 		if (is_exit(cmds))
 			break ;
 	}
 	free_commands(cmds);
-	return (0);
+	return (exit_code);
 }
