@@ -59,6 +59,7 @@ void		find_command(t_cmds *cmds);
 void		set_envs(char **envp, char **envs);
 int			count_envp(char **envp);
 int			append_envs(char **envs, char *name, char *value);
+void		free_envs(char **envs);
 
 /* Set commands */
 void		set_commands(t_cmds *cmds);
@@ -68,5 +69,9 @@ void		free_commands(t_cmds *cmds);
 int			echo_adapter(const char *arg);
 int			pwd_adapter(const char *arg);
 int			exit_adapter(const char *arg);
+void		execute_cmd(t_cmds *cmds);
+
+/* Minishell */
+int			minishell(t_cmds *cmds, char **envs);
 
 #endif

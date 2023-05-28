@@ -12,6 +12,19 @@
 
 #include "../includes/minishell.h"
 
+void	free_envs(char **envs)
+{
+	int	i;
+
+	i = 0;
+	while (envs[i] != NULL)
+	{
+		free(envs[i]);
+		i++;
+	}
+	free(envs);
+}
+
 int	count_envp(char **envp)
 {
 	int	i;
@@ -50,6 +63,7 @@ int	append_envs(char **envs, char *name, char *value)
 		env = ft_strjoin(name_equal, value);
 		envs[i] = env;
 	}
+	free(name_equal);
 	envs[i + 1] = NULL;
 	return (0);
 }

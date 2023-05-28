@@ -6,7 +6,8 @@ FILES 	= \
 			srcs/commands.c			\
 			srcs/commands/echo.c	\
 			srcs/commands/pwd.c		\
-			srcs/commands/exit.c
+			srcs/commands/exit.c	\
+			srcs/envs.c
 
 OBJS  		= $(FILES:.c=.o)
 CC 			= gcc
