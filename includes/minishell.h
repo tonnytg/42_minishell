@@ -46,9 +46,19 @@ typedef struct s_commands{
 	t_exit_code	exit_code;
 }	t_cmds;
 
+typedef struct s_envs{
+	char	*name;
+	char	*value;
+}	t_envs;
+
 /* Read Keyboard */
 void		read_keyboard(t_cmds *cmds);
 void		find_command(t_cmds *cmds);
+
+/* Set envs */
+void		set_envs(char **envp, char **envs);
+int			count_envp(char **envp);
+int			append_envs(char **envs, char *name, char *value);
 
 /* Set commands */
 void		set_commands(t_cmds *cmds);
