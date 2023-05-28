@@ -57,12 +57,9 @@ int	append_envs(char **envs, char *name, char *value)
 	i = 0;
 	while (envs[i] != NULL)
 		i++;
-	if (envs[i] == NULL)
-	{
-		name_equal = ft_strjoin(name, "=");
-		env = ft_strjoin(name_equal, value);
-		envs[i] = env;
-	}
+	name_equal = ft_strjoin(name, "=");
+	env = ft_strjoin(name_equal, value);
+	envs[i] = env;
 	free(name_equal);
 	envs[i + 1] = NULL;
 	return (0);
