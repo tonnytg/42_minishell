@@ -22,9 +22,12 @@ void	find_command(t_cmds *cmds)
 		if (ft_strcmp(cmds->arr_cmds[i].name, cmds->input->cmd_name) == 0)
 		{
 			ft_memcpy(cmds->cmd_finded, &cmds->arr_cmds[i], sizeof(t_command));
+			return ;
 		}
 		i++;
 	}
+	ft_printf("minishell: %s: command not found\n", cmds->input->cmd_name);
+	cmds->cmd_finded->name = NULL;
 }
 
 void	read_keyboard(t_cmds *cmds)
