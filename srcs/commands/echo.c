@@ -12,42 +12,53 @@
 
 #include "../../includes/minishell.h"
 
-void	check_flag(const char *arg, int *flag)
+void	free_args(char **args)
 {
 	int	i;
 
 	i = 0;
-	while (arg[i] != '\0')
+	while (args[i] != NULL)
 	{
-		if (arg[i] == '-' && arg[i] == 'n')
-		{
-			*flag = 1;
-			break ;
-		}
+		free(args[i]);
+		i++;
+	}
+	free(args);
+}
+
+void	print_args(char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i] != NULL)
+	{
+		ft_printf("[%d] %s", i, args[i]);
 		i++;
 	}
 }
 
-int	echo_adapter(const char *arg)
+int	echo_adapter(const char *args)
 {
-	int	i;
-	int	flag;
+	char	**words;
+	int		i;
+	int		trigger;
 
-	flag = 0;
-	check_flag(arg, &flag);
-	if (arg == NULL)
-		ft_printf("\n");
-	else
+	trigger = 0;
+	words = ft_split(args, ' ');
+	if (words == NULL)
 	{
-		i = 0;
-		while (arg[i] != '\0')
-		{
-			if (arg[i] != '"')
-				ft_printf("%c", arg[i]);
-			i++;
-		}
-		if (flag == 0)
-			ft_printf("\n");
+		ft_printf("\n");
+		return (0);
 	}
+	i = 0;
+	if (ft_strcmp(words[0], "-n") == 0)
+	{
+		i = 1;
+		trigger = 1;
+	}
+	print_args(words + i);
+	if (trigger == 0)
+		ft_printf("\n");
+	free_args(words);
 	return (0);
 }
