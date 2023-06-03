@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input.c                                            :+:      :+:    :+:   */
+/*   ft_strtok.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antthoma <antthoma@student.42sp.org.br>    +#+  +:+       +#+        */
 /*       calbert  <calbert@student.42sp.org.br>   +#+#+#+#+#+   +#+           */
@@ -10,28 +10,32 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void	find_command(t_cmds *cmds)
+char	*ft_strtok(char *str, const char *delim, int tigger)
 {
-	int	i;
+	static char	*next_token;
+	char		*current_token;
 
-	i = 0;
-	while (i < cmds->num_cmds && cmds->input->cmd_name != NULL)
+	if (tigger == 1)
+		next_token = NULL;
+	if (str != NULL)
+		next_token = str;
+	if (next_token == NULL)
+		return (NULL);
+	while (*next_token != '\0' && ft_strchr(delim, *next_token) != NULL)
+		next_token++;
+	if (*next_token == '\0')
 	{
-		if (ft_strcmp(cmds->arr_cmds[i].name, cmds->input->cmd_name) == 0)
-		{
-			ft_memcpy(cmds->cmd_finded, &cmds->arr_cmds[i], sizeof(t_command));
-		}
-		i++;
+		next_token = NULL;
+		return (NULL);
 	}
-}
-
-void	read_keyboard(t_cmds *cmds)
-{
-	ft_printf("> ");
-	fgets(cmds->input->data, sizeof(cmds->input->data), stdin);
-	cmds->input->data[strcspn(cmds->input->data, "\n")] = 0;
-	cmds->input->cmd_name = ft_strtok(cmds->input->data, " ", 1);
-	cmds->input->cmd_args = ft_strtok(NULL, "", 0);
+	current_token = next_token;
+	next_token = ft_strpbrk(next_token, delim);
+	if (next_token != NULL)
+	{
+		*next_token = '\0';
+		next_token++;
+	}
+	return (current_token);
 }
