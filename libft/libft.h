@@ -89,4 +89,9 @@ int			ft_strisdigit(char *str);
 int			max(int arr[], int len);
 char		*ft_char_to_bit(int dec);
 int			max_arrary(int *arr, int len);
+
+/* Create for Minishell */
+char		*ft_strpbrk(const char *str, const char *delim);
+char		*ft_strtok(char *str, const char *delim, int tigger);
+
 #endif
