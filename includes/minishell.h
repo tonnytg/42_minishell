@@ -66,7 +66,7 @@ void		set_commands(t_cmds *cmds);
 void		free_commands(t_cmds *cmds);
 
 /* Commands */
-int			echo_adapter(const char *arg);
+int			echo_adapter(const char *args);
 int			pwd_adapter(const char *arg);
 int			exit_adapter(const char *arg);
 void		execute_cmd(t_cmds *cmds);
