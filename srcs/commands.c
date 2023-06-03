@@ -21,7 +21,8 @@ Command local_commands[] = {
 
 void	execute_cmd(t_cmds *cmds)
 {
-	if (cmds->cmd_finded->name) {
+	if (cmds->cmd_finded->name)
+	{
 		cmds->exit_code.last_cmd = cmds->input->cmd_name;
 		cmds->exit_code.code = cmds->cmd_finded->execute(cmds->input->cmd_args);
 	}
