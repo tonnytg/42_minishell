@@ -12,8 +12,53 @@
 
 #include "../../includes/minishell.h"
 
-int	echo_adapter(const char *arg)
+void	free_args(char **args)
 {
-	ft_printf("%s\n", arg);
+	int	i;
+
+	i = 0;
+	while (args[i] != NULL)
+	{
+		free(args[i]);
+		i++;
+	}
+	free(args);
+}
+
+void	print_args(char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i] != NULL)
+	{
+		ft_printf("%s ", args[i]);
+		i++;
+	}
+}
+
+int	echo_adapter(const char *args)
+{
+	char	**words;
+	int		i;
+	int		trigger;
+
+	trigger = 0;
+	if (args == NULL)
+	{
+		ft_printf("\n");
+		return (0);
+	}
+	words = ft_split(args, ' ');
+	i = 0;
+	if (ft_strcmp(words[0], "-n") == 0)
+	{
+		i = 1;
+		trigger = 1;
+	}
+	print_args(words + i);
+	if (trigger == 0)
+		ft_printf("\n");
+	free_args(words);
 	return (0);
 }
