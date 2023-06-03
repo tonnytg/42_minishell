@@ -44,12 +44,12 @@ int	echo_adapter(const char *args)
 	int		trigger;
 
 	trigger = 0;
-	words = ft_split(args, ' ');
-	if (words == NULL)
+	if (args == NULL)
 	{
 		ft_printf("\n");
 		return (0);
 	}
+	words = ft_split(args, ' ');
 	i = 0;
 	if (ft_strcmp(words[0], "-n") == 0)
 	{
