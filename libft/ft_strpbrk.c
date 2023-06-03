@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input.c                                            :+:      :+:    :+:   */
+/*   ft_strpbrk.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antthoma <antthoma@student.42sp.org.br>    +#+  +:+       +#+        */
 /*       calbert  <calbert@student.42sp.org.br>   +#+#+#+#+#+   +#+           */
@@ -10,28 +10,24 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "libft.h"
 
-void	find_command(t_cmds *cmds)
+char	*ft_strpbrk(const char *str, const char *delim)
 {
-	int	i;
+	const char	*d;
 
-	i = 0;
-	while (i < cmds->num_cmds && cmds->input->cmd_name != NULL)
+	if (str == NULL || delim == NULL)
+		return (NULL);
+	while (*str)
 	{
-		if (ft_strcmp(cmds->arr_cmds[i].name, cmds->input->cmd_name) == 0)
+		d = delim;
+		while (*d)
 		{
-			ft_memcpy(cmds->cmd_finded, &cmds->arr_cmds[i], sizeof(t_command));
+			if (*str == *d)
+				return ((char *)str);
+			d++;
 		}
-		i++;
+		str++;
 	}
-}
-
-void	read_keyboard(t_cmds *cmds)
-{
-	ft_printf("> ");
-	fgets(cmds->input->data, sizeof(cmds->input->data), stdin);
-	cmds->input->data[strcspn(cmds->input->data, "\n")] = 0;
-	cmds->input->cmd_name = ft_strtok(cmds->input->data, " ", 1);
-	cmds->input->cmd_args = ft_strtok(NULL, "", 0);
+	return (NULL);
 }
