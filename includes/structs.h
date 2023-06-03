@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c.                                            :+:      :+:    :+:   */
+/*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antthoma <antthoma@student.42sp.org.br>    +#+  +:+       +#+        */
 /*       calbert  <calbert@student.42sp.org.br>   +#+#+#+#+#+   +#+           */
@@ -10,56 +10,33 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#ifndef STRUCTS_H
+# define STRUCTS_H
 
-void	free_args(char **args)
-{
-	int	i;
+# include "minishell.h"
 
-	i = 0;
-	while (args[i] != NULL)
-	{
-		free(args[i]);
-		i++;
-	}
-	free(args);
-}
+typedef struct s_exit_code {
+	int		code;
+	char	*msg;
+	char	*last_cmd;
+}	t_exit_code;
 
-void	print_args(char **args)
-{
-	int	i;
+/* Read Keyboard command and arguments */
+typedef struct s_input{
+	char		data[256];
+	char		*cmd_name;
+	char		*cmd_args;
+}	t_input;
 
-	i = 0;
-	while (args[i] != NULL)
-	{
-		ft_printf("%s ", args[i]);
-		i++;
-	}
-}
+/* Each Command */
+typedef struct s_command{
+	char	*name;
+	int		(*execute)(t_cmds *cmds);
+}	t_command;
 
-int	echo_adapter(const char *args, char **envs)
-{
-	char	**words;
-	int		i;
-	int		trigger;
+typedef struct s_envs{
+	char	*name;
+	char	*value;
+}	t_envs;
 
-	printf("envs: %s\n", envs[0]);
-	trigger = 0;
-	if (args == NULL)
-	{
-		ft_printf("\n");
-		return (0);
-	}
-	words = ft_split(args, ' ');
-	i = 0;
-	if (ft_strcmp(words[0], "-n") == 0)
-	{
-		i = 1;
-		trigger = 1;
-	}
-	print_args(words + i);
-	if (trigger == 0)
-		ft_printf("\n");
-	free_args(words);
-	return (0);
-}
+#endif

@@ -47,7 +47,7 @@ int	check_erros_exit(const char *arg, int count)
 	return (0);
 }
 
-int	exit_adapter(const char *arg)
+int	exit_adapter(const char *arg, char **envs)
 {
 	int	count;
 	int	exit_code;

@@ -12,17 +12,17 @@
 
 #include "../includes/minishell.h"
 
-void	free_envs(char **envs)
+void	free_envs(t_cmds *cmds)
 {
 	int	i;
 
 	i = 0;
-	while (envs[i] != NULL)
+	while (cmds->envs[i] != NULL)
 	{
-		free(envs[i]);
+		free(cmds->envs[i]);
 		i++;
 	}
-	free(envs);
+	free(cmds->envs);
 }
 
 int	count_envp(char **envp)
@@ -35,32 +35,32 @@ int	count_envp(char **envp)
 	return (i);
 }
 
-void	set_envs(char **envp, char **envs)
+void	set_envs(char **envp, t_cmds *cmds)
 {
 	int	i;
 
 	i = 0;
 	while (envp[i] != NULL)
 	{
-		envs[i] = ft_strdup(envp[i]);
+		cmds->envs[i] = ft_strdup(envp[i]);
 		i++;
 	}
-	envs[i] = NULL;
+	cmds->envs[i] = NULL;
 }
 
-int	append_envs(char **envs, char *name, char *value)
+int	append_envs(t_cmds *cmds, char *name, char *value)
 {
 	int		i;
 	char	*env;
 	char	*name_equal;
 
 	i = 0;
-	while (envs[i] != NULL)
+	while (cmds->envs[i] != NULL)
 		i++;
 	name_equal = ft_strjoin(name, "=");
 	env = ft_strjoin(name_equal, value);
-	envs[i] = env;
+	cmds->envs[i] = env;
 	free(name_equal);
-	envs[i + 1] = NULL;
+	cmds->envs[i + 1] = NULL;
 	return (0);
 }
