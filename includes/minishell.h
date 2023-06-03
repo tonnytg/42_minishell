@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antthoma <antthoma@student.42sp.org.br>    +#+  +:+       +#+        */
-/*       calbert  <calbert@student.42sp.org.br>   +#+#+#+#+#+   +#+           */
+/*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/04/26 00:17:13 by antthoma         ###   ########.fr       */
+/*   Updated: 2023/06/03 20:11:04 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,10 @@ void		execute_cmd(t_cmds *cmds);
 
 /* Minishell */
 int			minishell(t_cmds *cmds, char **envs);
+
+/* Signals (signals.c) */
+void		handler(int signal_num);
+void		signal_handler(int signal_num);
+void		signals_handler(void);
 
 #endif
