@@ -32,7 +32,7 @@ void	print_args(char **args)
 	i = 0;
 	while (args[i] != NULL)
 	{
-		ft_printf("[%d] %s", i, args[i]);
+		ft_printf("%s ", args[i]);
 		i++;
 	}
 }
