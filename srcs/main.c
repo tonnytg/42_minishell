@@ -48,7 +48,7 @@ void	check_args(int argc, char **argv)
 	}
 }
 
-int	minishell(t_cmds *cmds, char **envs)
+int	minishell(t_cmds *cmds)
 {
 	int	exit_code;
 
@@ -60,7 +60,6 @@ int	minishell(t_cmds *cmds, char **envs)
 			continue ;
 		find_command(cmds);
 		execute_cmd(cmds);
-		ft_printf("temp envs: %s\n", envs[0]);
 		exit_code = cmds->exit_code.code;
 		if (is_exit(cmds))
 			break ;
@@ -71,7 +70,6 @@ int	minishell(t_cmds *cmds, char **envs)
 int	main(int argc, char **argv, char **envp)
 {
 	t_cmds	*cmds;
-	char	**envs;
 	int		exit_code;
 
 	check_args(argc, argv);
@@ -79,11 +77,11 @@ int	main(int argc, char **argv, char **envp)
 	cmds->input = malloc(sizeof(t_input) * 1);
 	cmds->cmd_finded = malloc(sizeof(t_command));
 	cmds->exit_code.code = 0;
-	envs = malloc(sizeof(char *) * (count_envp(envp) + 2));
-	set_envs(envp, envs);
+	cmds->envs = malloc(sizeof(char *) * (count_envp(envp) + 2));
+	set_envs(envp, cmds);
 	set_commands(cmds);
-	exit_code = minishell(cmds, envs);
-	free_envs(envs);
+	exit_code = minishell(cmds);
+	free_envs(cmds);
 	free_commands(cmds);
 	return (exit_code);
 }
