@@ -47,16 +47,16 @@ int	check_erros_exit(const char *arg, int count)
 	return (0);
 }
 
-int	exit_adapter(const char *arg, char **envs)
+int	exit_adapter(t_cmds *cmds)
 {
 	int	count;
 	int	exit_code;
 
-	if (arg == NULL)
+	if (cmds->input->cmd_args == NULL)
 		return (0);
 	count = 0;
-	count = count_args(arg);
-	exit_code = check_erros_exit(arg, count);
+	count = count_args(cmds->input->cmd_args);
+	exit_code = check_erros_exit(cmds->input->cmd_args, count);
 	exit_code = (exit_code % 256 + 256) % 256;
 	return (exit_code);
 }

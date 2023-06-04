@@ -18,6 +18,8 @@
 # include <stdio.h>
 # include "libft.h"
 
+typedef struct s_commands	t_cmds;
+
 typedef struct s_exit_code {
 	int		code;
 	char	*msg;
@@ -34,7 +36,7 @@ typedef struct s_input{
 /* Each Command */
 typedef struct s_command{
 	char	*name;
-	int		(*execute)(const char*, char **);
+	int		(*execute)(t_cmds *);
 }	t_command;
 
 /* Array of commands */
@@ -67,9 +69,9 @@ void		set_commands(t_cmds *cmds);
 void		free_commands(t_cmds *cmds);
 
 /* Commands */
-int			echo_adapter(const char *args, char **envs);
-int			pwd_adapter(const char *arg, char **envs);
-int			exit_adapter(const char *arg, char **envs);
+int			echo_adapter(t_cmds *cmds);
+int			pwd_adapter(t_cmds *cmds);
+int			exit_adapter(t_cmds *cmds);
 void		execute_cmd(t_cmds *cmds);
 
 /* Minishell */

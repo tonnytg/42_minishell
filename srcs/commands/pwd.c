@@ -12,13 +12,12 @@
 
 #include "../../includes/minishell.h"
 
-int	pwd_adapter(const char *arg, char **envs)
+int	pwd_adapter(t_cmds *cmds)
 {
 	char	*dir;
 
 	dir = getcwd(NULL, 0);
-	ft_printf("%s - %s\n", dir, arg);
-	printf("envs: %s\n", envs[0]);
+	ft_printf("%s - %s\n", dir, cmds->input->cmd_args);
 	free(dir);
 	return (0);
 }
