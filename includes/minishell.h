@@ -6,7 +6,7 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/06/03 23:24:05 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/06/03 23:44:38 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
+# include <signal.h>
 # include "libft.h"
 
 typedef struct s_exit_code
@@ -75,5 +76,10 @@ void		execute_cmd(t_cmds *cmds);
 
 /* Minishell */
 int			minishell(t_cmds *cmds, char **envs);
+
+/* Signals (signals.c) */
+void		handler(int signal_num);
+void		signal_handler(int signal_num);
+void		signals_handler(void);
 
 #endif

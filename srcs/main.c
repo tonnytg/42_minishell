@@ -6,7 +6,11 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2023/06/03 22:55:44 by caalbert         ###   ########.fr       */
+=======
+/*   Updated: 2023/06/03 20:10:12 by caalbert         ###   ########.fr       */
+>>>>>>> main
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +52,7 @@ int	minishell(t_cmds *cmds, char **envs)
 {
 	int	exit_code;
 
+	signals_handler();
 	while (1)
 	{
 		read_keyboard(cmds);
