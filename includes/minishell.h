@@ -19,6 +19,8 @@
 # include <signal.h>
 # include "libft.h"
 
+typedef struct s_commands	t_cmds;
+
 typedef struct s_exit_code {
 	int		code;
 	char	*msg;
@@ -35,7 +37,7 @@ typedef struct s_input{
 /* Each Command */
 typedef struct s_command{
 	char	*name;
-	int		(*execute)(const char*);
+	int		(*execute)(t_cmds *);
 }	t_command;
 
 /* Array of commands */
@@ -45,6 +47,7 @@ typedef struct s_commands{
 	int			num_cmds;
 	t_command	*arr_cmds;
 	t_exit_code	exit_code;
+	char		**envs;
 }	t_cmds;
 
 typedef struct s_envs{
@@ -57,23 +60,23 @@ void		read_keyboard(t_cmds *cmds);
 void		find_command(t_cmds *cmds);
 
 /* Set envs */
-void		set_envs(char **envp, char **envs);
+void		set_envs(char **envp, t_cmds *cmds);
 int			count_envp(char **envp);
-int			append_envs(char **envs, char *name, char *value);
-void		free_envs(char **envs);
+int			append_envs(t_cmds *cmds, char *name, char *value);
+void		free_envs(t_cmds *cmds);
 
 /* Set commands */
 void		set_commands(t_cmds *cmds);
 void		free_commands(t_cmds *cmds);
 
 /* Commands */
-int			echo_adapter(const char *args);
-int			pwd_adapter(const char *arg);
-int			exit_adapter(const char *arg);
+int			echo_adapter(t_cmds *cmds);
+int			pwd_adapter(t_cmds *cmds);
+int			exit_adapter(t_cmds *cmds);
 void		execute_cmd(t_cmds *cmds);
 
 /* Minishell */
-int			minishell(t_cmds *cmds, char **envs);
+int			minishell(t_cmds *cmds);
 
 /* Signals (signals.c) */
 void		handler(int signal_num);
