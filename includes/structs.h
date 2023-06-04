@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c.                                            :+:      :+:    :+:   */
+/*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antthoma <antthoma@student.42sp.org.br>    +#+  +:+       +#+        */
 /*       calbert  <calbert@student.42sp.org.br>   +#+#+#+#+#+   +#+           */
@@ -10,14 +10,33 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/minishell.h"
+#ifndef STRUCTS_H
+# define STRUCTS_H
 
-int	pwd_adapter(t_cmds *cmds)
-{
-	char	*dir;
+# include "minishell.h"
 
-	dir = getcwd(NULL, 0);
-	ft_printf("%s - %s\n", dir, cmds->input->cmd_args);
-	free(dir);
-	return (0);
-}
+typedef struct s_exit_code {
+	int		code;
+	char	*msg;
+	char	*last_cmd;
+}	t_exit_code;
+
+/* Read Keyboard command and arguments */
+typedef struct s_input{
+	char		data[256];
+	char		*cmd_name;
+	char		*cmd_args;
+}	t_input;
+
+/* Each Command */
+typedef struct s_command{
+	char	*name;
+	int		(*execute)(t_cmds *cmds);
+}	t_command;
+
+typedef struct s_envs{
+	char	*name;
+	char	*value;
+}	t_envs;
+
+#endif

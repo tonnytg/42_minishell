@@ -25,38 +25,50 @@ void	free_args(char **args)
 	free(args);
 }
 
-void	print_args(char **args)
+void	print_args(t_cmds *cmds, int index)
 {
-	int	i;
+	int		i;
+	char	*word;
+	char	**args;
+	char	*result;
 
-	i = 0;
+	i = index;
+	args = ft_split(cmds->input->cmd_args, ' ');
 	while (args[i] != NULL)
 	{
-		ft_printf("%s ", args[i]);
+		if (args[i][0] == '$')
+		{
+			word = ft_strtok(args[i], "$", 0);
+			result = getenv(word);
+			ft_printf("%s ", result);
+		}
+		else
+			ft_printf("%s ", args[i]);
 		i++;
 	}
+	free_args(args);
 }
 
-int	echo_adapter(const char *args)
+int	echo_adapter(t_cmds *cmds)
 {
 	char	**words;
-	int		i;
 	int		trigger;
+	int		i;
 
 	trigger = 0;
-	if (args == NULL)
+	i = 0;
+	if (cmds->input->cmd_args == NULL)
 	{
 		ft_printf("\n");
 		return (0);
 	}
-	words = ft_split(args, ' ');
-	i = 0;
+	words = ft_split(cmds->input->cmd_args, ' ');
 	if (ft_strcmp(words[0], "-n") == 0)
 	{
 		i = 1;
 		trigger = 1;
 	}
-	print_args(words + i);
+	print_args(cmds, i);
 	if (trigger == 0)
 		ft_printf("\n");
 	free_args(words);
