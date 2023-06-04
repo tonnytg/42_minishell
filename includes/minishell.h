@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antthoma <antthoma@student.42sp.org.br>    +#+  +:+       +#+        */
-/*       calbert  <calbert@student.42sp.org.br>   +#+#+#+#+#+   +#+           */
+/*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/04/26 00:17:13 by antthoma         ###   ########.fr       */
+/*   Updated: 2023/06/03 23:24:05 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 # include <stdio.h>
 # include "libft.h"
 
-typedef struct s_exit_code {
+typedef struct s_exit_code
+{
 	int		code;
 	char	*msg;
 	char	*last_cmd;
@@ -38,10 +39,10 @@ typedef struct s_command{
 }	t_command;
 
 /* Array of commands */
-typedef struct s_commands{
+typedef struct s_cmds{
 	t_input		*input;
 	t_command	*cmd_finded;
-	int			num_cmds;
+	size_t		num_cmds;
 	t_command	*arr_cmds;
 	t_exit_code	exit_code;
 }	t_cmds;
@@ -69,6 +70,7 @@ void		free_commands(t_cmds *cmds);
 int			echo_adapter(const char *args);
 int			pwd_adapter(const char *arg);
 int			exit_adapter(const char *arg);
+int			export_adapter(const char *arg);
 void		execute_cmd(t_cmds *cmds);
 
 /* Minishell */

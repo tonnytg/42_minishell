@@ -7,6 +7,7 @@ FILES 	= \
 			srcs/commands/echo.c	\
 			srcs/commands/pwd.c		\
 			srcs/commands/exit.c	\
+			srcs/commands/export.c	\
 			srcs/envs.c
 
 OBJS  		= $(FILES:.c=.o)
