@@ -6,25 +6,23 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 21:55:19 by caalbert          #+#    #+#             */
-/*   Updated: 2023/06/03 23:46:02 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/06/04 21:12:47 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-int	export_adapter(const char *arg)
+int	export_adapter(t_cmds *cmds)
 {
-	const char	**args;
-	char		*var_name;
-	char		*var_value;
+	char	*var_name;
+	char	*var_value;
 
 	var_name = NULL;
 	var_value = NULL;
-	args = (const char **)arg;
-	if (args[1] != NULL)
+	if (cmds->input->cmd_args[1] != NULL)
 	{
-		var_name = args[1];
-		var_value = args[2];
+		var_name = cmds->input->cmd_args[1];
+		var_value = cmds->input->cmd_args[2];
 		if (setenv(var_name, var_value, 1) != 0)
 		{
 			perror("Error to export var");

@@ -6,7 +6,7 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/06/04 20:46:52 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/06/04 21:09:20 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,10 @@ void		set_commands(t_cmds *cmds);
 void		free_commands(t_cmds *cmds);
 
 /* Commands */
-int			echo_adapter(const char *args);
-int			pwd_adapter(const char *arg);
-int			exit_adapter(const char *arg);
+int			echo_adapter(ct_cmds *cmds);
+int			pwd_adapter(t_cmds *cmds);
+int			exit_adapter(t_cmds *cmds);
+int			export_adapter(t_cmds *cmds);
 void		execute_cmd(t_cmds *cmds);
 
 /* Minishell */
