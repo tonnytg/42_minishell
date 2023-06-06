@@ -4,15 +4,17 @@ FILES 	= \
 			srcs/main.c				\
 			srcs/input.c			\
 			srcs/commands.c			\
+			srcs/commands/cd.c		\
 			srcs/commands/echo.c	\
-			srcs/commands/pwd.c		\
+			srcs/commands/echo.o	\
+			srcs/commands/env.c		\
 			srcs/commands/exit.c	\
-<<<<<<< HEAD
+			srcs/commands/exit.o	\
 			srcs/commands/export.c	\
-=======
-			srcs/commands/export.C	\
+			srcs/commands/pwd.c		\
+			srcs/commands/pwd.o		\
+			srcs/commands/unset.c	\
 			srcs/signals/signals.c	\
->>>>>>> main
 			srcs/envs.c
 
 OBJS  		= $(FILES:.c=.o)
