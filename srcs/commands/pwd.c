@@ -17,7 +17,8 @@ int	pwd_adapter(t_cmds *cmds)
 	char	*dir;
 
 	dir = getcwd(NULL, 0);
-	ft_printf("%s - %s\n", dir, cmds->input->cmd_args);
+	ft_printf("%s\n", dir);
 	free(dir);
+	cmds->exit_code.code = 0;
 	return (0);
 }
