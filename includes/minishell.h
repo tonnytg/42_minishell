@@ -6,7 +6,7 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/06/08 19:20:57 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/06/08 20:28:12 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,12 @@
 # include <stdio.h>
 # include <signal.h>
 # include "libft.h"
+
+typedef struct s_tk_node {
+	char				token[100];
+	char				tk_type[100];
+	struct s_tk_node	*next;
+}	t_tk_node;
 
 # define ECHO_BUILTIN	"echo"
 # define CD_BUILTIN		"cd"
@@ -40,6 +46,7 @@ typedef struct s_exit_code
 typedef struct s_input
 {
 	char		data[256];
+	char		*datacpy;
 	char		*cmd_name;
 	char		*cmd_args;
 }	t_input;
@@ -52,6 +59,18 @@ typedef struct s_command
 	int		(*execute)(struct s_cmds *);
 }	t_command;
 
+typedef struct s_mns
+{
+	char	*line;
+	char	*line_cmd;
+	char	**lexical_line;
+	char	**parsed_line;
+	int		err_num;
+	int		n_break;
+	int		n;
+	int		exit_code;
+}	t_mns;
+
 /* Array of commands */
 typedef struct s_cmds
 {
@@ -60,6 +79,7 @@ typedef struct s_cmds
 	size_t		num_cmds;
 	t_command	*arr_cmds;
 	t_exit_code	exit_code;
+	char		**lexical;
 	char		**envs;
 }	t_cmds;
 
@@ -100,5 +120,11 @@ int			minishell(t_cmds *cmds);
 void		handler(int signal_num);
 void		signal_handler(int signal_num);
 void		signals_handler(void);
+
+/* Token Analysis */
+int			token_analysis(t_cmds *cmds);
+
+/* Syntax Analysis */
+void		syntax_analysis(t_cmds *cmds);
 
 #endif

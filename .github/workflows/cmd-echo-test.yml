@@ -1,0 +1,37 @@
+name: Minishell Command echo Test
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: install valgrind
+      run: sudo apt install valgrind
+    - name: make
+      run: make      
+    - name: test command echo 1
+      run: |
+        valgrind -s --leak-check=full --track-origins=yes ./minishell << EOF
+        echo
+        echo a b c
+        echo -n a b c
+        echo
+        exit
+        EOF
+
+    - name: test command echo Hello World
+      run: |
+        valgrind -s --leak-check=full --track-origins=yes ./minishell << EOF
+        echo "Hello World"
+        echo
+        echo $PWD
+        echo $?
+        cls
+        echo $?
+        echo
+        exit
+        EOF

@@ -27,6 +27,8 @@ void	find_command(t_cmds *cmds)
 		i++;
 	}
 	ft_printf("minishell: %s: command not found\n", cmds->input->cmd_name);
+	cmds->exit_code.code = 127;
+	cmds->exit_code.last_cmd = cmds->input->cmd_name;
 	cmds->cmd_finded->name = NULL;
 }
 
@@ -35,6 +37,7 @@ void	read_keyboard(t_cmds *cmds)
 	ft_printf("> ");
 	fgets(cmds->input->data, sizeof(cmds->input->data), stdin);
 	cmds->input->data[strcspn(cmds->input->data, "\n")] = 0;
+	cmds->input->datacpy = ft_strdup(cmds->input->data);
 	cmds->input->cmd_name = ft_strtok(cmds->input->data, " ", 1);
 	cmds->input->cmd_args = ft_strtok(NULL, "", 0);
 }
