@@ -37,6 +37,7 @@ void	read_keyboard(t_cmds *cmds)
 	ft_printf("> ");
 	fgets(cmds->input->data, sizeof(cmds->input->data), stdin);
 	cmds->input->data[strcspn(cmds->input->data, "\n")] = 0;
+	cmds->input->datacpy = ft_strdup(cmds->input->data);
 	cmds->input->cmd_name = ft_strtok(cmds->input->data, " ", 1);
 	cmds->input->cmd_args = ft_strtok(NULL, "", 0);
 }
