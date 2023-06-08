@@ -19,6 +19,12 @@
 # include <signal.h>
 # include "libft.h"
 
+typedef struct s_tk_node {
+	char				token[100];
+	char				tk_type[100];
+	struct s_tk_node	*next;
+}	t_tk_node;
+
 typedef struct s_commands	t_cmds;
 
 typedef struct s_exit_code {
@@ -30,6 +36,7 @@ typedef struct s_exit_code {
 /* Read Keyboard command and arguments */
 typedef struct s_input{
 	char		data[256];
+	char		*datacpy;
 	char		*cmd_name;
 	char		*cmd_args;
 }	t_input;
@@ -40,6 +47,18 @@ typedef struct s_command{
 	int		(*execute)(t_cmds *);
 }	t_command;
 
+typedef struct s_mns
+{
+	char	*line;
+	char	*line_cmd;
+	char	**lexical_line;
+	char	**parsed_line;
+	int		err_num;
+	int		n_break;
+	int		n;
+	int		exit_code;
+}	t_mns;
+
 /* Array of commands */
 typedef struct s_commands{
 	t_input		*input;
@@ -47,6 +66,7 @@ typedef struct s_commands{
 	int			num_cmds;
 	t_command	*arr_cmds;
 	t_exit_code	exit_code;
+	char		**lexical;
 	char		**envs;
 }	t_cmds;
 
@@ -82,5 +102,11 @@ int			minishell(t_cmds *cmds);
 void		handler(int signal_num);
 void		signal_handler(int signal_num);
 void		signals_handler(void);
+
+/* Token Analysis */
+int			token_analysis(t_cmds *cmds);
+
+/* Syntax Analysis */
+void		syntax_analysis(t_cmds *cmds);
 
 #endif
