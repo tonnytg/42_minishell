@@ -25,12 +25,20 @@ void	free_args(char **args)
 	free(args);
 }
 
+void	print_env_var(char *word)
+{
+	char	*result;
+
+	result = getenv(word);
+	if (result != NULL)
+		ft_printf("%s ", result);
+}
+
 void	print_args(t_cmds *cmds, int index)
 {
 	int		i;
 	char	*word;
 	char	**args;
-	char	*result;
 
 	i = index;
 	args = ft_split(cmds->input->cmd_args, ' ');
@@ -39,8 +47,10 @@ void	print_args(t_cmds *cmds, int index)
 		if (args[i][0] == '$')
 		{
 			word = ft_strtok(args[i], "$", 0);
-			result = getenv(word);
-			ft_printf("%s ", result);
+			if (ft_strcmp(word, "?") == 0)
+				ft_printf("%d ", cmds->exit_code.code);
+			else
+				print_env_var(word);
 		}
 		else
 			ft_printf("%s ", args[i]);

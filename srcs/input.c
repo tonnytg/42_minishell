@@ -27,6 +27,8 @@ void	find_command(t_cmds *cmds)
 		i++;
 	}
 	ft_printf("minishell: %s: command not found\n", cmds->input->cmd_name);
+	cmds->exit_code.code = 127;
+	cmds->exit_code.last_cmd = cmds->input->cmd_name;
 	cmds->cmd_finded->name = NULL;
 }
 
