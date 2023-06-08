@@ -9,7 +9,9 @@ FILES 	= \
 			srcs/commands/exit.c	\
 			srcs/commands/export.C	\
 			srcs/signals/signals.c	\
-			srcs/envs.c
+			srcs/envs.c				\
+			srcs/parser/token_analysis.c \
+			srcs/parser/syntax_analysis.c
 
 OBJS  		= $(FILES:.c=.o)
 CC 			= gcc

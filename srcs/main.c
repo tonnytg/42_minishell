@@ -54,6 +54,8 @@ int	minishell(t_cmds *cmds)
 		read_keyboard(cmds);
 		if (cmds->input->cmd_name == NULL)
 			continue ;
+		token_analysis(cmds);
+		syntax_analysis(cmds);
 		find_command(cmds);
 		execute_cmd(cmds);
 		exit_code = cmds->exit_code.code;
