@@ -6,7 +6,7 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 21:16:46 by caalbert          #+#    #+#             */
-/*   Updated: 2023/06/04 21:16:49 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/06/08 20:04:29 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int	export_adapter(t_cmds *cmds)
 
 	var_name = NULL;
 	var_value = NULL;
-	if (cmds->input->cmd_args[1] != NULL)
+	if (cmds->input->cmd_args[1] != '\0')
 	{
-		var_name = cmds->input->cmd_args[1];
-		var_value = cmds->input->cmd_args[2];
+		var_name = &cmds->input->cmd_args[1];
+		var_value = &cmds->input->cmd_args[2];
 		if (setenv(var_name, var_value, 1) != 0)
 		{
 			perror("Error to export var");

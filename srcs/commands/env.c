@@ -6,7 +6,7 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 10:14:04 by caalbert          #+#    #+#             */
-/*   Updated: 2023/06/06 10:24:01 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/06/08 19:47:10 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,7 @@
 
 int	env_adapter(t_cmds *cmds)
 {
-	printf("⚠️ Need to create!!! ⚠️");
+	(void) cmds;
+	printf("⚠️ Need to create!!! ⚠️\n");
+	return (0);
 }

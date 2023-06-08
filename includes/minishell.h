@@ -6,7 +6,7 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/06/06 12:37:23 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/06/08 19:20:57 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define ENV_BUILTIN	"env"
 # define EXIT_BUILTIN	"exit"
 
-//typedef struct s_commands	t_cmds;
+struct s_cmds;
 
 typedef struct s_exit_code
 {
@@ -45,10 +45,11 @@ typedef struct s_input
 }	t_input;
 
 /* Each Command */
+
 typedef struct s_command
 {
 	char	*name;
-	int		(*execute)(t_cmds *);
+	int		(*execute)(struct s_cmds *);
 }	t_command;
 
 /* Array of commands */
