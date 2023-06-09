@@ -6,25 +6,21 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/06/08 20:28:12 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/06/08 21:27:00 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+/* Libs */
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <signal.h>
 # include "libft.h"
 
-typedef struct s_tk_node {
-	char				token[100];
-	char				tk_type[100];
-	struct s_tk_node	*next;
-}	t_tk_node;
-
+/* Macros */
 # define ECHO_BUILTIN	"echo"
 # define CD_BUILTIN		"cd"
 # define PWD_BUILTIN	"pwd"
@@ -33,7 +29,16 @@ typedef struct s_tk_node {
 # define ENV_BUILTIN	"env"
 # define EXIT_BUILTIN	"exit"
 
-struct s_cmds;
+/* Structs */
+
+struct	s_cmds;
+
+typedef struct s_tk_node
+{
+	char				token[100];
+	char				tk_type[100];
+	struct s_tk_node	*next;
+}	t_tk_node;
 
 typedef struct s_exit_code
 {
