@@ -14,14 +14,6 @@
 
 void	free_commands(t_cmds *cmds)
 {
-	size_t	i;
-
-	i = 0;
-	while (i < cmds->num_cmds)
-	{
-		free(cmds->arr_cmds[i].name);
-		i++;
-	}
 	free(cmds->arr_cmds);
 	free(cmds->cmd_finded);
 	free(cmds->input);
