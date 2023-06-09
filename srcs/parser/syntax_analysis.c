@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c.                                            :+:      :+:    :+:   */
+/*   syntax_analysis.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antthoma <antthoma@student.42sp.org.br>    +#+  +:+       +#+        */
 /*       calbert  <calbert@student.42sp.org.br>   +#+#+#+#+#+   +#+           */
@@ -12,13 +12,21 @@
 
 #include "../../includes/minishell.h"
 
-int	pwd_adapter(t_cmds *cmds)
+void	syntax_analysis(t_cmds *cmds)
 {
-	char	*dir;
+	int	i;
 
-	dir = getcwd(NULL, 0);
-	ft_printf("%s\n", dir);
-	free(dir);
-	cmds->exit_code.code = 0;
-	return (0);
+	i = 0;
+	while (cmds->lexical[i])
+	{
+		printf("lexical[%d]: %s\n", i, cmds->lexical[i]);
+		i++;
+	}
+	i = 0;
+	while (cmds->lexical[i])
+	{
+		free(cmds->lexical[i]);
+		i++;
+	}
+	free(cmds->lexical);
 }

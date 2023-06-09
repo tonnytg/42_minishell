@@ -1,4 +1,4 @@
-name: Minishell Core Test
+name: Minishell Command exit Test
 
 on:
   pull_request:
