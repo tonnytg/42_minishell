@@ -1,21 +1,25 @@
-NAME   	= minishell
-HEADER 	= $(NAME).h
-FILES 	= \
+NAME	= minishell
+HEADER	= $(NAME).h
+FILES	= \
 			srcs/main.c				\
 			srcs/input.c			\
 			srcs/commands.c			\
+			srcs/commands/cd.c		\
 			srcs/commands/echo.c	\
-			srcs/commands/pwd.c		\
+			srcs/commands/env.c		\
 			srcs/commands/exit.c	\
+			srcs/commands/export.c	\
+			srcs/commands/pwd.c		\
+			srcs/commands/unset.c	\
 			srcs/signals/signals.c	\
 			srcs/envs.c				\
 			srcs/parser/token_analysis.c \
 			srcs/parser/syntax_analysis.c
 
-OBJS  		= $(FILES:.c=.o)
-CC 			= gcc
-CC_ARGS 	= -Wextra -Wall -Werror -g3
-LIBS		= libs
+OBJS	= $(FILES:.c=.o)
+CC		= gcc
+CC_ARGS = -Wextra -Wall -Werror -g3
+LIBS	= libs
 
 all: $(NAME)
 
@@ -38,14 +42,14 @@ debug:
 
 clean:
 	make -C libft clean
-	rm $(OBJS)
+	rm -f $(OBJS)
 
 fclean: clean
 	make -C libft fclean
-	rm $(NAME)
-	rm includes/libft.h
+	rm -f $(NAME)
+	rm -f includes/libft.h
 	rm -rf $(LIBS)
 
 re: fclean all
 
-.PHONY:            all clean fclean re
+.PHONY: all clean fclean re

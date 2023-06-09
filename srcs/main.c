@@ -6,7 +6,7 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/06/03 20:10:12 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/06/06 11:39:13 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	free_commands(t_cmds *cmds)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	while (i < cmds->num_cmds)
