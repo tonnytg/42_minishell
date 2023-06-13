@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-extern char	**environ;
+//extern char	**environ;
 
 // int	ft_unsetenv(const char *name)
 // {
@@ -39,11 +39,12 @@ extern char	**environ;
 
 int	unset_adapter(t_cmds *cmds)
 {
+	/*
 	(void) cmds;
 	printf("⚠️ Need to create!!! ⚠️\n");
 	return (0);
+	*/
 	
-	/*
 	if (getenv(cmds->input->cmd_args) != NULL)
 	{
 		unsetenv(cmds->input->cmd_args);
@@ -54,5 +55,4 @@ int	unset_adapter(t_cmds *cmds)
 	}
 	else
 		return (1);
-	*/
 }
