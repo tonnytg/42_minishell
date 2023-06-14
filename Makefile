@@ -40,6 +40,9 @@ test: all
 debug:
 	$(CC) $(CC_ARGS) -g $(FILES) -L $(LIBS) -lft -o srcs/$(NAME)
 
+valgrind: debug
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes srcs/$(NAME)
+
 clean:
 	make -C libft clean
 	rm -f $(OBJS)
