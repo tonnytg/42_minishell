@@ -108,6 +108,7 @@ int	token_analysis(t_cmds *cmds)
 	}
 	classify_tk_nodes(list_tokens);
 	concat_tk_nodes(cmds, list_tokens);
+	build_struct_to_exec(cmds, list_tokens); // Aqui vai executar a construção das frases
 	free_tk_nodes(list_tokens);
 	free(data_copy);
 	return (1);

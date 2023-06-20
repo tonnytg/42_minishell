@@ -54,6 +54,7 @@ typedef struct s_input
 	char		*datacpy;
 	char		*cmd_name;
 	char		*cmd_args;
+	char		**phrase;
 }	t_input;
 
 /* Each Command */
@@ -131,5 +132,6 @@ int			token_analysis(t_cmds *cmds);
 
 /* Syntax Analysis */
 void		syntax_analysis(t_cmds *cmds);
+void		build_struct_to_exec(t_cmds *cmds, t_tk_node *list_tokens);
 
 #endif

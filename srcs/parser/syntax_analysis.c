@@ -55,12 +55,6 @@ void	syntax_analysis(t_cmds *cmds)
 {
 	int	i;
 
-	i = 0;
-	while (cmds->lexical[i])
-	{
-		printf("lexical[%d]: %s\n", i, cmds->lexical[i]);
-		i++;
-	}
 	if (check_lexical_errors(cmds->lexical) == -1)
 	{
 		cmds->exit_code.code = 258;
