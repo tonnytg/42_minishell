@@ -73,6 +73,5 @@ int	main(int argc, char **argv, char **envp)
 	exit_code = minishell(cmds);
 	free_envs(cmds);
 	free_commands(cmds);
-	printf("saindo do minishell");
 	return (exit_code);
 }
