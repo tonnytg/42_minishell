@@ -109,15 +109,6 @@ int	token_analysis(t_cmds *cmds)
 	classify_tk_nodes(list_tokens);
 	concat_tk_nodes(cmds, list_tokens);
 	build_struct_to_exec(cmds, list_tokens);
-
-	t_cmd_node *actual;
-	actual = cmds->cmd_list;
-	while (actual != NULL)
-	{
-		printf("[%p] - Type: %s \t Value: %s\n", actual, actual->type, actual->phrase);
-		actual = actual->next;
-	}
-
 	free_cmd_nodes(cmds->cmd_list);
 	free_tk_nodes(list_tokens);
 	free(data_copy);

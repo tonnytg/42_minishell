@@ -12,7 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-
 void	free_cmd_nodes(t_cmd_node *list_cmds)
 {
 	t_cmd_node	*temp;
@@ -60,6 +59,7 @@ void	build_struct_to_exec(t_cmds *cmds, t_tk_node *list_tokens)
 	str = ft_strdup("");
 	list_cmds = NULL;
 	actual_tk = list_tokens;
+
 	while (actual_tk != NULL)
 	{
 		if (ft_strcmp(actual_tk->tk_type, "WORD") == 0)
@@ -73,14 +73,15 @@ void	build_struct_to_exec(t_cmds *cmds, t_tk_node *list_tokens)
 		}
 		if (ft_strcmp(actual_tk->tk_type, "WORD") != 0)
 		{
-			char *temp_str = str;
-			new_node_cmd(&list_cmds, temp_str, "WORD");
+			temp = str;
+			new_node_cmd(&list_cmds, temp, "WORD");
 			new_node_cmd(&list_cmds, " ", actual_tk->tk_type);
-			str = ft_strdup(""); // Reinicializa a variável str
-			free(temp_str); // Libera a memória apenas uma vez
+			str = ft_strdup("");
+			free(temp);
 		}
 		actual_tk = actual_tk->next;
 	}
+
 	if (list_cmds == NULL && list_tokens != NULL)
 		new_node_cmd(&list_cmds, str, "WORD");
 	actual = list_cmds;
