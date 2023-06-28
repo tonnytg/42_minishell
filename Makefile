@@ -14,7 +14,8 @@ FILES	= \
 			srcs/signals/signals.c	\
 			srcs/envs.c				\
 			srcs/parser/token_analysis.c \
-			srcs/parser/syntax_analysis.c
+			srcs/parser/syntax_analysis.c \
+			srcs/parser/build_struct_to_exec.c
 
 OBJS	= $(FILES:.c=.o)
 CC		= gcc

@@ -43,6 +43,6 @@ void	read_keyboard(t_cmds *cmds)
 		return ;
 	}
 	cmds->input->datacpy = ft_strdup(cmds->input->data);
-	cmds->input->cmd_name = ft_strtok(cmds->input->data, " ", 1);
-	cmds->input->cmd_args = ft_strtok(NULL, "", 0);
+	cmds->input->cmd_name = ft_strtok(cmds->input->data, " ", 1); // Isso precisa mudar de lugar, somente depois da analise
+	cmds->input->cmd_args = ft_strtok(NULL, "", 0); // Isso precisa mudar de lugar, somente depois da analise
 }
