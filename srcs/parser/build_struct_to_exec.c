@@ -73,9 +73,11 @@ void	build_struct_to_exec(t_cmds *cmds, t_tk_node *list_tokens)
 		}
 		if (ft_strcmp(actual_tk->tk_type, "WORD") != 0)
 		{
-			new_node_cmd(&list_cmds, str, "WORD");
-			free(str);
+			char *temp_str = str;
+			new_node_cmd(&list_cmds, temp_str, "WORD");
 			new_node_cmd(&list_cmds, " ", actual_tk->tk_type);
+			str = ft_strdup(""); // Reinicializa a variável str
+			free(temp_str); // Libera a memória apenas uma vez
 		}
 		actual_tk = actual_tk->next;
 	}
@@ -84,7 +86,7 @@ void	build_struct_to_exec(t_cmds *cmds, t_tk_node *list_tokens)
 	actual = list_cmds;
 	while (actual->next != NULL)
 		actual = actual->next;
-	if (list_cmds == NULL && ft_strcmp(actual->type, "WORD") != 0)
+	if (list_cmds != NULL && ft_strcmp(actual->type, "WORD") != 0)
 		new_node_cmd(&list_cmds, str, "WORD");
 	free(str);
 	cmds->cmd_list = list_cmds;
