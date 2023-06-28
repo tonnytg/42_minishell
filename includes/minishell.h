@@ -40,6 +40,14 @@ typedef struct s_tk_node
 	struct s_tk_node	*next;
 }	t_tk_node;
 
+typedef struct s_cmd_node
+{
+	char				*phrase;
+	char				*type;
+	struct s_cmd_node	*next;
+	struct s_cmd_node	*prev;
+}	t_cmd_node;
+
 typedef struct s_exit_code
 {
 	int		code;
@@ -87,6 +95,7 @@ typedef struct s_cmds
 	t_exit_code	exit_code;
 	char		**lexical;
 	char		**envs;
+	t_cmd_node	*cmd_list;
 }	t_cmds;
 
 typedef struct s_envs
@@ -133,5 +142,5 @@ int			token_analysis(t_cmds *cmds);
 /* Syntax Analysis */
 void		syntax_analysis(t_cmds *cmds);
 void		build_struct_to_exec(t_cmds *cmds, t_tk_node *list_tokens);
-
+void		free_cmd_nodes(t_cmd_node *list_cmds);
 #endif
