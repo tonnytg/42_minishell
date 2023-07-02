@@ -6,7 +6,7 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/07/02 12:53:28 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/07/02 19:21:17 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,8 @@ int	minishell(t_cmds *cmds)
 	while (1)
 	{
 		read_keyboard(cmds);
-		if (cmds->exit)
-		{
-			printf("\n");
+		if (iteractive_exit(cmds))
 			break ;
-		}
 		if (cmds->input->cmd_name == NULL)
 			continue ;
 		token_analysis(cmds);
