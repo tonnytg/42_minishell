@@ -6,46 +6,11 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 21:16:46 by caalbert          #+#    #+#             */
-/*   Updated: 2023/07/01 20:59:06 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/07/02 11:44:14 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-
-// int	export_adapter(t_cmds *cmds)
-// {
-// 	char	*var_name;
-// 	char	*var_value;
-
-// 	var_name = NULL;
-// 	var_value = NULL;
-// 	if (cmds->input->cmd_args[1] != '\0')
-// 	{
-// 		var_name = &cmds->input->cmd_args[1];
-// 		var_value = &cmds->input->cmd_args[2];
-// 		if (setenv(var_name, var_value, 1) != 0)
-// 		{
-// 			perror("Error to export var");
-// 			return (1);
-// 		}
-// 	}
-// 	else
-// 		return (1);
-// 	return (0);
-// }
-
-static void	free_args(char **args)
-{
-	int	i;
-
-	i = 0;
-	while (args[i] != NULL)
-	{
-		free(args[i]);
-		i++;
-	}
-	free(args);
-}
 
 int	set_env_var(char **args)
 {
