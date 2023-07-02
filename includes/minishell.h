@@ -6,7 +6,7 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/07/02 11:52:47 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/07/02 12:35:45 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ typedef struct s_cmds
 	char		**lexical;
 	char		**envs;
 	t_cmd_node	*cmd_list;
+	int			exit;
 }	t_cmds;
 
 typedef struct s_envs
