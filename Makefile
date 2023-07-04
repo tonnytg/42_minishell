@@ -2,6 +2,7 @@ NAME	= minishell
 HEADER	= $(NAME).h
 FILES	= \
 			srcs/main.c				\
+			srcs/minishell_utils.c	\
 			srcs/input.c			\
 			srcs/commands.c			\
 			srcs/commands/cd.c		\

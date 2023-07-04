@@ -6,7 +6,7 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/06/08 21:27:00 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/07/02 19:24:01 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ typedef struct s_cmds
 	char		**lexical;
 	char		**envs;
 	t_cmd_node	*cmd_list;
+	int			exit;
 }	t_cmds;
 
 typedef struct s_envs
@@ -103,6 +104,9 @@ typedef struct s_envs
 	char	*name;
 	char	*value;
 }	t_envs;
+
+void		free_args(char **args);
+int			iteractive_exit(t_cmds *cmds);
 
 /* Read Keyboard */
 void		read_keyboard(t_cmds *cmds);

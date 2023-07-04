@@ -6,7 +6,7 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/06/03 22:56:19 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/07/02 12:43:45 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,12 @@ void	find_command(t_cmds *cmds)
 
 void	read_keyboard(t_cmds *cmds)
 {
-	ft_printf("> ");
-	fgets(cmds->input->data, sizeof(cmds->input->data), stdin);
+	ft_printf("\033[0;32mminishell: > \033[0;0m");
+	if (fgets(cmds->input->data, sizeof(cmds->input->data), stdin) == NULL)
+	{
+		cmds->exit = 1;
+		return ;
+	}
 	cmds->input->data[strcspn(cmds->input->data, "\n")] = 0;
 	if (cmds->input->data[0] == '\0')
 	{
