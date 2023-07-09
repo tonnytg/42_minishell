@@ -55,7 +55,12 @@ int	minishell(t_cmds *cmds)
 		find_command(cmds);
 		actual_cmd = cmds->cmd_list;
 		while (actual_cmd != NULL)
+		{
+			printf("Node Type: %s\n", actual_cmd->type);
+			printf("Node Value: %s\n", actual_cmd->phrase);
+			printf("Node Memory: %p\n", actual_cmd);
 			actual_cmd = actual_cmd->next;
+		}
 		execute_cmd(cmds);
 		free_cmd_nodes(cmds->cmd_list);
 		exit_code = cmds->exit_code.code;

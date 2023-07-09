@@ -46,6 +46,8 @@ typedef struct s_cmd_node
 	char				*type;
 	struct s_cmd_node	*next;
 	struct s_cmd_node	*prev;
+	int					fd_in;
+	int					fd_out;
 }	t_cmd_node;
 
 typedef struct s_exit_code
