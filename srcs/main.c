@@ -39,7 +39,6 @@ void	check_args(int argc, char **argv)
 int	minishell(t_cmds *cmds)
 {
 	int			exit_code;
-	t_cmd_node	*actual_cmd;
 
 	cmds->exit = 0;
 	signals_handler();
@@ -53,9 +52,6 @@ int	minishell(t_cmds *cmds)
 		token_analysis(cmds);
 		syntax_analysis(cmds);
 		find_command(cmds);
-		actual_cmd = cmds->cmd_list;
-		while (actual_cmd != NULL)
-			actual_cmd = actual_cmd->next;
 		execute_cmd(cmds);
 		free_cmd_nodes(cmds->cmd_list);
 		exit_code = cmds->exit_code.code;

@@ -11,14 +11,100 @@
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+typedef struct Node {
+	char *command;
+	char **args;
+	int input_fd;
+	int output_fd;
+	struct Node *next;
+} Node;
+
+void	organize_commands(t_cmds *cmds)
+{
+	t_cmd_node *current = cmds->cmd_list;
+
+	int prev_pipe[2] = {-1, -1}; // Descritores de arquivo do pipe anterior
+
+	while (current != NULL) {
+
+		int curr_pipe[2]; // Descritores de arquivo do pipe atual
+
+		// Cria um novo pipe
+		if (pipe(curr_pipe) == -1) {
+			perror("pipe");
+			exit(1);
+		}
+
+		pid_t pid = fork();
+		printf("pid: %d\n", pid);
+
+
+		if (pid == -1) {
+			perror("fork");
+			exit(1);
+		} else if (pid == 0) {
+			// Fecha o descritor de arquivo de leitura do pipe atual
+			close(curr_pipe[0]);
+
+			// Redireciona o descritor de arquivo de leitura para o pipe anterior
+			if (current->fd_in != -1) {
+				dup2(current->fd_in, STDIN_FILENO);
+				close(current->fd_in);
+			}
+
+			// Redireciona o descritor de arquivo de escrita para o pipe atual
+			dup2(curr_pipe[1], STDOUT_FILENO);
+			close(curr_pipe[1]);
+
+			// Se o execve falhar, exibe o erro e sai
+			perror("execve");
+			exit(1);
+		} else {
+
+			// Executa o comando do nó atual
+			char *command_path = "/usr/bin/ls";
+			char *my_args[] = {"ls","/usr/sbin", NULL};
+			printf("[Start] Run comando execve:\n");
+			execve(command_path, my_args, NULL);
+			printf("[Finish] Run comando execve:\n");
+
+			printf("Else\n");
+			// Fecha o descritor de arquivo de escrita do pipe atual
+			close(curr_pipe[1]);
+
+			// Fecha o descritor de arquivo de leitura do pipe anterior
+			if (prev_pipe[0] != -1) {
+				close(prev_pipe[0]);
+			}
+
+			// Salva o descritor de arquivo de leitura do pipe atual para o próximo nó
+			current->fd_out = curr_pipe[0];
+			prev_pipe[0] = curr_pipe[0];
+
+			// Aguarde o filho terminar
+			wait(NULL);
+
+			current = current->next;
+		}
+	}
+}
 
 void	execute_cmd(t_cmds *cmds)
 {
-	if (cmds->cmd_finded->name)
-	{
-		cmds->exit_code.last_cmd = cmds->input->cmd_name;
-		cmds->exit_code.code = cmds->cmd_finded->execute(cmds);
-	}
+	//	if (cmds->cmd_finded->name) // value != NULL
+	//	{
+	//		cmds->exit_code.last_cmd = cmds->input->cmd_name; // what the last command ?
+	//		cmds->exit_code.code = cmds->cmd_finded->execute(cmds); // run command and save return -> This line is the point!
+	//	}
+	organize_commands(cmds);
+	cmds->exit_code.last_cmd = cmds->input->cmd_name;
+	cmds->exit_code.code = 0;
+	printf("Finish run command!\n");
 }
 
 void	set_commands(t_cmds *cmds)

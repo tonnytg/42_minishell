@@ -29,6 +29,10 @@
 # define ENV_BUILTIN	"env"
 # define EXIT_BUILTIN	"exit"
 
+# define STDIN_FILENO 0
+# define STDOUT_FILENO 1
+# define STDERR_FILENO 2
+
 /* Structs */
 
 struct	s_cmds;
@@ -46,6 +50,8 @@ typedef struct s_cmd_node
 	char				*type;
 	struct s_cmd_node	*next;
 	struct s_cmd_node	*prev;
+	int					fd_in;
+	int					fd_out;
 }	t_cmd_node;
 
 typedef struct s_exit_code
@@ -104,6 +110,8 @@ typedef struct s_envs
 	char	*name;
 	char	*value;
 }	t_envs;
+
+
 
 void		free_args(char **args);
 int			iteractive_exit(t_cmds *cmds);
