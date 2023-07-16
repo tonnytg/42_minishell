@@ -98,4 +98,5 @@ void	build_struct_to_exec(t_cmds *cmds, t_tk_node *list_tokens)
 		new_node_cmd(&list_cmds, str, "WORD");
 	free(str);
 	cmds->cmd_list = list_cmds;
+	printf("[%p] - Head Cmd Node\n", cmds->cmd_list);
 }

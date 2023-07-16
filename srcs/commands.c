@@ -16,28 +16,6 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-typedef struct Node {
-	char *command;
-	char **args;
-	int input_fd;
-	int output_fd;
-	struct Node *next;
-} Node;
-
-char **split_path(char *path)
-{
-	char **array_path;
-	int i = 0;
-
-	array_path = ft_split(path, ':');
-	while (array_path[i])
-	{
-		printf("%s\n", array_path[i]);
-		i++;
-	}
-	return (array_path);
-}
-
 /* print variable PATH of envp
  https://github.com/LacrouxRaoni/minishell/blob/master/sources/execs/validate_path.c
 */
@@ -63,151 +41,76 @@ char	*check_path(t_cmds *cmds)
 	return (NULL);
 }
 
-// https://github.com/LacrouxRaoni/minishell/blob/master/sources/execs/exec_child.c#L31
-void	execute_child(t_cmd_node *node)
-{
-	// Executa o comando
-	printf("Irei executar: %s\n", node->cmd_name);
-	if (node->cmd_name != NULL) {
-		execve(node->cmd_name, node->args, NULL);
-		perror("execve error"); // TODO: Executa somente se der erro
-		exit(1);
-	}
-	printf("End execute_child\n");
-}
-
 void	organize_commands(t_cmds *cmds)
 {
-//	t_cmd_node	*current = cmds->cmd_list;
-	char		*result;
-	int		wstatus;
-	// https://github.com/LacrouxRaoni/minishell/blob/master/sources/execs/exec_cmds.c#L67C14-L67C14
-
-	// TODO: Verificar se o primeiro comando é built-in
-
-	// TODO: Se não for Built-in verificar se é um comando do sistema
-	result = check_path(cmds);
-	if (result == NULL) {
-		printf("Command not found\n");
-		return ;
-	}
-	/*
-
-      HEAD (prev == NULL)      MID (prev && next != NULL)   TAIL (next == NULL)
-	     echo "Name LastName" | cut -d " " -f1  |     tr [:lower:] [:upper:]
-	     \				    /  \               /  \                       /
-	      +---------+-------+   +-------+-----+    +-------------+-------+
-	                |					  |                      |
-	                v 			      	  v                      v
-	         StdIn clone;			   StdIn open;				StdIn open;
-	         StdOut open;			   StdOut open;			    StdOut close;
-	 */
-
 	t_cmd_node *actual;
 	actual = cmds->cmd_list;
-	int count = 0;
-	while (actual != NULL)
+	while(actual != NULL)
 	{
-		printf("[2] Node Type: %s\n", actual->type);
-		printf("[2] Node Command: %s\n", actual->cmd_name); // TODO: provalvelmente é NULL
-		printf("[2] Node Pointer: %p\n", actual);
-		actual->fd[0] = -1;
-		actual->fd[1] = -1;
-		actual->fd_in = -1;
-		actual->fd_out = -1;
-		if (actual->prev == NULL)
-		{
-			printf("[2] Node %p is Head\n", actual);
-		}
-		if (actual->next == NULL)
-		{
-			printf("[2] Node %p is Tail\n", actual);
-		}
-		if (actual->prev != NULL && actual->next != NULL)
-		{
-			printf("[2] Node %p is Mid\n", actual);
-		}
-
-		pipe(actual->fd);
-		// fork: https://github.com/LacrouxRaoni/minishell/blob/master/sources/execs/exec_child.c#L98
-		actual->pid = fork();
-		if (actual->pid < 0)
-		{
-			perror("fork error");
-			exit(1); // TODO: Solve this I can't exit here, create leak
-		} else if (actual->pid == 0) {
-
-			// exec: https://github.com/LacrouxRaoni/minishell/blob/master/sources/execs/exec_child.c#L102
-			if (ft_strcmp(actual->type, "WORD") == 0) {
-				printf("[%d] exec child\n", count);
-				execute_child(actual);
-			}
-		}
-		waitpid(actual->pid, &wstatus, 0);
-		printf("Status PID: %d\n", WEXITSTATUS(wstatus));
-
-		printf("---\n");
-		count++;
+		printf("[%p] - %s \t %s\n", actual, actual->type, actual->phrase);
 		actual = actual->next;
 	}
 
-//
-//
-//	int prev_pipe[2] = {-1, -1}; // Descritores de arquivo do pipe anterior
-//
-//	int curr_pipe[2]; // Descritores de arquivo do pipe atual
-//
-//	// Cria um novo pipe
-//	if (pipe(curr_pipe) == -1)
-//	{
-//		perror("pipe");
-//		exit(1); // TODO: Da leak se acontecer
-//	}
-//
-//	pid = fork();
-//	if (pid < 0)
-//	{
-//		perror("fork error");
-//		exit(1); // TODO: Solve this I can't exit here, create leak
-//	} else if (pid == 0)
-//	{
-//		printf("Eu sou o processo filho\n");
-//		// Executa o comando do nó atual
-//		char *command_path = "/usr/bin/ls";
-//		char *my_args[] = {"ls","/app", NULL};
-//
-//		printf("[Start] Run comando execve:\n");
-//		execve(command_path, my_args, NULL); // Só posso executar esse comando quando ele não é um builtin
-//		// Se a execução chegar aqui, ocorreu um erro no execve
-//		perror("execve falhou");
-//		exit(1); // Deu erro
-//	} else
-//	{
-//		// Aguarde o filho terminar
-//		printf("Vou esperar o filho terminar\n");
-//		wait(NULL); // TODO: Validar porque esperar o NULL
-//		printf("Pronto, filho terminou\n");
-//		int retorno = 1;
-//		printf("retorno: %d\n", retorno);
-//		if ( retorno < 0)
-//		{
-//			printf("Deu ruim ao chamar o execev!\n");
-//			perror("execve falhou");
-//		}
-//		printf("[Finish] Run comando execve:\n");
-//		// Fecha o descritor de arquivo de escrita do pipe atual
-//		close(curr_pipe[1]);
-//
-//		// Fecha o descritor de arquivo de leitura do pipe anterior
-//		if (prev_pipe[0] != -1)
-//		{
-//			close(prev_pipe[0]);
-//		}
-//
-//		// Salva o descritor de arquivo de leitura do pipe atual para o próximo nó
-//		current->fd_out = curr_pipe[0];
-//		prev_pipe[0] = curr_pipe[0];
-//	}
+	int fd[2];  // Descritores do pipe
+	pid_t pid1, pid2;
+
+	// Criar o pipe
+	if (pipe(fd) == -1) {
+		perror("Erro ao criar o pipe");
+		exit(EXIT_FAILURE);
+	}
+
+	// Criar o primeiro processo filho
+	pid1 = fork();
+	if (pid1 == -1) {
+		perror("Erro ao criar o primeiro processo filho");
+		exit(EXIT_FAILURE);
+	}
+
+	if (pid1 == 0) {
+		// Código do primeiro filho (executa 'echo "Name"')
+		close(fd[0]);  // Fecha o descritor de leitura do pipe
+
+		// Redireciona a saída padrão para o descritor de escrita do pipe
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
+
+		// Executa o comando 'echo "Name"'
+		execlp("echo", "echo", "Name", NULL);
+		perror("Erro ao executar o comando 'echo'");
+		exit(EXIT_FAILURE);
+	}
+
+	// Criar o segundo processo filho
+	pid2 = fork();
+	if (pid2 == -1) {
+		perror("Erro ao criar o segundo processo filho");
+		exit(EXIT_FAILURE);
+	}
+
+	if (pid2 == 0) {
+		// Código do segundo filho (executa 'tr [:lower:][:upper:]')
+		close(fd[1]);  // Fecha o descritor de escrita do pipe
+
+		// Redireciona a entrada padrão para o descritor de leitura do pipe
+		dup2(fd[0], STDIN_FILENO);
+		close(fd[0]);
+
+		// Executa o comando 'tr [:lower:][:upper:]'
+		execlp("tr", "tr", "[:lower:]", "[:upper:]", NULL);
+		perror("Erro ao executar o comando 'tr'");
+		exit(EXIT_FAILURE);
+	}
+
+	// Código do processo pai
+	close(fd[0]);  // Fecha o descritor de leitura do pipe
+	close(fd[1]);  // Fecha o descritor de escrita do pipe
+
+	// Espera pela conclusão dos processos filhos
+	wait(NULL);
+	wait(NULL);
+
+
 }
 
 void	execute_cmd(t_cmds *cmds)
