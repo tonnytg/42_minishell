@@ -51,6 +51,8 @@ int	minishell(t_cmds *cmds)
 			continue ;
 		token_analysis(cmds);
 		syntax_analysis(cmds);
+		// TODO: tild_expansion and quote parser
+		// https://github.com/LacrouxRaoni/minishell/blob/master/sources/expansions/tild_expansion.c#L64
 		find_command(cmds); // -> O que vou executa fica salvo em -> cmd_name // TODO: Built-ins e external?
 		execute_cmd(cmds);
 		free_cmd_nodes(cmds->cmd_list);

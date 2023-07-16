@@ -68,8 +68,10 @@ typedef struct s_cmd_node
 	char				*type;
 	int					fd_in;
 	int					fd_out;
-	struct s_cmd_node	*next;
-	struct s_cmd_node	*prev;
+	pid_t				pid;
+	int					fd[2]; // TODO: Posso usar assim na norminette?
+	struct s_cmd_node	*next; // NULL = tail -> fechados
+	struct s_cmd_node	*prev; // NULL = head -> fechados
 }	t_cmd_node;
 
 typedef struct s_exit_code
