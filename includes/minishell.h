@@ -29,6 +29,10 @@
 # define ENV_BUILTIN	"env"
 # define EXIT_BUILTIN	"exit"
 
+# define STDIN_FILENO 0
+# define STDOUT_FILENO 1
+# define STDERR_FILENO 2
+
 /* Structs */
 
 struct	s_cmds;
@@ -40,12 +44,34 @@ typedef struct s_tk_node
 	struct s_tk_node	*next;
 }	t_tk_node;
 
+
+// struct para executar
+// https://github.com/LacrouxRaoni/minishell/blob/master/include/exec.h#L27
+typedef struct s_exec
+{
+	char	**env;
+	char	*path_confirmed;
+	char	**path;
+	int		fd[2];
+	int		temp_fd;
+	int		b_hdoc;
+	int		pid;
+	int		error;
+	int		in_exec;
+}	t_exec;
+
 typedef struct s_cmd_node
 {
 	char				*phrase;
+	char 				*cmd_name;
+	char				**args;
 	char				*type;
-	struct s_cmd_node	*next;
-	struct s_cmd_node	*prev;
+	int					fd_in;
+	int					fd_out;
+	pid_t				pid;
+	int					fd[2]; // TODO: Posso usar assim na norminette?
+	struct s_cmd_node	*next; // NULL = tail -> fechados
+	struct s_cmd_node	*prev; // NULL = head -> fechados
 }	t_cmd_node;
 
 typedef struct s_exit_code
@@ -104,6 +130,8 @@ typedef struct s_envs
 	char	*name;
 	char	*value;
 }	t_envs;
+
+
 
 void		free_args(char **args);
 int			iteractive_exit(t_cmds *cmds);
