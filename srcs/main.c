@@ -51,7 +51,7 @@ int	minishell(t_cmds *cmds)
 			continue ;
 		token_analysis(cmds);
 		syntax_analysis(cmds);
-		find_command(cmds);
+		find_command(cmds); // -> O que vou executa fica salvo em -> cmd_name // TODO: Built-ins e external?
 		execute_cmd(cmds);
 		free_cmd_nodes(cmds->cmd_list);
 		exit_code = cmds->exit_code.code;

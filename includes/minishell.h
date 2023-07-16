@@ -44,14 +44,32 @@ typedef struct s_tk_node
 	struct s_tk_node	*next;
 }	t_tk_node;
 
+
+// struct para executar
+// https://github.com/LacrouxRaoni/minishell/blob/master/include/exec.h#L27
+typedef struct s_exec
+{
+	char	**env;
+	char	*path_confirmed;
+	char	**path;
+	int		fd[2];
+	int		temp_fd;
+	int		b_hdoc;
+	int		pid;
+	int		error;
+	int		in_exec;
+}	t_exec;
+
 typedef struct s_cmd_node
 {
 	char				*phrase;
+	char 				*cmd_name;
+	char				**args;
 	char				*type;
-	struct s_cmd_node	*next;
-	struct s_cmd_node	*prev;
 	int					fd_in;
 	int					fd_out;
+	struct s_cmd_node	*next;
+	struct s_cmd_node	*prev;
 }	t_cmd_node;
 
 typedef struct s_exit_code
