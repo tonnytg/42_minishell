@@ -41,7 +41,7 @@ char **split_path(char *path)
 /* print variable PATH of envp
  https://github.com/LacrouxRaoni/minishell/blob/master/sources/execs/validate_path.c
 */
-int	check_path(t_cmds *cmds)
+char	*check_path(t_cmds *cmds)
 {
 	char	**path;
 	int		i;
@@ -57,25 +57,26 @@ int	check_path(t_cmds *cmds)
 		pathComplete = ft_strjoin(path[i], name);
 		return_access = access(pathComplete, F_OK);
 		if (return_access == 0)
-		{
-			printf("Comando encontrado em: %s\n", pathComplete);
-			return (0);
-		}
+			return (pathComplete);
 		i++;
 	}
-	printf("Comando Não encontrado em: %s\n", pathComplete);
-	return (-1);
+	return (NULL);
 }
 
 void	organize_commands(t_cmds *cmds)
 {
 	t_cmd_node *current = cmds->cmd_list;
 
-	check_path(cmds);
+	// TODO: Verificar se o primeiro comando é built-in
+
+	// TODO: Se não for Built-in verificar se é um comando do sistema
+	char *result = check_path(cmds);
+	if (result == NULL) {
+		printf("Command not found\n");
+		return ;
+	}
 
 	int prev_pipe[2] = {-1, -1}; // Descritores de arquivo do pipe anterior
-
-	while (current != NULL) {
 
 		int curr_pipe[2]; // Descritores de arquivo do pipe atual
 
@@ -93,11 +94,12 @@ void	organize_commands(t_cmds *cmds)
 			exit(1); // TODO: Solve this I can't exit here, create leak
 		} else if (pid == 0)
 		{
-			printf("Deu errado, entrou aqui!\n");
-			printf("Não sei para que serve isso, dei exit!\n");
+			printf("Eu sou o processo filho\n");
 			exit(0); // TODO: Gera Leak
 		} else
 		{
+			// Aguarde o filho terminar
+			wait(NULL); // TODO: Validar porque esperar o NULL
 			// Executa o comando do nó atual
 			char *command_path = "/usr/bin/ls";
 			char *my_args[] = {"ls","/app", NULL};
@@ -123,12 +125,6 @@ void	organize_commands(t_cmds *cmds)
 			// Salva o descritor de arquivo de leitura do pipe atual para o próximo nó
 			current->fd_out = curr_pipe[0];
 			prev_pipe[0] = curr_pipe[0];
-
-			// Aguarde o filho terminar
-			wait(NULL);
-
-			current = current->next;
-		}
 	}
 }
 
