@@ -28,45 +28,67 @@ void	organize_commands(t_cmds *cmds)
 
 	actual = cmds->cmd_list;
 	if (actual->next != NULL)
-		open_pipe(cmds);
+		open_pipe(cmds); // cmds.fd[2];
 	if (cmds->redirects_count > 0)
 	{
-		printf("Redirecionando\n");
+		printf("Redirecionando\n"); // >> > << <
 	}
 	while(actual != NULL)
 	{
-		printf("[%p] - %s \t %s\n", actual, actual->type, actual->phrase);
+		printf("[%p] - %s \t %s\n", actual, actual->type, actual->phrase); // WORD, PIPE, DLESS, LESS, DGREAT, GREAT
 		if (ft_strcmp(actual->type, "WORD") == 0)
 		{
-			cp_phrase = malloc(sizeof(actual->phrase) * 100);
-			ft_strlcpy(cp_phrase, actual->phrase, 100);
-			actual->cmd_name = ft_strtok(cp_phrase, " ", 1);
-			actual->args = ft_split(actual->phrase, ' ');
+			// Prepara as informações para executar o comando
+			cp_phrase = malloc(sizeof(actual->phrase) + 1);		// prepara cp_phrase para receber o conteúdo
+			ft_strlcpy(cp_phrase, actual->phrase, 100);			// Copia a frase para não se perder ao executar o ft_strtok
+			actual->cmd_name = ft_strtok(cp_phrase, " ", 1);	// O comando que será executado
+			actual->args = ft_split(actual->phrase, ' ');		// Todos os argumentos
+			path = check_path(actual);							// Verifica se o comando existe no PATH
 
-			actual->pid = fork();
-			if (actual->pid == -1) {
+			actual->pid = fork();								// Cria um novo processo
+			if (actual->pid == -1)								// Valda se ve algum erro
+			{
+				write(1, "Erro ao criar o processo filho\n", 31);
+				printf("Erro ao criar o processo filho\n");
 				perror("Erro ao criar o processo filho");
 				exit(EXIT_FAILURE);
 			}
-			if (actual->pid == 0)
+			if (actual->pid == 0)								// Se for o processo filho execute o contexto
 			{
-				if (actual->prev == NULL)
-					close(actual->fd[0]);
-				if (actual->next == NULL)
-					close(actual->fd[1]);
-
-				path = check_path(actual);
+				if (actual->prev == NULL)						// Se o processo é o primeiro, logo não recebe input
+				{
+					close(cmds->fd[0]);							// fecha o stdin
+					dup2(cmds->fd[1], STDOUT_FILENO);			// copia o stdout
+					close(cmds->fd[1]);							// fecha o stdout original
+				}
+				else if (actual->next == NULL)					// Se o processo é o ultimo, logo não emite output
+				{
+					close(cmds->fd[1]);							// fecha o stdout
+					dup2(cmds->fd[0], STDIN_FILENO);			// copia o stdin
+					close(cmds->fd[0]);							// fecha o stdin original
+				}
+				else											// Se o processo é o do meio, logo recebe e emite output
+				{
+					dup2(cmds->fd[0], STDIN_FILENO);			// copia o stdin
+					close(cmds->fd[0]);							// fecha o stdin original
+					dup2(cmds->fd[1], STDOUT_FILENO);			// copia o stdout
+					close(cmds->fd[1]);							// fecha o stdout original
+				}
 				if (execve(path, actual->args, NULL) == -1)
 				{
 					perror("Erro ao executar o comando 'echo'");
 					exit(EXIT_FAILURE);
 				}
 			}
-			waitpid(actual->pid, &wstatus, 0);
-			printf("status waitpid: %d\n", WEXITSTATUS(wstatus));
+			printf("pid: %d\n", actual->pid);
 		}
+		waitpid(actual->pid, &wstatus, 0);
+		printf("status waitpid: %d\n", WEXITSTATUS(wstatus));
 		actual = actual->next;
+
 	}
+	close(cmds->fd[0]);
+	close(cmds->fd[1]);
 	free(cp_phrase);
 }
 
