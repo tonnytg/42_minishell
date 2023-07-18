@@ -28,28 +28,22 @@ void	organize_commands(t_cmds *cmds)
 
 	actual = cmds->cmd_list;
 	if (actual->next != NULL)
-		open_pipe(cmds); // cmds.fd[2];
+		open_pipe(cmds);
 	if (cmds->redirects_count > 0)
-	{
-		printf("Redirecionando\n"); // >> > << <
-	}
+		printf("Redirecionando\n");
 	while(actual != NULL)
 	{
-		printf("[%p] - %s \t %s\n", actual, actual->type, actual->phrase); // WORD, PIPE, DLESS, LESS, DGREAT, GREAT
+		printf("[%p] - %s \t %s\n", actual, actual->type, actual->phrase);
 		if (ft_strcmp(actual->type, "WORD") == 0)
 		{
-			// Prepara as informações para executar o comando
-			cp_phrase = malloc(sizeof(actual->phrase) + 1);		// prepara cp_phrase para receber o conteúdo
-			ft_strlcpy(cp_phrase, actual->phrase, 100);			// Copia a frase para não se perder ao executar o ft_strtok
-			actual->cmd_name = ft_strtok(cp_phrase, " ", 1);	// O comando que será executado
-			actual->args = ft_split(actual->phrase, ' ');		// Todos os argumentos
-			path = check_path(actual);							// Verifica se o comando existe no PATH
-
-			actual->pid = fork();								// Cria um novo processo
-			if (actual->pid == -1)								// Valda se ve algum erro
+			cp_phrase = malloc(sizeof(actual->phrase) + 1);
+			ft_strlcpy(cp_phrase, actual->phrase, 100);
+			actual->cmd_name = ft_strtok(cp_phrase, " ", 1);
+			actual->args = ft_split(actual->phrase, ' ');
+			path = check_path(actual);
+			actual->pid = fork();
+			if (actual->pid == -1)
 			{
-				write(1, "Erro ao criar o processo filho\n", 31);
-				printf("Erro ao criar o processo filho\n");
 				perror("Erro ao criar o processo filho");
 				exit(EXIT_FAILURE);
 			}
@@ -80,12 +74,11 @@ void	organize_commands(t_cmds *cmds)
 					exit(EXIT_FAILURE);
 				}
 			}
-			printf("pid: %d\n", actual->pid);
 		}
-		waitpid(actual->pid, &wstatus, 0);
-		printf("status waitpid: %d\n", WEXITSTATUS(wstatus));
+		if (ft_strcmp(actual->type, "PIPE") == 0) {
+			waitpid(actual->pid, &wstatus, 0);
+		}
 		actual = actual->next;
-
 	}
 	close(cmds->fd[0]);
 	close(cmds->fd[1]);
