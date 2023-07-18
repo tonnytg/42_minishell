@@ -16,7 +16,9 @@ FILES	= \
 			srcs/envs.c				\
 			srcs/parser/token_analysis.c \
 			srcs/parser/syntax_analysis.c \
-			srcs/parser/build_struct_to_exec.c
+			srcs/parser/build_struct_to_exec.c \
+			srcs/parser/redirects.c \
+			srcs/parser/path.c
 
 OBJS	= $(FILES:.c=.o)
 CC		= gcc

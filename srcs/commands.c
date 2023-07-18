@@ -11,106 +11,78 @@
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/wait.h>
 
-/* print variable PATH of envp
- https://github.com/LacrouxRaoni/minishell/blob/master/sources/execs/validate_path.c
-*/
-char	*check_path(t_cmds *cmds)
+void	open_pipe(t_cmds *cmds)
 {
-	char	**path;
-	int		i;
-	char	*pathComplete;
-	int		return_access;
-	char	*name;
-
-	path = ft_split(getenv("PATH"), ':');
-	i = 0;
-	while (path[i])
-	{
-		name = ft_strjoin("/", cmds->cmd_finded->name); // TODO: desacoplar do find_cmd
-		pathComplete = ft_strjoin(path[i], name);
-		return_access = access(pathComplete, F_OK);
-		if (return_access == 0)
-			return (pathComplete);
-		i++;
-	}
-	return (NULL);
+	printf("Abrindo o Pipe\n");
+	if (pipe(cmds->fd) < 0)
+		exit (write (1, "Pipe error\n", 12));
 }
 
 void	organize_commands(t_cmds *cmds)
 {
-	t_cmd_node *actual;
+	t_cmd_node	*actual;
+	int			wstatus;
+	char		*cp_phrase;
+	char		*path;
+
 	actual = cmds->cmd_list;
+	if (actual->next != NULL)
+		open_pipe(cmds);
+	if (cmds->redirects_count > 0)
+		printf("Redirecionando\n");
 	while(actual != NULL)
 	{
 		printf("[%p] - %s \t %s\n", actual, actual->type, actual->phrase);
+		if (ft_strcmp(actual->type, "WORD") == 0)
+		{
+			cp_phrase = malloc(sizeof(actual->phrase) + 1);
+			ft_strlcpy(cp_phrase, actual->phrase, 100);
+			actual->cmd_name = ft_strtok(cp_phrase, " ", 1);
+			actual->args = ft_split(actual->phrase, ' ');
+			path = check_path(actual);
+			actual->pid = fork();
+			if (actual->pid == -1)
+			{
+				perror("Erro ao criar o processo filho");
+				exit(EXIT_FAILURE);
+			}
+			if (actual->pid == 0)								// Se for o processo filho execute o contexto
+			{
+				if (actual->prev == NULL)						// Se o processo é o primeiro, logo não recebe input
+				{
+					close(cmds->fd[0]);							// fecha o stdin
+					dup2(cmds->fd[1], STDOUT_FILENO);			// copia o stdout
+					close(cmds->fd[1]);							// fecha o stdout original
+				}
+				else if (actual->next == NULL)					// Se o processo é o ultimo, logo não emite output
+				{
+					close(cmds->fd[1]);							// fecha o stdout
+					dup2(cmds->fd[0], STDIN_FILENO);			// copia o stdin
+					close(cmds->fd[0]);							// fecha o stdin original
+				}
+				else											// Se o processo é o do meio, logo recebe e emite output
+				{
+					dup2(cmds->fd[0], STDIN_FILENO);			// copia o stdin
+					close(cmds->fd[0]);							// fecha o stdin original
+					dup2(cmds->fd[1], STDOUT_FILENO);			// copia o stdout
+					close(cmds->fd[1]);							// fecha o stdout original
+				}
+				if (execve(path, actual->args, NULL) == -1)
+				{
+					perror("Erro ao executar o comando 'echo'");
+					exit(EXIT_FAILURE);
+				}
+			}
+		}
+		if (ft_strcmp(actual->type, "PIPE") == 0) {
+			waitpid(actual->pid, &wstatus, 0);
+		}
 		actual = actual->next;
 	}
-
-	int fd[2];  // Descritores do pipe
-	pid_t pid1, pid2;
-
-	// Criar o pipe
-	if (pipe(fd) == -1) {
-		perror("Erro ao criar o pipe");
-		exit(EXIT_FAILURE);
-	}
-
-	// Criar o primeiro processo filho
-	pid1 = fork();
-	if (pid1 == -1) {
-		perror("Erro ao criar o primeiro processo filho");
-		exit(EXIT_FAILURE);
-	}
-
-	if (pid1 == 0) {
-		// Código do primeiro filho (executa 'echo "Name"')
-		close(fd[0]);  // Fecha o descritor de leitura do pipe
-
-		// Redireciona a saída padrão para o descritor de escrita do pipe
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[1]);
-
-		// Executa o comando 'echo "Name"'
-		execlp("echo", "echo", "Name", NULL);
-		perror("Erro ao executar o comando 'echo'");
-		exit(EXIT_FAILURE);
-	}
-
-	// Criar o segundo processo filho
-	pid2 = fork();
-	if (pid2 == -1) {
-		perror("Erro ao criar o segundo processo filho");
-		exit(EXIT_FAILURE);
-	}
-
-	if (pid2 == 0) {
-		// Código do segundo filho (executa 'tr [:lower:][:upper:]')
-		close(fd[1]);  // Fecha o descritor de escrita do pipe
-
-		// Redireciona a entrada padrão para o descritor de leitura do pipe
-		dup2(fd[0], STDIN_FILENO);
-		close(fd[0]);
-
-		// Executa o comando 'tr [:lower:][:upper:]'
-		execlp("tr", "tr", "[:lower:]", "[:upper:]", NULL);
-		perror("Erro ao executar o comando 'tr'");
-		exit(EXIT_FAILURE);
-	}
-
-	// Código do processo pai
-	close(fd[0]);  // Fecha o descritor de leitura do pipe
-	close(fd[1]);  // Fecha o descritor de escrita do pipe
-
-	// Espera pela conclusão dos processos filhos
-	wait(NULL);
-	wait(NULL);
-
-
+	close(cmds->fd[0]);
+	close(cmds->fd[1]);
+	free(cp_phrase);
 }
 
 void	execute_cmd(t_cmds *cmds)

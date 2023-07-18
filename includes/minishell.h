@@ -18,6 +18,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <signal.h>
+#include <sys/wait.h>
 # include "libft.h"
 
 /* Macros */
@@ -122,7 +123,9 @@ typedef struct s_cmds
 	char		**lexical;
 	char		**envs;
 	t_cmd_node	*cmd_list;
+	int			fd[2];
 	int			exit;
+	int			redirects_count;
 }	t_cmds;
 
 typedef struct s_envs
@@ -176,3 +179,10 @@ void		syntax_analysis(t_cmds *cmds);
 void		build_struct_to_exec(t_cmds *cmds, t_tk_node *list_tokens);
 void		free_cmd_nodes(t_cmd_node *list_cmds);
 #endif
+
+/* Path */
+char	*check_path(t_cmd_node *node);
+
+/* Redirects */
+void	check_exist_redirect(t_cmds *cmds);
+char	*check_path(t_cmd_node *node);
