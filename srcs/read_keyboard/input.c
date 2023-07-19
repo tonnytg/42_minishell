@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
+#include "../../includes/minishell.h"
 
 void	find_command(t_cmds *cmds)
 {
@@ -30,6 +30,29 @@ void	find_command(t_cmds *cmds)
 	cmds->exit_code.code = 127;
 	cmds->exit_code.last_cmd = cmds->input->cmd_name;
 	cmds->cmd_finded->name = NULL;
+}
+
+void	set_commands(t_cmds *cmds)
+{
+	size_t		i;
+	t_command	command_mapping[7];
+
+	command_mapping[0] = (t_command){ECHO_BUILTIN, echo_adapter};
+	command_mapping[1] = (t_command){CD_BUILTIN, cd_adapter};
+	command_mapping[2] = (t_command){PWD_BUILTIN, pwd_adapter};
+	command_mapping[3] = (t_command){EXPORT_BUILTIN, export_adapter};
+	command_mapping[4] = (t_command){UNSET_BUILTIN, unset_adapter};
+	command_mapping[5] = (t_command){ENV_BUILTIN, env_adapter};
+	command_mapping[6] = (t_command){EXIT_BUILTIN, exit_adapter};
+	cmds->num_cmds = sizeof(command_mapping) / sizeof(t_command);
+	cmds->arr_cmds = malloc(sizeof(t_command) * cmds->num_cmds);
+	i = 0;
+	while (i < cmds->num_cmds)
+	{
+		cmds->arr_cmds[i].name = command_mapping[i].name;
+		cmds->arr_cmds[i].execute = command_mapping[i].execute;
+		i++;
+	}
 }
 
 void	read_keyboard(t_cmds *cmds)

@@ -3,22 +3,23 @@ HEADER	= $(NAME).h
 FILES	= \
 			srcs/main.c				\
 			srcs/minishell_utils.c	\
-			srcs/input.c			\
-			srcs/commands.c			\
-			srcs/commands/cd.c		\
-			srcs/commands/echo.c	\
-			srcs/commands/env.c		\
-			srcs/commands/exit.c	\
-			srcs/commands/export.c	\
-			srcs/commands/pwd.c		\
-			srcs/commands/unset.c	\
+			srcs/read_keyboard/input.c			\
+			srcs/commands/commands.c			\
+			srcs/commands/nodes.c	\
+			srcs/builtins/cd.c		\
+			srcs/builtins/echo.c	\
+			srcs/builtins/env.c		\
+			srcs/builtins/exit.c	\
+			srcs/builtins/export.c	\
+			srcs/builtins/pwd.c		\
+			srcs/builtins/unset.c	\
 			srcs/signals/signals.c	\
-			srcs/envs.c				\
+			srcs/envs/envs.c				\
 			srcs/parser/token_analysis.c \
 			srcs/parser/syntax_analysis.c \
 			srcs/parser/build_struct_to_exec.c \
 			srcs/parser/redirects.c \
-			srcs/parser/path.c
+			srcs/parser/path.c		\
 
 OBJS	= $(FILES:.c=.o)
 CC		= gcc

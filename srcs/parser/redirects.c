@@ -11,35 +11,12 @@
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
-//
-//int	init_redirects(t_cmd *cmd_node)
-//{
-//	exec_redirect(cmd_node);
-//	if ((g_data.mns).exit_code == 0)
-//		dup2(cmd_node->fd_in, STDIN_FILENO);
-//	if ((g_data.mns).exit_code == 1)
-//	{
-//		if (cmd_node->fd_in < 0 || cmd_node->fd_out < 0)
-//		{
-//			if (cmd_node->next != NULL)
-//			{
-//				dup2(g_data.exec.fd[0], STDIN_FILENO);
-//				close (g_data.exec.fd[0]);
-//				close (g_data.exec.fd[1]);
-//				return (0);
-//			}
-//			else
-//				return (1);
-//		}
-//	}
-//	return (0);
-//}
-//
+
 void	check_exist_redirect(t_cmds *cmds)
 {
 	t_cmd_node	*actual;
-	cmds->redirects_count = 0;
 
+	cmds->redirects_count = 0;
 	actual = cmds->cmd_list;
 	while (actual != NULL)
 	{
