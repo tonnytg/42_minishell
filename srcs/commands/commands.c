@@ -19,7 +19,7 @@ void	open_pipe(t_cmd_node *current)
 		exit (write (1, "Pipe error\n", 12));
 }
 
-void	exec_builtin2(t_cmds *cmds, t_cmd_node *current)
+void	exec_builtin(t_cmds *cmds, t_cmd_node *current)
 {
 	size_t i = 0;
 
@@ -32,21 +32,8 @@ void	exec_builtin2(t_cmds *cmds, t_cmd_node *current)
 		}
 		i++;
 	}
-	printf("running %s\n", current->cmd_builtin->name);
-	int result = current->cmd_builtin->execute(cmds, current);
+	current->cmd_builtin->execute(cmds);
 }
-
-//void	exec_builtin(t_cmds *cmds)
-//{
-//	find_command(cmds);
-//	if (cmds->cmd_finded->name)
-//	{
-//		cmds->exit_code.last_cmd = cmds->input->cmd_name;
-//		cmds->exit_code.code = cmds->cmd_finded->execute(cmds);
-//	}
-//	cmds->exit_code.last_cmd = cmds->input->cmd_name;
-//	cmds->exit_code.code = 0;
-//}
 
 void	exec_external(t_cmds *cmds, t_cmd_node *current)
 {
@@ -110,7 +97,7 @@ void	run_node(t_cmds *cmds, t_cmd_node *current)
 	{
 		type_command = check_type_command(cmds, current);
 		if (type_command == 0)
-			exec_builtin2(cmds, current);
+			exec_builtin(cmds, current);
 		else if (type_command == 1)
 			exec_external(cmds, current);
 		else
@@ -129,3 +116,5 @@ void	execute_cmd(t_cmds *cmds)
 		current = current->next;
 	}
 }
+
+

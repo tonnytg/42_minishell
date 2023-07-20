@@ -67,7 +67,7 @@ typedef struct s_exec
 typedef struct s_command
 {
 	char	*name;
-	int		(*execute)(struct s_cmds *, struct s_cmd_node *);
+	int		(*execute)(struct s_cmds *);
 }	t_command;
 
 typedef struct s_cmd_node
@@ -143,7 +143,8 @@ void		read_keyboard(t_cmds *cmds);
 /* Comamnds */
 void		find_command(t_cmds *cmds);
 int			count_nodes(t_cmds *cmds);
-void		exec_builtin(t_cmds *cmds);
+//void		exec_builtin(t_cmds *cmds);
+void	exec_builtin(t_cmds *cmds, t_cmd_node *current);
 
 /* Set envs */
 void		set_envs(char **envp, t_cmds *cmds);
