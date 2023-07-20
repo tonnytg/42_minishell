@@ -55,6 +55,7 @@ void	exec_external(t_cmds *cmds, t_cmd_node *current)
 int	check_type_command(t_cmds *cmds, t_cmd_node *current)
 {
 	size_t	i;
+	char	*path;
 
 	i = 0;
 	load_commands(current);
@@ -64,7 +65,11 @@ int	check_type_command(t_cmds *cmds, t_cmd_node *current)
 			return (0);
 		i++;
 	}
-	if (get_fullpath(current) != NULL)
+	path = get_fullpath(current);
+	if (path != NULL)
+	{
+		free(path);
 		return (1);
+	}
 	return (-1);
 }
