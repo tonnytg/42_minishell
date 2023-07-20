@@ -27,13 +27,13 @@ void	free_split(char **split_array)
 	free(split_array);
 }
 
-char *get_fullpath(t_cmd_node *current)
+char	*get_fullpath(t_cmd_node *current)
 {
-	char **path;
-	int i;
-	char *path_complete;
-	int return_access;
-	char *name;
+	char	**path;
+	int		i;
+	char	*path_complete;
+	int		return_access;
+	char	*name;
 
 	path = ft_split(getenv("PATH"), ':');
 	i = 0;
@@ -42,18 +42,15 @@ char *get_fullpath(t_cmd_node *current)
 		name = ft_strjoin("/", current->cmd_name);
 		path_complete = ft_strjoin(path[i], name);
 		free(name);
-
 		return_access = access(path_complete, F_OK);
 		if (return_access == 0)
 		{
-			free_split(path); // Liberar a memória alocada para o array de strings path
-			return path_complete;
+			free_split(path);
+			return (path_complete);
 		}
-
-		free(path_complete); // Liberar a memória alocada para path_complete
+		free(path_complete);
 		i++;
 	}
-
-	free_split(path); // Liberar a memória alocada para o array de strings path
-	return NULL;
+	free_split(path);
+	return (NULL);
 }

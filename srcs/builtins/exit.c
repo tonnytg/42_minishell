@@ -60,5 +60,6 @@ int	exit_adapter(t_cmds *cmds)
 	count = count_args(cmds->input->cmd_args);
 	exit_code = check_erros_exit(cmds->input->cmd_args, count);
 	exit_code = (exit_code % 256 + 256) % 256;
+	cmds->exit_code.code = exit_code;
 	return (exit_code);
 }
