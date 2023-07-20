@@ -55,6 +55,25 @@ void	set_commands(t_cmds *cmds)
 	}
 }
 
+void	read_keyboard_old(t_cmds *cmds)
+{
+	ft_printf("\033[0;32mminishell: > \033[0;0m");
+	if (fgets(cmds->input->data, sizeof(cmds->input->data), stdin) == NULL)
+	{
+		cmds->exit = 1;
+		return ;
+	}
+	cmds->input->data[strcspn(cmds->input->data, "\n")] = 0;
+	if (cmds->input->data[0] == '\0')
+	{
+		cmds->input->cmd_name = NULL;
+		return ;
+	}
+	cmds->input->datacpy = ft_strdup(cmds->input->data);
+	cmds->input->cmd_name = ft_strtok(cmds->input->data, " ", 1);
+	cmds->input->cmd_args = ft_strtok(NULL, "", 0);
+}
+
 void	read_keyboard(t_cmds *cmds)
 {
 	ft_printf("\033[0;32mminishell: > \033[0;0m");

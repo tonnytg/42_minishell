@@ -20,7 +20,10 @@ int	count_nodes(t_cmds *cmds)
 	count = 0;
 	current = cmds->cmd_list;
 	while (current != NULL)
+	{
+		count++;
 		current = current->next;
+	}
 	cmds->cmds_list_count = count;
 	return (count);
 }

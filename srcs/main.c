@@ -22,8 +22,9 @@ void	free_commands(t_cmds *cmds)
 
 int	is_exit(t_cmds *cmds)
 {
-	if (ft_strcmp(cmds->exit_code.last_cmd, "exit") == 0)
-		return (1);
+	if (cmds->exit_code.last_cmd != NULL)
+		if (ft_strcmp(cmds->exit_code.last_cmd, "exit") == 0)
+			return (1);
 	return (0);
 }
 
@@ -45,10 +46,6 @@ int	minishell(t_cmds *cmds)
 	while (1)
 	{
 		read_keyboard(cmds);
-		if (iteractive_exit(cmds))
-			break ;
-		if (cmds->input->cmd_name == NULL)
-			continue ;
 		token_analysis(cmds);
 		syntax_analysis(cmds);
 		execute_cmd(cmds);

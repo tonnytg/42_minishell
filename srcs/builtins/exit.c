@@ -47,7 +47,7 @@ int	check_erros_exit(const char *arg, int count)
 	return (0);
 }
 
-int	exit_adapter(t_cmds *cmds)
+int	exit_adapter(t_cmds *cmds, t_cmd_node *current)
 {
 	int	count;
 	int	exit_code;
@@ -55,8 +55,8 @@ int	exit_adapter(t_cmds *cmds)
 	if (cmds->input->cmd_args == NULL)
 		return (0);
 	count = 0;
-	count = count_args(cmds->input->cmd_args);
-	exit_code = check_erros_exit(cmds->input->cmd_args, count);
+	count = count_args(current->args);
+	exit_code = check_erros_exit(current->args, count);
 	exit_code = (exit_code % 256 + 256) % 256;
 	return (exit_code);
 }

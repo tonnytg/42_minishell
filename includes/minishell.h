@@ -37,6 +37,8 @@
 /* Structs */
 
 struct	s_cmds;
+struct	s_command;
+struct	s_cmd_node;
 
 typedef struct s_tk_node
 {
@@ -60,11 +62,20 @@ typedef struct s_exec
 	int		in_exec;
 }	t_exec;
 
+/* Each Command */
+
+typedef struct s_command
+{
+	char	*name;
+	int		(*execute)(struct s_cmds *, struct s_cmd_node *);
+}	t_command;
+
 typedef struct s_cmd_node
 {
 	char				*phrase;
 	char				*cmd_name;
-	char				**args;
+	char				*args;
+	t_command			*cmd_builtin;
 	char				*type;
 	pid_t				pid;
 	int					fd[2];
@@ -88,14 +99,6 @@ typedef struct s_input
 	char		*cmd_args;
 	char		**phrase;
 }	t_input;
-
-/* Each Command */
-
-typedef struct s_command
-{
-	char	*name;
-	int		(*execute)(struct s_cmds *);
-}	t_command;
 
 typedef struct s_mns
 {
@@ -140,6 +143,7 @@ void		read_keyboard(t_cmds *cmds);
 /* Comamnds */
 void		find_command(t_cmds *cmds);
 int			count_nodes(t_cmds *cmds);
+void		exec_builtin(t_cmds *cmds);
 
 /* Set envs */
 void		set_envs(char **envp, t_cmds *cmds);
