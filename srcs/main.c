@@ -24,7 +24,7 @@ void	free_commands(t_cmds *cmds)
 int	is_exit(t_cmds *cmds)
 {
 	if (cmds->signal_exit == 1)
-			return (1);
+		return (1);
 	return (0);
 }
 

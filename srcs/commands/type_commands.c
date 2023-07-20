@@ -34,10 +34,10 @@ void	exec_external(t_cmds *cmds, t_cmd_node *current)
 	pid_t	pid;
 	char	*path;
 
-	path = get_fullpath(current);
-	current->split_args = ft_split(current->phrase, ' ');
 	if (ft_strcmp(current->type, "WORD") == 0)
 	{
+		path = get_fullpath(current);
+		current->split_args = ft_split(current->phrase, ' ');
 		pid = fork();
 		if (pid == -1)
 			perror("fork");
@@ -48,21 +48,20 @@ void	exec_external(t_cmds *cmds, t_cmd_node *current)
 		}
 		if (pid > 0)
 			waitpid(pid, NULL, 0);
+		free(path);
 	}
 }
 
 int	check_type_command(t_cmds *cmds, t_cmd_node *current)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	load_commands(current);
-	while (cmds->arr_cmds[i].name != NULL)
+	while (i < cmds->num_cmds)
 	{
 		if (ft_strcmp(current->cmd_name, cmds->arr_cmds[i].name) == 0)
-		{
 			return (0);
-		}
 		i++;
 	}
 	if (get_fullpath(current) != NULL)

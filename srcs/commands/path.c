@@ -12,20 +12,43 @@
 
 #include "../../includes/minishell.h"
 
+void free_split(char **split_array)
+{
+	if (split_array == NULL)
+		return;
+
+	// Iterar sobre o array de strings
+	for (int i = 0; split_array[i] != NULL; i++)
+	{
+		free(split_array[i]); // Liberar a memória de cada string
+	}
+
+	free(split_array); // Liberar a memória do array de strings
+}
+
 char	*get_fullpath(t_cmd_node *current)
 {
-	char	**paths;
-	char	*temp;
+	char	**path;
 	int		i;
+	char	*path_complete;
+	int		return_access;
+	char	*name;
 
-	paths = ft_split(getenv("PATH"), ':');
+	path = ft_split(getenv("PATH"), ':');
 	i = 0;
-	while (paths[i])
+	while (path[i])
 	{
-		temp = ft_strjoin("/", current->cmd_name);
-		if (access(ft_strjoin(paths[i], temp), F_OK) == 0)
-			return (ft_strjoin(paths[i], temp));
+		name = ft_strjoin("/", current->cmd_name);
+		path_complete = ft_strjoin(path[i], name);
+		free(name);
+		return_access = access(path_complete, F_OK);
+		if (return_access == 0)
+		{
+			free_split(path);
+			return (path_complete);
+		}
 		i++;
 	}
+	free_split(path);
 	return (NULL);
 }
