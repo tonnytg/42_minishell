@@ -12,18 +12,18 @@
 
 #include "../../includes/minishell.h"
 
-void free_split(char **split_array)
+void	free_split(char **split_array)
 {
+	int	i;
+
 	if (split_array == NULL)
-		return;
-
-	// Iterar sobre o array de strings
-	for (int i = 0; split_array[i] != NULL; i++)
+		return ;
+	while (split_array[i] != NULL)
 	{
-		free(split_array[i]); // Liberar a memória de cada string
+		free(split_array[i]);
+		i++;
 	}
-
-	free(split_array); // Liberar a memória do array de strings
+	free(split_array);
 }
 
 char	*get_fullpath(t_cmd_node *current)
