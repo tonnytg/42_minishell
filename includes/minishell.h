@@ -158,6 +158,7 @@ int			check_type_command(t_cmds *cmds, t_cmd_node *current);
 /* Path */
 char		*check_path(t_cmd_node *node);
 char		*get_fullpath(t_cmd_node *current);
+void		free_split(char **split_array);
 
 /* Set envs */
 void		set_envs(char **envp, t_cmds *cmds);

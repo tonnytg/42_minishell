@@ -50,6 +50,7 @@ void	exec_external(t_cmds *cmds, t_cmd_node *current)
 			waitpid(pid, NULL, 0);
 		free(path);
 	}
+	free_split(current->split_args);
 }
 
 int	check_type_command(t_cmds *cmds, t_cmd_node *current)
