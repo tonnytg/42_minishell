@@ -31,12 +31,14 @@ void	exec_builtin(t_cmds *cmds, t_cmd_node *current)
 
 void	exec_external(t_cmds *cmds, t_cmd_node *current)
 {
-	char	*path = get_fullpath(current);
+	pid_t	pid;
+	char	*path;
 
+	path = get_fullpath(current);
 	current->split_args = ft_split(current->phrase, ' ');
 	if (ft_strcmp(current->type, "WORD") == 0)
 	{
-		pid_t pid = fork();
+		pid = fork();
 		if (pid == -1)
 			perror("fork");
 		if (pid == 0)

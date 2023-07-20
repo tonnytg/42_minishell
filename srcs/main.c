@@ -14,6 +14,7 @@
 
 void	free_commands(t_cmds *cmds)
 {
+	free(cmds->exit_code.last_cmd);
 	free(cmds->arr_cmds);
 	free(cmds->cmd_finded);
 	free(cmds->input);
@@ -22,8 +23,7 @@ void	free_commands(t_cmds *cmds)
 
 int	is_exit(t_cmds *cmds)
 {
-	if (cmds->exit_code.last_cmd != NULL)
-		if (ft_strcmp(cmds->exit_code.last_cmd, "exit") == 0)
+	if (cmds->signal_exit == 1)
 			return (1);
 	return (0);
 }
@@ -67,6 +67,7 @@ int	main(int argc, char **argv, char **envp)
 	cmds->input = malloc(sizeof(t_input) * 1);
 	cmds->cmd_finded = malloc(sizeof(t_command));
 	cmds->exit_code.code = 0;
+	cmds->signal_exit = -1;
 	cmds->envs = malloc(sizeof(char *) * (count_envp(envp) + 2));
 	set_envs(envp, cmds);
 	set_commands(cmds);

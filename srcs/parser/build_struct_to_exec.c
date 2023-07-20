@@ -21,6 +21,7 @@ void	free_cmd_nodes(t_cmd_node *list_cmds)
 		temp = list_cmds;
 		list_cmds = list_cmds->next;
 		free(temp->phrase);
+		free(temp->phrase_temp);
 		free(temp->type);
 		free(temp);
 	}
@@ -34,6 +35,7 @@ void	new_node_cmd(t_cmd_node **head, char *str, char *type)
 	actual = *head;
 	new_cmd = (t_cmd_node *)malloc(sizeof(t_cmd_node));
 	new_cmd->phrase = ft_strdup(str);
+	new_cmd->phrase_temp = ft_strdup(str);
 	new_cmd->type = ft_strdup(type);
 	new_cmd->next = NULL;
 	new_cmd->prev = actual;

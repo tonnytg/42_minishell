@@ -73,6 +73,7 @@ typedef struct s_command
 typedef struct s_cmd_node
 {
 	char				*phrase;
+	char				*phrase_temp;
 	char				*cmd_name;
 	char				*full_args;
 	char				**split_args;
@@ -126,6 +127,7 @@ typedef struct s_cmds
 	t_cmd_node	*cmd_list;
 	int			cmds_list_count;
 	int			exit;
+	int 		signal_exit;
 	int			redirects_count;
 }	t_cmds;
 

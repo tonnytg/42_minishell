@@ -21,12 +21,7 @@ void	open_pipe(t_cmd_node *current)
 
 void	load_commands(t_cmd_node *current)
 {
-	char	*phrase_copy;
-
-	phrase_copy = malloc(sizeof(char) * ft_strlen(current->phrase));
-	ft_memcpy(phrase_copy,
-		current->phrase, sizeof(char) * ft_strlen(current->phrase));
-	current->cmd_name = ft_strtok(phrase_copy, " ", 1);
+	current->cmd_name = ft_strtok(current->phrase_temp, " ", 1);
 	current->full_args = ft_strtok(NULL, "", 0);
 }
 
