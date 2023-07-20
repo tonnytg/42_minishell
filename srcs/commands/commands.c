@@ -27,7 +27,7 @@ void	load_commands(t_cmd_node *current)
 	ft_memcpy(phrase_copy,
 		current->phrase, sizeof(char) * ft_strlen(current->phrase));
 	current->cmd_name = ft_strtok(phrase_copy, " ", 1);
-	current->args = ft_strtok(NULL, "", 0);
+	current->full_args = ft_strtok(NULL, "", 0);
 }
 
 void	execute_cmd(t_cmds *cmds)

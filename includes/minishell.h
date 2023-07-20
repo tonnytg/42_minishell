@@ -74,7 +74,8 @@ typedef struct s_cmd_node
 {
 	char				*phrase;
 	char				*cmd_name;
-	char				*args;
+	char				*full_args;
+	char				**split_args;
 	t_command			*cmd_builtin;
 	char				*type;
 	pid_t				pid;

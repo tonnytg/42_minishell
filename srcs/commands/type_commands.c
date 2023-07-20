@@ -31,8 +31,22 @@ void	exec_builtin(t_cmds *cmds, t_cmd_node *current)
 
 void	exec_external(t_cmds *cmds, t_cmd_node *current)
 {
-	printf("Run external commands %p\n", cmds);
-	printf("phrase: %s\n", current->phrase);
+	char	*path = get_fullpath(current);
+
+	current->split_args = ft_split(current->phrase, ' ');
+	if (ft_strcmp(current->type, "WORD") == 0)
+	{
+		pid_t pid = fork();
+		if (pid == -1)
+			perror("fork");
+		if (pid == 0)
+		{
+			execve(path, current->split_args, cmds->envs);
+			perror("execve");
+		}
+		if (pid > 0)
+			waitpid(pid, NULL, 0);
+	}
 }
 
 int	check_type_command(t_cmds *cmds, t_cmd_node *current)
