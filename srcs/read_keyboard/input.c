@@ -69,6 +69,8 @@ void	read_keyboard_old(t_cmds *cmds)
 		cmds->input->cmd_name = NULL;
 		return ;
 	}
+	if (cmds->input->datacpy != NULL)
+		free(cmds->input->datacpy);
 	cmds->input->datacpy = ft_strdup(cmds->input->data);
 	cmds->input->cmd_name = ft_strtok(cmds->input->data, " ", 1);
 	cmds->input->cmd_args = ft_strtok(NULL, "", 0);
