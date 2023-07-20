@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   nodes.c                                            :+:      :+:    :+:   */
+/*   type_commands.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,35 +12,44 @@
 
 #include "../../includes/minishell.h"
 
-int	count_nodes(t_cmds *cmds)
+void	exec_builtin(t_cmds *cmds, t_cmd_node *current)
 {
-	t_cmd_node	*current;
-	int			count;
+	size_t	i;
 
-	count = 0;
-	current = cmds->cmd_list;
-	while (current != NULL)
+	i = 0;
+	while (i < cmds->num_cmds)
 	{
-		count++;
-		current = current->next;
+		if (ft_strcmp(current->cmd_name, cmds->arr_cmds[i].name) == 0)
+		{
+			current->cmd_builtin = &cmds->arr_cmds[i];
+			break ;
+		}
+		i++;
 	}
-	cmds->cmds_list_count = count;
-	return (count);
+	current->cmd_builtin->execute(cmds);
 }
 
-void	run_node(t_cmds *cmds, t_cmd_node *current)
+void	exec_external(t_cmds *cmds, t_cmd_node *current)
 {
-	int	type_command;
+	printf("Run external commands %p\n", cmds);
+	printf("phrase: %s\n", current->phrase);
+}
 
-	type_command = -1;
-	if (ft_strcmp(current->type, "WORD") == 0)
+int	check_type_command(t_cmds *cmds, t_cmd_node *current)
+{
+	int	i;
+
+	i = 0;
+	load_commands(current);
+	while (cmds->arr_cmds[i].name != NULL)
 	{
-		type_command = check_type_command(cmds, current);
-		if (type_command == 0)
-			exec_builtin(cmds, current);
-		else if (type_command == 1)
-			exec_external(cmds, current);
-		else
-			printf("minishell: %s: command not found\n", cmds->input->cmd_name);
+		if (ft_strcmp(current->cmd_name, cmds->arr_cmds[i].name) == 0)
+		{
+			return (0);
+		}
+		i++;
 	}
+	if (get_fullpath(current) != NULL)
+		return (1);
+	return (-1);
 }

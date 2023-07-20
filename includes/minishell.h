@@ -143,8 +143,18 @@ void		read_keyboard(t_cmds *cmds);
 /* Comamnds */
 void		find_command(t_cmds *cmds);
 int			count_nodes(t_cmds *cmds);
-//void		exec_builtin(t_cmds *cmds);
-void	exec_builtin(t_cmds *cmds, t_cmd_node *current);
+void		exec_builtin(t_cmds *cmds, t_cmd_node *current);
+void		run_node(t_cmds *cmds, t_cmd_node *current);
+void		load_commands(t_cmd_node *current);
+
+/* Types Commands */
+void		exec_builtin(t_cmds *cmds, t_cmd_node *current);
+void		exec_external(t_cmds *cmds, t_cmd_node *current);
+int			check_type_command(t_cmds *cmds, t_cmd_node *current);
+
+/* Path */
+char		*check_path(t_cmd_node *node);
+char		*get_fullpath(t_cmd_node *current);
 
 /* Set envs */
 void		set_envs(char **envp, t_cmds *cmds);
@@ -179,9 +189,6 @@ int			token_analysis(t_cmds *cmds);
 void		syntax_analysis(t_cmds *cmds);
 void		build_struct_to_exec(t_cmds *cmds, t_tk_node *list_tokens);
 void		free_cmd_nodes(t_cmd_node *list_cmds);
-
-/* Path */
-char		*check_path(t_cmd_node *node);
 
 /* Redirects */
 void		check_exist_redirect(t_cmds *cmds);

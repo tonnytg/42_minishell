@@ -19,7 +19,8 @@ FILES	= \
 			srcs/parser/syntax_analysis.c \
 			srcs/parser/build_struct_to_exec.c \
 			srcs/parser/redirects.c \
-			srcs/parser/path.c		\
+			srcs/commands/path.c	\
+			srcs/commands/type_commands.c
 
 OBJS	= $(FILES:.c=.o)
 CC		= gcc
