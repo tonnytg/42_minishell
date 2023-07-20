@@ -14,6 +14,7 @@
 
 void	free_commands(t_cmds *cmds)
 {
+	free(cmds->exit_code.last_cmd);
 	free(cmds->arr_cmds);
 	free(cmds->cmd_finded);
 	free(cmds->input);
@@ -22,7 +23,7 @@ void	free_commands(t_cmds *cmds)
 
 int	is_exit(t_cmds *cmds)
 {
-	if (ft_strcmp(cmds->exit_code.last_cmd, "exit") == 0)
+	if (cmds->signal_exit == 1)
 		return (1);
 	return (0);
 }
@@ -42,23 +43,20 @@ int	minishell(t_cmds *cmds)
 
 	cmds->exit = 0;
 	signals_handler();
+	cmds->input->datacpy = NULL;
 	while (1)
 	{
 		read_keyboard(cmds);
-		if (iteractive_exit(cmds))
-			break ;
-		if (cmds->input->cmd_name == NULL)
+		if (cmds->input->datacpy == NULL)
 			continue ;
 		token_analysis(cmds);
 		syntax_analysis(cmds);
-		// TODO: tild_expansion and quote parser
-		// https://github.com/LacrouxRaoni/minishell/blob/master/sources/expansions/tild_expansion.c#L64
-		find_command(cmds); // -> O que vou executa fica salvo em -> cmd_name // TODO: Built-ins e external?
 		execute_cmd(cmds);
 		free_cmd_nodes(cmds->cmd_list);
 		exit_code = cmds->exit_code.code;
 		if (is_exit(cmds))
 			break ;
+		cmds->input->datacpy = NULL;
 	}
 	return (exit_code);
 }
@@ -73,6 +71,7 @@ int	main(int argc, char **argv, char **envp)
 	cmds->input = malloc(sizeof(t_input) * 1);
 	cmds->cmd_finded = malloc(sizeof(t_command));
 	cmds->exit_code.code = 0;
+	cmds->signal_exit = -1;
 	cmds->envs = malloc(sizeof(char *) * (count_envp(envp) + 2));
 	set_envs(envp, cmds);
 	set_commands(cmds);

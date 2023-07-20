@@ -18,7 +18,7 @@
 # include <unistd.h>
 # include <stdio.h>
 # include <signal.h>
-#include <sys/wait.h>
+# include <sys/wait.h>
 # include "libft.h"
 
 /* Macros */
@@ -37,6 +37,8 @@
 /* Structs */
 
 struct	s_cmds;
+struct	s_command;
+struct	s_cmd_node;
 
 typedef struct s_tk_node
 {
@@ -44,7 +46,6 @@ typedef struct s_tk_node
 	char				tk_type[100];
 	struct s_tk_node	*next;
 }	t_tk_node;
-
 
 // struct para executar
 // https://github.com/LacrouxRaoni/minishell/blob/master/include/exec.h#L27
@@ -61,18 +62,27 @@ typedef struct s_exec
 	int		in_exec;
 }	t_exec;
 
+/* Each Command */
+
+typedef struct s_command
+{
+	char	*name;
+	int		(*execute)(struct s_cmds *);
+}	t_command;
+
 typedef struct s_cmd_node
 {
 	char				*phrase;
-	char 				*cmd_name;
-	char				**args;
+	char				*phrase_temp;
+	char				*cmd_name;
+	char				*full_args;
+	char				**split_args;
+	t_command			*cmd_builtin;
 	char				*type;
-	int					fd_in;
-	int					fd_out;
 	pid_t				pid;
-	int					fd[2]; // TODO: Posso usar assim na norminette?
-	struct s_cmd_node	*next; // NULL = tail -> fechados
-	struct s_cmd_node	*prev; // NULL = head -> fechados
+	int					fd[2];
+	struct s_cmd_node	*next;
+	struct s_cmd_node	*prev;
 }	t_cmd_node;
 
 typedef struct s_exit_code
@@ -91,14 +101,6 @@ typedef struct s_input
 	char		*cmd_args;
 	char		**phrase;
 }	t_input;
-
-/* Each Command */
-
-typedef struct s_command
-{
-	char	*name;
-	int		(*execute)(struct s_cmds *);
-}	t_command;
 
 typedef struct s_mns
 {
@@ -123,8 +125,9 @@ typedef struct s_cmds
 	char		**lexical;
 	char		**envs;
 	t_cmd_node	*cmd_list;
-	int			fd[2];
+	int			cmds_list_count;
 	int			exit;
+	int			signal_exit;
 	int			redirects_count;
 }	t_cmds;
 
@@ -134,14 +137,28 @@ typedef struct s_envs
 	char	*value;
 }	t_envs;
 
-
-
 void		free_args(char **args);
 int			iteractive_exit(t_cmds *cmds);
 
 /* Read Keyboard */
 void		read_keyboard(t_cmds *cmds);
+
+/* Comamnds */
 void		find_command(t_cmds *cmds);
+int			count_nodes(t_cmds *cmds);
+void		exec_builtin(t_cmds *cmds, t_cmd_node *current);
+void		run_node(t_cmds *cmds, t_cmd_node *current);
+void		load_commands(t_cmd_node *current);
+
+/* Types Commands */
+void		exec_builtin(t_cmds *cmds, t_cmd_node *current);
+void		exec_external(t_cmds *cmds, t_cmd_node *current);
+int			check_type_command(t_cmds *cmds, t_cmd_node *current);
+
+/* Path */
+char		*check_path(t_cmd_node *node);
+char		*get_fullpath(t_cmd_node *current);
+void		free_split(char **split_array);
 
 /* Set envs */
 void		set_envs(char **envp, t_cmds *cmds);
@@ -149,11 +166,7 @@ int			count_envp(char **envp);
 int			append_envs(t_cmds *cmds, char *name, char *value);
 void		free_envs(t_cmds *cmds);
 
-/* Set commands */
-void		set_commands(t_cmds *cmds);
-void		free_commands(t_cmds *cmds);
-
-/* Commands */
+/* Builtins */
 int			echo_adapter(t_cmds *cmds);
 int			cd_adapter(t_cmds *cmds);
 int			env_adapter(t_cmds *cmds);
@@ -162,6 +175,8 @@ int			pwd_adapter(t_cmds *cmds);
 int			exit_adapter(t_cmds *cmds);
 int			export_adapter(t_cmds *cmds);
 void		execute_cmd(t_cmds *cmds);
+void		set_commands(t_cmds *cmds);
+void		free_commands(t_cmds *cmds);
 
 /* Minishell */
 int			minishell(t_cmds *cmds);
@@ -178,11 +193,8 @@ int			token_analysis(t_cmds *cmds);
 void		syntax_analysis(t_cmds *cmds);
 void		build_struct_to_exec(t_cmds *cmds, t_tk_node *list_tokens);
 void		free_cmd_nodes(t_cmd_node *list_cmds);
-#endif
-
-/* Path */
-char	*check_path(t_cmd_node *node);
 
 /* Redirects */
-void	check_exist_redirect(t_cmds *cmds);
-char	*check_path(t_cmd_node *node);
+void		check_exist_redirect(t_cmds *cmds);
+char		*check_path(t_cmd_node *node);
+#endif

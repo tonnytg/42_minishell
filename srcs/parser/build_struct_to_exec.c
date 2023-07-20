@@ -21,6 +21,7 @@ void	free_cmd_nodes(t_cmd_node *list_cmds)
 		temp = list_cmds;
 		list_cmds = list_cmds->next;
 		free(temp->phrase);
+		free(temp->phrase_temp);
 		free(temp->type);
 		free(temp);
 	}
@@ -34,9 +35,8 @@ void	new_node_cmd(t_cmd_node **head, char *str, char *type)
 	actual = *head;
 	new_cmd = (t_cmd_node *)malloc(sizeof(t_cmd_node));
 	new_cmd->phrase = ft_strdup(str);
+	new_cmd->phrase_temp = ft_strdup(str);
 	new_cmd->type = ft_strdup(type);
-	new_cmd->fd_in = -1;
-	new_cmd->fd_out = -1;
 	new_cmd->next = NULL;
 	new_cmd->prev = actual;
 	if (*head == NULL)
@@ -56,7 +56,7 @@ void	create_cmd_nodes(t_cmd_node **list_cmds,
 	t_tk_node	*actual_tk;
 
 	actual_tk = *list_tokens;
-	while (actual_tk != NULL) // echo a b >> c d
+	while (actual_tk != NULL)
 	{
 		if (ft_strcmp(actual_tk->tk_type, "WORD") == 0)
 		{
@@ -67,7 +67,7 @@ void	create_cmd_nodes(t_cmd_node **list_cmds,
 			*str = ft_strjoin(*temp, " ");
 			free(*temp);
 		}
-		if (ft_strcmp(actual_tk->tk_type, "WORD") != 0) // echo a b >> WORD
+		if (ft_strcmp(actual_tk->tk_type, "WORD") != 0)
 		{
 			*temp = *str;
 			new_node_cmd(list_cmds, *temp, "WORD");
@@ -98,5 +98,4 @@ void	build_struct_to_exec(t_cmds *cmds, t_tk_node *list_tokens)
 		new_node_cmd(&list_cmds, str, "WORD");
 	free(str);
 	cmds->cmd_list = list_cmds;
-	printf("[%p] - Head Cmd Node\n", cmds->cmd_list);
 }

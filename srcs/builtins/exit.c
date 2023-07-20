@@ -52,6 +52,8 @@ int	exit_adapter(t_cmds *cmds)
 	int	count;
 	int	exit_code;
 
+	cmds->signal_exit = 1;
+	cmds->exit_code.last_cmd = ft_strdup("exit");
 	if (cmds->input->cmd_args == NULL)
 		return (0);
 	count = 0;
