@@ -27,7 +27,7 @@ void	free_split(char **split_array)
 	free(split_array);
 }
 
-char	*get_fullpath(t_cmd_node *current)
+char	*get_fullpath(t_cmds *cmds)
 {
 	char	**path;
 	int		i;
@@ -39,7 +39,7 @@ char	*get_fullpath(t_cmd_node *current)
 	i = 0;
 	while (path[i])
 	{
-		name = ft_strjoin("/", current->cmd_name);
+		name = ft_strjoin("/", cmds->current->cmd_name);
 		path_complete = ft_strjoin(path[i], name);
 		free(name);
 		return_access = access(path_complete, F_OK);

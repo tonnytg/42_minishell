@@ -114,6 +114,12 @@ typedef struct s_mns
 	int		exit_code;
 }	t_mns;
 
+typedef struct s_envs
+{
+	char	*name;
+	char	*value;
+}	t_envs;
+
 /* Array of commands */
 typedef struct s_cmds
 {
@@ -125,17 +131,12 @@ typedef struct s_cmds
 	char		**lexical;
 	char		**envs;
 	t_cmd_node	*cmd_list;
+	t_cmd_node	*current;
 	int			cmds_list_count;
 	int			exit;
 	int			signal_exit;
 	int			redirects_count;
 }	t_cmds;
-
-typedef struct s_envs
-{
-	char	*name;
-	char	*value;
-}	t_envs;
 
 void		free_args(char **args);
 int			iteractive_exit(t_cmds *cmds);
@@ -146,18 +147,18 @@ void		read_keyboard(t_cmds *cmds);
 /* Comamnds */
 void		find_command(t_cmds *cmds);
 int			count_nodes(t_cmds *cmds);
-void		exec_builtin(t_cmds *cmds, t_cmd_node *current);
-void		run_node(t_cmds *cmds, t_cmd_node *current);
-void		load_commands(t_cmd_node *current);
+void		exec_builtin(t_cmds *cmds);
+void		run_node(t_cmds *cmds);
+void		load_commands(t_cmds *cmds);
 
 /* Types Commands */
-void		exec_builtin(t_cmds *cmds, t_cmd_node *current);
-void		exec_external(t_cmds *cmds, t_cmd_node *current);
-int			check_type_command(t_cmds *cmds, t_cmd_node *current);
+void		exec_builtin(t_cmds *cmds);
+void		exec_external(t_cmds *cmds);
+int			check_type_command(t_cmds *cmds);
 
 /* Path */
 char		*check_path(t_cmd_node *node);
-char		*get_fullpath(t_cmd_node *current);
+char		*get_fullpath(t_cmds *cmds);
 void		free_split(char **split_array);
 
 /* Set envs */

@@ -19,20 +19,18 @@ void	open_pipe(t_cmd_node *current)
 		exit (write (1, "Pipe error\n", 12));
 }
 
-void	load_commands(t_cmd_node *current)
+void	load_commands(t_cmds *cmds)
 {
-	current->cmd_name = ft_strtok(current->phrase_temp, " ", 1);
-	current->full_args = ft_strtok(NULL, "", 0);
+	cmds->current->cmd_name = ft_strtok(cmds->current->phrase_temp, " ", 1);
+	cmds->current->full_args = ft_strtok(NULL, "", 0);
 }
 
 void	execute_cmd(t_cmds *cmds)
 {
-	t_cmd_node	*current;
-
-	current = cmds->cmd_list;
-	while (current != NULL)
+	cmds->current = cmds->cmd_list;
+	while (cmds->current != NULL)
 	{
-		run_node(cmds, current);
-		current = current->next;
+		run_node(cmds);
+		cmds->current = cmds->current->next;
 	}
 }
