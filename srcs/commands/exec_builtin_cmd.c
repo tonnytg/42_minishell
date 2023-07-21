@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   nodes.c                                            :+:      :+:    :+:   */
+/*   exec_builtin_cmd.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,35 +12,38 @@
 
 #include "../../includes/minishell.h"
 
-int	count_nodes(t_cmds *cmds)
+void	exec_builtin(t_cmds *cmds)
 {
-	t_cmd_node	*current;
-	int			count;
+	size_t	i;
+	pid_t	pid;
+	int		child_return_status;
 
-	count = 0;
-	current = cmds->cmd_list;
-	while (current != NULL)
+	i = 0;
+	while (i < cmds->num_cmds)
 	{
-		count++;
-		current = current->next;
+		if (ft_strcmp(cmds->current->cmd_name, cmds->arr_cmds[i].name) == 0)
+		{
+			cmds->current->cmd_builtin = &cmds->arr_cmds[i];
+			break ;
+		}
+		i++;
 	}
-	cmds->cmds_list_count = count;
-	return (count);
-}
-
-void	run_node(t_cmds *cmds)
-{
-	int	type_command;
-
-	type_command = -1;
-	if (ft_strcmp(cmds->current->type, "WORD") == 0)
+	if (ft_strcmp(cmds->current->cmd_name, "exit") == 0)
+		current->cmd_builtin->execute(cmds);
+	else
 	{
-		type_command = check_type_command(cmds);
-		if (type_command == 0)
-			exec_builtin(cmds);
-		else if (type_command == 1)
-			exec_external(cmds);
+		pid = fork();
+		if (pid == -1)
+		{
+			perror("fork");
+			exit(EXIT_FAILURE);
+		}
+		else if (pid == 0)
+		{
+			cmds->current->cmd_builtin->execute(cmds);
+			exit(EXIT_SUCCESS);
+		}
 		else
-			printf("minishell: %s: command not found\n", cmds->input->cmd_name);
+			waitpid(pid, &child_return_status, 0);
 	}
 }

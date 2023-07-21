@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   nodes.c                                            :+:      :+:    :+:   */
+/*   exec_external_cmd.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,35 +12,26 @@
 
 #include "../../includes/minishell.h"
 
-int	count_nodes(t_cmds *cmds)
+void	exec_external(t_cmds *cmds)
 {
-	t_cmd_node	*current;
-	int			count;
+	pid_t	pid;
+	char	*path;
 
-	count = 0;
-	current = cmds->cmd_list;
-	while (current != NULL)
+	if (ft_strcmp(current->type, "WORD") == 0)
 	{
-		count++;
-		current = current->next;
+		path = get_fullpath(cmds->current);
+		cmds->current->split_args = ft_split(cmds->current->phrase, ' ');
+		pid = fork();
+		if (pid == -1)
+			perror("fork");
+		if (pid == 0)
+		{
+			execve(path, cmds->current->split_args, cmds->envs);
+			perror("execve");
+		}
+		if (pid > 0)
+			waitpid(pid, NULL, 0);
+		free(path);
 	}
-	cmds->cmds_list_count = count;
-	return (count);
-}
-
-void	run_node(t_cmds *cmds)
-{
-	int	type_command;
-
-	type_command = -1;
-	if (ft_strcmp(cmds->current->type, "WORD") == 0)
-	{
-		type_command = check_type_command(cmds);
-		if (type_command == 0)
-			exec_builtin(cmds);
-		else if (type_command == 1)
-			exec_external(cmds);
-		else
-			printf("minishell: %s: command not found\n", cmds->input->cmd_name);
-	}
+	free_split(cmds->current->split_args);
 }
