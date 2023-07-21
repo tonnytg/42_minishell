@@ -12,11 +12,24 @@
 
 #include "../../includes/minishell.h"
 
-void	exec_builtin(t_cmds *cmds)
+void	free_builtin_cmd(t_cmds *cmds)
+{
+	int	i;
+
+	i = 0;
+	while (cmds->envs[i])
+	{
+		free(cmds->envs[i]);
+		i++;
+	}
+	free(cmds->envs);
+	free_cmd_nodes(cmds->cmd_list);
+	free_commands(cmds);
+}
+
+void	define_cmd_to_exec(t_cmds *cmds)
 {
 	size_t	i;
-	pid_t	pid;
-	int		child_return_status;
 
 	i = 0;
 	while (i < cmds->num_cmds)
@@ -28,8 +41,16 @@ void	exec_builtin(t_cmds *cmds)
 		}
 		i++;
 	}
+}
+
+void	exec_builtin(t_cmds *cmds)
+{
+	pid_t	pid;
+	int		child_return_status;
+
+	define_cmd_to_exec(cmds);
 	if (ft_strcmp(cmds->current->cmd_name, "exit") == 0)
-		current->cmd_builtin->execute(cmds);
+		cmds->current->cmd_builtin->execute(cmds);
 	else
 	{
 		pid = fork();
@@ -41,6 +62,7 @@ void	exec_builtin(t_cmds *cmds)
 		else if (pid == 0)
 		{
 			cmds->current->cmd_builtin->execute(cmds);
+			free_builtin_cmd(cmds);
 			exit(EXIT_SUCCESS);
 		}
 		else

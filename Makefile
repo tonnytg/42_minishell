@@ -20,7 +20,9 @@ FILES	= \
 			srcs/parser/build_struct_to_exec.c \
 			srcs/parser/redirects.c \
 			srcs/commands/path.c	\
-			srcs/commands/type_commands.c
+			srcs/commands/type_commands.c \
+			srcs/commands/exec_builtin_cmd.c \
+			srcs/commands/exec_external_cmd.c
 
 OBJS	= $(FILES:.c=.o)
 CC		= gcc

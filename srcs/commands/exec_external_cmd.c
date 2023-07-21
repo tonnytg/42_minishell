@@ -17,9 +17,9 @@ void	exec_external(t_cmds *cmds)
 	pid_t	pid;
 	char	*path;
 
-	if (ft_strcmp(current->type, "WORD") == 0)
+	if (ft_strcmp(cmds->current->type, "WORD") == 0)
 	{
-		path = get_fullpath(cmds->current);
+		path = get_fullpath(cmds);
 		cmds->current->split_args = ft_split(cmds->current->phrase, ' ');
 		pid = fork();
 		if (pid == -1)

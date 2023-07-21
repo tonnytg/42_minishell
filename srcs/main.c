@@ -72,6 +72,7 @@ int	main(int argc, char **argv, char **envp)
 	cmds->input = malloc(sizeof(t_input) * 1);
 	cmds->cmd_finded = malloc(sizeof(t_command));
 	cmds->exit_code.code = 0;
+	cmds->exit_code.last_cmd = NULL;
 	cmds->signal_exit = -1;
 	cmds->envs = malloc(sizeof(char *) * (count_envp(envp) + 2));
 	set_envs(envp, cmds);
