@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-int	iteractive_exit(t_cmds *cmds)
+int	interactive_exit(t_cmds *cmds)
 {
 	if (cmds->exit)
 	{
@@ -20,4 +20,17 @@ int	iteractive_exit(t_cmds *cmds)
 		return (1);
 	}
 	return (0);
+}
+
+void	free_arr(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i] != NULL)
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }
