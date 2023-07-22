@@ -35,7 +35,6 @@
 # define STDERR_FILENO 2
 
 /* Structs */
-
 struct	s_cmds;
 struct	s_command;
 struct	s_cmd_node;
@@ -47,23 +46,7 @@ typedef struct s_tk_node
 	struct s_tk_node	*next;
 }	t_tk_node;
 
-// struct para executar
-// https://github.com/LacrouxRaoni/minishell/blob/master/include/exec.h#L27
-typedef struct s_exec
-{
-	char	**env;
-	char	*path_confirmed;
-	char	**path;
-	int		fd[2];
-	int		temp_fd;
-	int		b_hdoc;
-	int		pid;
-	int		error;
-	int		in_exec;
-}	t_exec;
-
 /* Each Command */
-
 typedef struct s_command
 {
 	char	*name;
@@ -102,23 +85,20 @@ typedef struct s_input
 	char		**phrase;
 }	t_input;
 
-typedef struct s_mns
-{
-	char	*line;
-	char	*line_cmd;
-	char	**lexical_line;
-	char	**parsed_line;
-	int		err_num;
-	int		n_break;
-	int		n;
-	int		exit_code;
-}	t_mns;
-
 typedef struct s_envs
 {
 	char	*name;
 	char	*value;
 }	t_envs;
+
+typedef struct s_path
+{
+	char	**path;
+	int		i;
+	char	*path_complete;
+	int		return_access;
+	char	*name;
+}	t_path;
 
 /* Array of commands */
 typedef struct s_cmds
@@ -127,6 +107,7 @@ typedef struct s_cmds
 	t_command	*cmd_finded;
 	size_t		num_cmds;
 	t_command	*arr_cmds;
+	t_path		*path;
 	t_exit_code	exit_code;
 	char		**lexical;
 	char		**envs;
@@ -138,13 +119,7 @@ typedef struct s_cmds
 	int			redirects_count;
 }	t_cmds;
 
-void		free_args(char **args);
-int			iteractive_exit(t_cmds *cmds);
-
-/* Read Keyboard */
-void		read_keyboard(t_cmds *cmds);
-
-/* Comamnds */
+/* Commands */
 void		find_command(t_cmds *cmds);
 int			count_nodes(t_cmds *cmds);
 void		exec_builtin(t_cmds *cmds);
@@ -161,12 +136,6 @@ char		*check_path(t_cmd_node *node);
 char		*get_fullpath(t_cmds *cmds);
 void		free_split(char **split_array);
 
-/* Set envs */
-void		set_envs(char **envp, t_cmds *cmds);
-int			count_envp(char **envp);
-int			append_envs(t_cmds *cmds, char *name, char *value);
-void		free_envs(t_cmds *cmds);
-
 /* Builtins */
 int			echo_adapter(t_cmds *cmds);
 int			cd_adapter(t_cmds *cmds);
@@ -179,23 +148,35 @@ void		execute_cmd(t_cmds *cmds);
 void		set_commands(t_cmds *cmds);
 void		free_commands(t_cmds *cmds);
 
-/* Minishell */
-int			minishell(t_cmds *cmds);
+/* Redirects */
+void		check_exist_redirect(t_cmds *cmds);
 
-/* Signals (signals.c) */
-void		handler(int signal_num);
-void		signal_handler(int signal_num);
-void		signals_handler(void);
-
-/* Token Analysis */
-int			token_analysis(t_cmds *cmds);
+/* Set envs */
+void		set_envs(char **envp, t_cmds *cmds);
+int			count_envp(char **envp);
+int			append_envs(t_cmds *cmds, char *name, char *value);
+void		free_envs(t_cmds *cmds);
 
 /* Syntax Analysis */
 void		syntax_analysis(t_cmds *cmds);
 void		build_struct_to_exec(t_cmds *cmds, t_tk_node *list_tokens);
 void		free_cmd_nodes(t_cmd_node *list_cmds);
 
-/* Redirects */
-void		check_exist_redirect(t_cmds *cmds);
-char		*check_path(t_cmd_node *node);
+/* Token Analysis */
+int			token_analysis(t_cmds *cmds);
+
+/* Read Keyboard */
+void		read_keyboard(t_cmds *cmds);
+
+/* Signals (signals.c) */
+void		handler(int signal_num);
+void		signal_handler(int signal_num);
+void		signals_handler(void);
+
+/* Minishell Utils */
+int			interactive_exit(t_cmds *cmds);
+void		free_arr(char **arr);
+
+/* Minishell  main.c */
+int			minishell(t_cmds *cmds);
 #endif

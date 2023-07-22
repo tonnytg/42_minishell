@@ -52,6 +52,6 @@ int	export_adapter(t_cmds *cmds)
 	}
 	args = ft_split(cmds->input->cmd_args, ' ');
 	result = set_env_var(args);
-	free_args(args);
+	free_arr(args);
 	return (result);
 }

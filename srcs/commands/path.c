@@ -27,23 +27,46 @@ void	free_split(char **split_array)
 	free(split_array);
 }
 
+char	*build_complete_path(t_cmds *cmds, char *path, char *cmd_name)
+{
+	char	*path_complete;
+	char	*tmp;
+
+	if (cmds->current->cmd_name != NULL && cmds->current->cmd_name[0] == '/')
+		return (ft_strdup(cmds->current->cmd_name));
+	tmp = ft_strjoin(path, "/");
+	path_complete = ft_strjoin(tmp, cmd_name);
+	free(tmp);
+	return (path_complete);
+}
+
+int	check_access(char *path_complete)
+{
+	if (access(path_complete, F_OK) == 0)
+	{
+		if (access(path_complete, X_OK) == 0)
+			return (1);
+		else
+			return (0);
+	}
+	return (0);
+}
+
 char	*get_fullpath(t_cmds *cmds)
 {
 	char	**path;
 	int		i;
 	char	*path_complete;
 	int		return_access;
-	char	*name;
 
 	path = ft_split(getenv("PATH"), ':');
 	i = 0;
 	while (path[i])
 	{
-		name = ft_strjoin("/", cmds->current->cmd_name);
-		path_complete = ft_strjoin(path[i], name);
-		free(name);
-		return_access = access(path_complete, F_OK);
-		if (return_access == 0)
+		path_complete = build_complete_path(cmds, path[i],
+				cmds->current->cmd_name);
+		return_access = check_access(path_complete);
+		if (return_access)
 		{
 			free_split(path);
 			return (path_complete);

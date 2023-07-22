@@ -12,19 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-void	free_args(char **args)
-{
-	int	i;
-
-	i = 0;
-	while (args[i] != NULL)
-	{
-		free(args[i]);
-		i++;
-	}
-	free(args);
-}
-
 void	print_env_var(char *word)
 {
 	char	*result;
@@ -56,7 +43,7 @@ void	print_args(t_cmds *cmds, int index)
 			ft_printf("%s ", args[i]);
 		i++;
 	}
-	free_args(args);
+	free_arr(args);
 }
 
 int	echo_adapter(t_cmds *cmds)
@@ -81,6 +68,6 @@ int	echo_adapter(t_cmds *cmds)
 	print_args(cmds, i);
 	if (trigger == 0)
 		ft_printf("\n");
-	free_args(words);
+	free_arr(words);
 	return (0);
 }
