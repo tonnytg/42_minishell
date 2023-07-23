@@ -6,6 +6,7 @@ FILES	= \
 			srcs/read_keyboard/input.c				\
 			srcs/read_keyboard/check_data_input.c	\
 			srcs/commands/commands.c				\
+			srcs/commands/interpreter.c				\
 			srcs/commands/nodes.c					\
 			srcs/commands/path.c					\
 			srcs/commands/type_commands.c 			\

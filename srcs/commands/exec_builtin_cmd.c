@@ -14,15 +14,7 @@
 
 void	free_builtin_cmd(t_cmds *cmds)
 {
-	int	i;
-
-	i = 0;
-	while (cmds->envs[i])
-	{
-		free(cmds->envs[i]);
-		i++;
-	}
-	free(cmds->envs);
+	free_arr(cmds->envs);
 	free_cmd_nodes(cmds->cmd_list);
 	free_commands(cmds);
 }

@@ -83,7 +83,7 @@ int	echo_exec_print(t_cmds *cmds, int settings, char **words)
 	char	*word;
 	int		exit_code;
 
-	i = 0;
+	i = 1;
 	exit_code = 0;
 	while (words[i] != NULL)
 	{

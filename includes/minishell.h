@@ -57,6 +57,7 @@ typedef struct s_cmd_node
 {
 	char				*phrase;
 	char				*phrase_temp;
+	char				**phrase_parsed;
 	char				*cmd_name;
 	char				*full_args;
 	char				**split_args;
@@ -147,6 +148,9 @@ int			export_adapter(t_cmds *cmds);
 void		execute_cmd(t_cmds *cmds);
 void		set_commands(t_cmds *cmds);
 void		free_commands(t_cmds *cmds);
+
+/* Commands */
+void		init_interpreter(t_cmds *cmds);
 
 /* Command Echo echo_utils.c */
 void		echo_print_envs(char *word);

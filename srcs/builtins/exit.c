@@ -37,7 +37,7 @@ int	check_errors_exit(const char *arg, int count)
 	}
 	if (arg[0] != '-' && ft_isdigit(arg[0]) == 0)
 	{
-		ft_printf("minishell: exit: %s: numeric argument required\n", arg);
+		ft_printf("[1] minishell: exit: %s: numeric argument required\n", arg);
 		return (2);
 	}
 	if (arg[0] == '-' && ft_isdigit(arg[1]) == 1)

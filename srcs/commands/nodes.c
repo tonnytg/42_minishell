@@ -35,6 +35,7 @@ void	run_node(t_cmds *cmds)
 	type_command = -1;
 	if (ft_strcmp(cmds->current->type, "WORD") == 0)
 	{
+		init_interpreter(cmds);
 		type_command = check_type_command(cmds);
 		if (type_command == 0)
 			exec_builtin(cmds);
@@ -45,5 +46,6 @@ void	run_node(t_cmds *cmds)
 			printf("minishell: %s: command not found\n", cmds->input->cmd_name);
 			cmds->exit_code.code = 127;
 		}
+		free_arr(cmds->current->phrase_parsed);
 	}
 }
