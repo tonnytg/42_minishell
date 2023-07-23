@@ -84,7 +84,7 @@ int	echo_adapter(t_cmds *cmds)
 		return (0);
 	}
 	settings = 0;
-	words = ft_split(cmds->current->full_args, ' ');
+	words = cmds->current->phrase_parsed;
 	filter_words = set_echo_settings(words, &settings);
 	exit_code = echo_exec_print(cmds, settings, filter_words);
 	cmds->exit_code.code = exit_code;

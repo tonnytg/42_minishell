@@ -28,7 +28,7 @@ void	exec_external(t_cmds *cmds)
 			perror("fork");
 		if (pid == 0)
 		{
-			execve(path, cmds->current->split_args, cmds->envs);
+			execve(path, cmds->current->phrase_parsed, cmds->envs);
 			perror("execve");
 		}
 		if (pid > 0)
