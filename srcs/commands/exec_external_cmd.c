@@ -16,7 +16,9 @@ void	exec_external(t_cmds *cmds)
 {
 	pid_t	pid;
 	char	*path;
+	int		child_return_status;
 
+	cmds->exit_code.code = 0;
 	if (ft_strcmp(cmds->current->type, "WORD") == 0)
 	{
 		path = get_fullpath(cmds);
@@ -30,8 +32,9 @@ void	exec_external(t_cmds *cmds)
 			perror("execve");
 		}
 		if (pid > 0)
-			waitpid(pid, NULL, 0);
+			waitpid(pid, &child_return_status, 0);
 		free(path);
 	}
 	free_split(cmds->current->split_args);
+	cmds->exit_code.code = WEXITSTATUS(child_return_status);
 }
