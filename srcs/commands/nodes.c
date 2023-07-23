@@ -41,6 +41,9 @@ void	run_node(t_cmds *cmds)
 		else if (type_command == 1)
 			exec_external(cmds);
 		else
+		{
 			printf("minishell: %s: command not found\n", cmds->input->cmd_name);
+			cmds->exit_code.code = 127;
+		}
 	}
 }
