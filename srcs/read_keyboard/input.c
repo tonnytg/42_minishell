@@ -12,49 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-void	find_command(t_cmds *cmds)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < cmds->num_cmds && cmds->input->cmd_name != NULL)
-	{
-		if (ft_strcmp(cmds->arr_cmds[i].name, cmds->input->cmd_name) == 0)
-		{
-			ft_memcpy(cmds->cmd_finded, &cmds->arr_cmds[i], sizeof(t_command));
-			return ;
-		}
-		i++;
-	}
-	ft_printf("minishell: %s: command not found\n", cmds->input->cmd_name);
-	cmds->exit_code.code = 127;
-	cmds->exit_code.last_cmd = cmds->input->cmd_name;
-	cmds->cmd_finded->name = NULL;
-}
-
-void	set_commands(t_cmds *cmds)
-{
-	size_t		i;
-	t_command	command_mapping[7];
-
-	command_mapping[0] = (t_command){ECHO_BUILTIN, echo_adapter};
-	command_mapping[1] = (t_command){CD_BUILTIN, cd_adapter};
-	command_mapping[2] = (t_command){PWD_BUILTIN, pwd_adapter};
-	command_mapping[3] = (t_command){EXPORT_BUILTIN, export_adapter};
-	command_mapping[4] = (t_command){UNSET_BUILTIN, unset_adapter};
-	command_mapping[5] = (t_command){ENV_BUILTIN, env_adapter};
-	command_mapping[6] = (t_command){EXIT_BUILTIN, exit_adapter};
-	cmds->num_cmds = sizeof(command_mapping) / sizeof(t_command);
-	cmds->arr_cmds = malloc(sizeof(t_command) * cmds->num_cmds);
-	i = 0;
-	while (i < cmds->num_cmds)
-	{
-		cmds->arr_cmds[i].name = command_mapping[i].name;
-		cmds->arr_cmds[i].execute = command_mapping[i].execute;
-		i++;
-	}
-}
-
 void	read_keyboard_old(t_cmds *cmds)
 {
 	ft_printf("\033[0;32mminishell: > \033[0;0m");
@@ -76,21 +33,73 @@ void	read_keyboard_old(t_cmds *cmds)
 	cmds->input->cmd_args = ft_strtok(NULL, "", 0);
 }
 
-void	read_keyboard(t_cmds *cmds)
+void	remove_empty(t_cmds *cmds)
+{
+	char	*clean_phrase;
+	int		i;
+	int		j;
+
+	clean_phrase = ft_calloc(ft_strlen(cmds->input->datacpy) + 1, sizeof(char));
+	while (cmds->input->datacpy[i] != '\0')
+	{
+		if (cmds->input->datacpy[i] != ' ')
+		{
+			clean_phrase[j] = cmds->input->datacpy[i];
+			j++;
+		}
+		i++;
+	}
+	clean_phrase[j] = '\0';
+	free(clean_phrase);
+}
+
+char	*remove_duplicate_spaces(char *input_string)
+{
+	int		i;
+	int		j;
+	char	*clean_phrase;
+
+	i = 0;
+	j = 0;
+	clean_phrase = (char *)malloc(strlen(input_string) + 1);
+	while (input_string[i] != '\0')
+	{
+		if (input_string[i] != ' ')
+		{
+			clean_phrase[j] = input_string[i];
+			j++;
+		}
+		else if (input_string[i + 1] != ' ')
+		{
+			clean_phrase[j] = input_string[i];
+			j++;
+		}
+		i++;
+	}
+	clean_phrase[j] = '\0';
+	return (clean_phrase);
+}
+
+int	read_keyboard(t_cmds *cmds)
 {
 	ft_printf("\033[0;32mminishell: > \033[0;0m");
 	if (fgets(cmds->input->data, sizeof(cmds->input->data), stdin) == NULL)
 	{
 		cmds->exit = 1;
-		return ;
+		return (1);
+	}
+	if (check_data_input(cmds) == NULL)
+	{
+		return (1);
 	}
 	cmds->input->data[strcspn(cmds->input->data, "\n")] = 0;
 	if (cmds->input->data[0] == '\0')
 	{
 		cmds->input->cmd_name = NULL;
-		return ;
+		return (1);
 	}
-	cmds->input->datacpy = ft_strdup(cmds->input->data);
+	cmds->input->datacpy = remove_duplicate_spaces(cmds->input->data);
 	cmds->input->cmd_name = ft_strtok(cmds->input->data, " ", 1);
 	cmds->input->cmd_args = ft_strtok(NULL, "", 0);
+	return (0);
 }
