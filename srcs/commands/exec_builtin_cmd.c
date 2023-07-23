@@ -43,15 +43,22 @@ void	define_cmd_to_exec(t_cmds *cmds)
 	}
 }
 
+int	skip_commands_child(t_cmds *cmds)
+{
+	if (ft_strcmp(cmds->current->cmd_name, "exit") == 0)
+		return (1);
+	else if (ft_strcmp(cmds->current->cmd_name, "cd") == 0)
+		return (1);
+	return (0);
+}
+
 void	exec_builtin(t_cmds *cmds)
 {
 	pid_t	pid;
 	int		child_return_status;
 
 	define_cmd_to_exec(cmds);
-	if (ft_strcmp(cmds->current->cmd_name, "exit") == 0)
-		cmds->current->cmd_builtin->execute(cmds);
-	else if (ft_strcmp(cmds->current->cmd_name, "cd") == 0)
+	if (skip_commands_child(cmds) == 1)
 		cmds->current->cmd_builtin->execute(cmds);
 	else
 	{
@@ -64,8 +71,9 @@ void	exec_builtin(t_cmds *cmds)
 		else if (pid == 0)
 		{
 			cmds->current->cmd_builtin->execute(cmds);
+			child_return_status = cmds->exit_code.code;
 			free_builtin_cmd(cmds);
-			exit(cmds->exit_code.code);
+			exit(child_return_status);
 		}
 		else
 			waitpid(pid, &child_return_status, 0);
