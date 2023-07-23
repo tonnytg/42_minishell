@@ -148,6 +148,11 @@ void		execute_cmd(t_cmds *cmds);
 void		set_commands(t_cmds *cmds);
 void		free_commands(t_cmds *cmds);
 
+/* Command Echo echo_utils.c */
+void		echo_print_envs(char *word);
+char		*echo_extract_word(char *word);
+int			echo_exec_print(t_cmds *cmds, int settings, char **words);
+
 /* Pipes */
 void		open_pipe(t_cmd_node *current);
 

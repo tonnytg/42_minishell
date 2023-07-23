@@ -14,7 +14,7 @@
 
 void	read_keyboard_old(t_cmds *cmds)
 {
-	ft_printf("\033[0;32mminishell: > \033[0;0m");
+	printf("\033[0;32mminishell: > \033[0;0m");
 	if (fgets(cmds->input->data, sizeof(cmds->input->data), stdin) == NULL)
 	{
 		cmds->exit = 1;
@@ -84,7 +84,7 @@ char	*remove_duplicate_spaces(char *input_string)
 
 int	read_keyboard(t_cmds *cmds)
 {
-	ft_printf("\033[0;32mminishell: > \033[0;0m");
+	printf("\033[0;32mminishell: > \033[0;0m");
 	if (fgets(cmds->input->data, sizeof(cmds->input->data), stdin) == NULL)
 	{
 		cmds->exit = 1;
