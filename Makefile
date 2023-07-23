@@ -14,6 +14,7 @@ FILES	= \
 			srcs/commands/pipes.c 					\
 			srcs/builtins/cd.c						\
 			srcs/builtins/echo.c					\
+			srcs/builtins/echo_utils.c				\
 			srcs/builtins/env.c						\
 			srcs/builtins/exit.c					\
 			srcs/builtins/export.c					\
