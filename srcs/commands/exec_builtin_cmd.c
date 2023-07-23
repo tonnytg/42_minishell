@@ -65,9 +65,10 @@ void	exec_builtin(t_cmds *cmds)
 		{
 			cmds->current->cmd_builtin->execute(cmds);
 			free_builtin_cmd(cmds);
-			exit(EXIT_SUCCESS);
+			exit(cmds->exit_code.code);
 		}
 		else
 			waitpid(pid, &child_return_status, 0);
+		cmds->exit_code.code = WEXITSTATUS(child_return_status);
 	}
 }
