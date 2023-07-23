@@ -46,7 +46,8 @@ int	minishell(t_cmds *cmds)
 	cmds->input->datacpy = NULL;
 	while (1)
 	{
-		read_keyboard(cmds);
+		if (read_keyboard(cmds))
+			continue ;
 		if (cmds->input->datacpy == NULL)
 			continue ;
 		token_analysis(cmds);

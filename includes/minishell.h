@@ -148,6 +148,9 @@ void		execute_cmd(t_cmds *cmds);
 void		set_commands(t_cmds *cmds);
 void		free_commands(t_cmds *cmds);
 
+/* Pipes */
+void		open_pipe(t_cmd_node *current);
+
 /* Redirects */
 void		check_exist_redirect(t_cmds *cmds);
 
@@ -166,7 +169,9 @@ void		free_cmd_nodes(t_cmd_node *list_cmds);
 int			token_analysis(t_cmds *cmds);
 
 /* Read Keyboard */
-void		read_keyboard(t_cmds *cmds);
+int			read_keyboard(t_cmds *cmds);
+char		*check_data_input(t_cmds *cmds);
+int			is_empty_data(t_cmds *cmds);
 
 /* Signals (signals.c) */
 void		handler(int signal_num);
