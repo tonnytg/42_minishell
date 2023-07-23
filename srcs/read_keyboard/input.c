@@ -39,6 +39,8 @@ void	remove_empty(t_cmds *cmds)
 	int		i;
 	int		j;
 
+	i = 0;
+	j = 0;
 	clean_phrase = ft_calloc(ft_strlen(cmds->input->datacpy) + 1, sizeof(char));
 	while (cmds->input->datacpy[i] != '\0')
 	{
