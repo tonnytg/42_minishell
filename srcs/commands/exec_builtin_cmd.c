@@ -51,6 +51,10 @@ void	exec_builtin(t_cmds *cmds)
 	define_cmd_to_exec(cmds);
 	if (ft_strcmp(cmds->current->cmd_name, "exit") == 0)
 		cmds->current->cmd_builtin->execute(cmds);
+	else if (ft_strcmp(cmds->current->cmd_name, "cd") == 0)
+	{
+		cmds->current->cmd_builtin->execute(cmds);
+	}
 	else
 	{
 		pid = fork();

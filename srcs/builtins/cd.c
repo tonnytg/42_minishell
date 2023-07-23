@@ -14,22 +14,12 @@
 
 int	cd_adapter(t_cmds *cmds)
 {
-	const char	*dir;
+	const char	*path;
 
-	if (cmds->input->cmd_args == NULL)
+	path = cmds->input->cmd_args;
+	if (chdir(path) != 0)
 	{
-		dir = getenv("HOME");
-		if (dir == NULL)
-		{
-			fprintf(stderr, "cd: HOME not set\n");
-			return (1);
-		}
-	}
-	else
-		dir = cmds->input->cmd_args;
-	if (chdir(cmds->input->cmd_args) != 0)
-	{
-		perror("cd");
+		printf("cd: %s: No such file or directory\n", path);
 		return (1);
 	}
 	return (0);
