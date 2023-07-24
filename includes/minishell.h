@@ -20,8 +20,8 @@
 # include <signal.h>
 # include <sys/wait.h>
 # include "libft.h"
-#include <readline/readline.h>
-#include <readline/history.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 /* Macros */
 # define ECHO_BUILTIN	"echo"
@@ -81,7 +81,7 @@ typedef struct s_exit_code
 /* Read Keyboard command and arguments */
 typedef struct s_input
 {
-	char		data[256];
+	char		*data;
 	char		*datacpy;
 	char		*cmd_name;
 	char		*cmd_args;
@@ -188,15 +188,9 @@ int			read_keyboard(t_cmds *cmds);
 char		*check_data_input(t_cmds *cmds);
 int			is_empty_data(t_cmds *cmds);
 
-typedef struct s_signal_handler_data
-{
-	t_cmds	*cmds;
-}	t_signal_handler_data;
-
 /* Signals (signals.c) */
-void		handler(int signal_num);
-void		signal_handler(int signal_num);
-void		signals_handlers(t_cmds *cmds);
+void		load_signals(void);
+void		signal_generic_handler(int signal);
 
 /* Minishell Utils */
 int			interactive_exit(t_cmds *cmds);

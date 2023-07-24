@@ -12,28 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-void	read_keyboard_old(t_cmds *cmds)
-{
-	printf("\033[0;32mminishell: > \033[0;0m");
-	if (cmds->new == 0
-		&& fgets(cmds->input->data, sizeof(cmds->input->data), stdin) == NULL)
-	{
-		cmds->exit = 1;
-		return ;
-	}
-	cmds->input->data[strcspn(cmds->input->data, "\n")] = 0;
-	if (cmds->input->data[0] == '\0')
-	{
-		cmds->input->cmd_name = NULL;
-		return ;
-	}
-	if (cmds->input->datacpy != NULL)
-		free(cmds->input->datacpy);
-	cmds->input->datacpy = ft_strdup(cmds->input->data);
-	cmds->input->cmd_name = ft_strtok(cmds->input->data, " ", 1);
-	cmds->input->cmd_args = ft_strtok(NULL, "", 0);
-}
-
 void	remove_empty(t_cmds *cmds)
 {
 	char	*clean_phrase;
@@ -83,31 +61,9 @@ char	*remove_duplicate_spaces(char *input_string)
 	return (clean_phrase);
 }
 
-void signal_generic_handler(int signal)
-{
-	printf("signal: %d\n", signal);
-	if (signal == 3)
-	{
-		//
-	}
-	else if (signal == 2)
-	{
-		write(1, "\n", 1);
-		rl_replace_line("", 0);
-		rl_on_new_line();
-		rl_redisplay();
-	}
-	else if (signal == 15)
-	{
-		printf("\n oi\n");
-	}
-}
-
 int	read_keyboard(t_cmds *cmds)
 {
-	signal(SIGINT, signal_generic_handler);
-	signal(SIGQUIT, SIG_IGN);
-	signal(SIGTERM, signal_generic_handler);
+	load_signals();
 	cmds->input->datacpy = readline("\033[0;32mminishell: > \033[0;0m");
 	if (cmds->input->datacpy == NULL)
 	{

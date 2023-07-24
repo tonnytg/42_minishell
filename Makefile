@@ -55,6 +55,14 @@ debug:
 valgrind: debug
 	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes srcs/$(NAME)
 
+va:
+	valgrind -q --leak-check=full --show-leak-kinds=all --trace-children=yes \
+                        --track-fds=yes --track-origins=yes --suppressions=readline.supp\
+                        --trace-children-skip='/bin/,/sbin/'  ./minishell
+
+v: all
+	valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --quiet ./minishell
+
 clean:
 	make -C libft clean
 	rm -f $(OBJS)
