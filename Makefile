@@ -36,7 +36,7 @@ LIBS	= libs
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CC_ARGS) $(OBJS) -L $(LIBS) -lft -o $(NAME)
+	$(CC) $(CC_ARGS) $(OBJS) -L $(LIBS) -lft -lreadline -o $(NAME)
 	ar rsc $(LIBS)/lib$(NAME).a $(OBJS)
 
 %.o: %.c

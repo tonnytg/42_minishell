@@ -41,15 +41,9 @@ int	minishell(t_cmds *cmds)
 {
 	int			exit_code;
 
-	cmds->exit = 0;
-	cmds->new = 0;
-	signals_handlers(cmds);
-	cmds->input->datacpy = NULL;
 	while (1)
 	{
 		if (read_keyboard(cmds))
-			continue ;
-		if (cmds->input->datacpy == NULL)
 			continue ;
 		token_analysis(cmds);
 		syntax_analysis(cmds);
@@ -58,7 +52,6 @@ int	minishell(t_cmds *cmds)
 		exit_code = cmds->exit_code.code;
 		if (is_exit(cmds))
 			break ;
-		cmds->input->datacpy = NULL;
 	}
 	return (exit_code);
 }

@@ -20,6 +20,8 @@
 # include <signal.h>
 # include <sys/wait.h>
 # include "libft.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
 /* Macros */
 # define ECHO_BUILTIN	"echo"
@@ -159,6 +161,7 @@ void		init_interpreter(t_cmds *cmds);
 void		echo_print_envs(char *word);
 char		*echo_extract_word(char *word);
 int			echo_exec_print(t_cmds *cmds, int settings, char **words);
+void		signal_handler_ctrld(int signal, siginfo_t *siginfo, void *context);
 
 /* Pipes */
 void		open_pipe(t_cmd_node *current);
