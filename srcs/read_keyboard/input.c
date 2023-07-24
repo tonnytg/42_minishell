@@ -15,7 +15,8 @@
 void	read_keyboard_old(t_cmds *cmds)
 {
 	printf("\033[0;32mminishell: > \033[0;0m");
-	if (fgets(cmds->input->data, sizeof(cmds->input->data), stdin) == NULL)
+	if (cmds->new == 0
+		&& fgets(cmds->input->data, sizeof(cmds->input->data), stdin) == NULL)
 	{
 		cmds->exit = 1;
 		return ;
