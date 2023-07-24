@@ -42,7 +42,8 @@ int	minishell(t_cmds *cmds)
 	int			exit_code;
 
 	cmds->exit = 0;
-	signals_handler();
+	cmds->new = 0;
+	signals_handlers(cmds);
 	cmds->input->datacpy = NULL;
 	while (1)
 	{
@@ -67,7 +68,6 @@ int	main(int argc, char **argv, char **envp)
 	t_cmds	*cmds;
 	int		exit_code;
 
-	exit_code = 0;
 	check_args(argc, argv);
 	cmds = malloc(sizeof(t_cmds) * 1);
 	cmds->input = malloc(sizeof(t_input) * 1);

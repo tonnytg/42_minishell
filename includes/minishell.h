@@ -118,6 +118,9 @@ typedef struct s_cmds
 	int			exit;
 	int			signal_exit;
 	int			redirects_count;
+	int			signal;
+	int			new;
+	void		(*signal_handler)(int);
 }	t_cmds;
 
 /* Commands */
@@ -182,10 +185,15 @@ int			read_keyboard(t_cmds *cmds);
 char		*check_data_input(t_cmds *cmds);
 int			is_empty_data(t_cmds *cmds);
 
+typedef struct s_signal_handler_data
+{
+	t_cmds	*cmds;
+}	t_signal_handler_data;
+
 /* Signals (signals.c) */
 void		handler(int signal_num);
 void		signal_handler(int signal_num);
-void		signals_handler(void);
+void		signals_handlers(t_cmds *cmds);
 
 /* Minishell Utils */
 int			interactive_exit(t_cmds *cmds);
