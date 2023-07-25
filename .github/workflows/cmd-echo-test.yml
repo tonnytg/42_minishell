@@ -11,11 +11,13 @@ jobs:
     - uses: actions/checkout@v3
     - name: install valgrind
       run: sudo apt install valgrind
+    - name: readline
+      run: sudo apt-get install libreadline-dev
     - name: make
       run: make      
     - name: test command echo 1
       run: |
-        valgrind -s --leak-check=full --track-origins=yes ./minishell << EOF
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --quiet ./minishell << EOF
         echo
         echo a b c
         echo -n a b c
@@ -25,7 +27,7 @@ jobs:
 
     - name: test command echo Hello World
       run: |
-        valgrind -s --leak-check=full --track-origins=yes ./minishell << EOF
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --quiet ./minishell << EOF
         echo "Hello World"
         echo
         echo $PWD

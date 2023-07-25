@@ -16,30 +16,32 @@ jobs:
     - name: install valgrind
       run: sudo apt-get install valgrind      
     - name: review norminette
-      run: norminette      
+      run: norminette
+    - name: readline
+      run: sudo apt-get install libreadline-dev
     - name: make
       run: make      
     - name: test command exit
       run: |
-        valgrind --leak-check=full -s ./minishell << EOF
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --quiet ./minishell << EOF
         exit
         EOF
     - name: test command echo exit
       run: |
-        valgrind --leak-check=full -s ./minishell << EOF
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --quiet ./minishell << EOF
         echo "Hello World"
         exit
         EOF
     - name: test command echo pwd exit
       run: |
-        valgrind --leak-check=full -s ./minishell << EOF
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --quiet ./minishell << EOF
         echo "Hello World"
         pwd
         exit
         EOF
     - name: test command echo pwd empty and exit
       run: |
-        valgrind --leak-check=full -s ./minishell << EOF
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --quiet ./minishell << EOF
         echo "Hello World"
         pwd
         
