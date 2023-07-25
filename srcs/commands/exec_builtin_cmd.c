@@ -14,6 +14,7 @@
 
 void	free_builtin_cmd(t_cmds *cmds)
 {
+	free(cmds->input->cmd_name);
 	free_arr(cmds->current->phrase_parsed);
 	free_arr(cmds->envs);
 	free_cmd_nodes(cmds->cmd_list);

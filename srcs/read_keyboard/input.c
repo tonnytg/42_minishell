@@ -61,6 +61,40 @@ char	*remove_duplicate_spaces(char *input_string)
 	return (clean_phrase);
 }
 
+int	check_quotes(t_cmds *cmds)
+{
+	int	i;
+	int	count_simple_quotes;
+	int	count_double_quotes;
+
+	i = 0;
+	count_simple_quotes = 0;
+	count_double_quotes = 0;
+	if (cmds->input->datacpy == NULL)
+		return (0);
+	while (cmds->input->datacpy[i] != '\0')
+	{
+		if (cmds->input->datacpy[i] == '\'')
+			count_simple_quotes++;
+		if (cmds->input->datacpy[i] == '\"')
+			count_double_quotes++;
+		i++;
+	}
+	if (count_simple_quotes % 2 != 0 || count_double_quotes % 2 != 0)
+	{
+		printf("Error: quotes not closed\n");
+		return (1);
+	}
+	if (count_simple_quotes > 0 || count_double_quotes > 0)
+		cmds->has_quote = 1;
+	return (0);
+}
+
+void	extract_input_values(t_cmds *cmds)
+{
+	cmds->input->cmd_name = cmds->input->datacpy;
+}
+
 int	read_keyboard(t_cmds *cmds)
 {
 	load_signals();
@@ -74,5 +108,8 @@ int	read_keyboard(t_cmds *cmds)
 	if (ft_strlen(cmds->input->datacpy) == 0)
 		return (1);
 	add_history(cmds->input->datacpy);
+	extract_input_values(cmds);
+	if (check_quotes(cmds))
+		return (1);
 	return (0);
 }

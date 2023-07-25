@@ -43,8 +43,8 @@ struct	s_cmd_node;
 
 typedef struct s_tk_node
 {
-	char				token[100];
-	char				tk_type[100];
+	char				token[256];
+	char				tk_type[256];
 	struct s_tk_node	*next;
 }	t_tk_node;
 
@@ -110,6 +110,8 @@ typedef struct s_cmds
 	t_command	*cmd_finded;
 	size_t		num_cmds;
 	t_command	*arr_cmds;
+	int			has_quote;
+	int			is_quote_opened;
 	t_path		*path;
 	t_exit_code	exit_code;
 	char		**lexical;
