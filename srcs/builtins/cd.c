@@ -12,10 +12,10 @@
 
 #include "../../includes/minishell.h"
 
-int cd_adapter(t_cmds *cmds)
+int	cd_adapter(t_cmds *cmds)
 {
-	const char *path;
-	char *temp;
+	const char	*path;
+	char		*temp;
 
 	temp = ft_strtrim(cmds->current->full_args, " ");
 	path = temp;
@@ -23,8 +23,8 @@ int cd_adapter(t_cmds *cmds)
 	{
 		perror("cd");
 		free(temp);
-		return 1;
+		return (1);
 	}
 	free(temp);
-	return 0;
+	return (0);
 }

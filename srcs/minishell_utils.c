@@ -22,8 +22,7 @@ int	interactive_exit(t_cmds *cmds)
 	return (0);
 }
 
-
-void free_arr(char **arr)
+void	free_arr(char **arr)
 {
 	int	i;
 
