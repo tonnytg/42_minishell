@@ -25,7 +25,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	src_count = 0;
 	while (src_count < len && s[start + src_count])
 		src_count++;
-	sub = (char *) malloc((1 * src_count) + 1);
+	sub = ft_calloc((1 * src_count) + 1, sizeof(char));
 	sub_count = 0;
 	while (sub_count < src_count)
 	{

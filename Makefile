@@ -75,10 +75,10 @@ test: all
 	make -C tests
 
 debug:
-	$(CC) $(CC_ARGS) -g $(FILES) -L $(LIBS) -lft -o srcs/$(NAME)
+	$(CC) $(CC_ARGS) -g $(FILES) -L $(LIBS) -lft -lreadline -o srcs/$(NAME)
 
 valgrind: debug
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes srcs/$(NAME)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp srcs/$(NAME)
 
 va:
 	valgrind -q --leak-check=full --show-leak-kinds=all --trace-children=yes \
@@ -99,8 +99,5 @@ fclean: clean
 	rm -rf $(LIBS)
 
 re: fclean all
-
-valgrind: $(NAME)
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
 
 .PHONY: all clean fclean re

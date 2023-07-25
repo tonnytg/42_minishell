@@ -15,12 +15,16 @@
 int	cd_adapter(t_cmds *cmds)
 {
 	const char	*path;
+	char		*temp;
 
-	path = cmds->input->cmd_args;
+	temp = ft_strtrim(cmds->current->full_args, " ");
+	path = temp;
 	if (chdir(path) != 0)
 	{
-		printf("cd: %s: No such file or directory\n", path);
+		perror("cd");
+		free(temp);
 		return (1);
 	}
+	free(temp);
 	return (0);
 }
