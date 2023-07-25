@@ -7,12 +7,23 @@
    ...
 }
 {
-   <Readline/AddHistory>
+   <Readline>
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:malloc
+   fun:xmalloc
+   fun:readline_internal_teardown
+   fun:readline
    ...
-   fun:add_history
+}
+{
+   <Readline>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xmalloc
+   fun:readline_internal_teardown
+   fun:readline
    ...
 }
 {
@@ -30,6 +41,21 @@
    fun:readline_internal_char
    fun:readline
    fun:create_initial_state
+   ...
+}
+{
+   <Readline>
+   Memcheck:Leak
+   ...
+   fun:readline_internal_teardown
+}
+{
+   <Readline/AddHistory>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   ...
+   fun:add_history
    ...
 }
 {

@@ -37,7 +37,7 @@ int	check_errors_exit(const char *arg, int count)
 	}
 	if (arg[0] != '-' && ft_isdigit(arg[0]) == 0)
 	{
-		ft_printf("[1] minishell: exit: %s: numeric argument required\n", arg);
+		ft_printf("minishell: exit: %s: numeric argument required\n", arg);
 		return (2);
 	}
 	if (arg[0] == '-' && ft_isdigit(arg[1]) == 1)
@@ -58,12 +58,12 @@ int	exit_adapter(t_cmds *cmds)
 	int	exit_code;
 
 	cmds->signal_exit = 1;
+	printf("exit\n");
 	cmds->exit_code.last_cmd = ft_strdup("exit");
-	if (cmds->input->cmd_args == NULL)
+	if (cmds->current->phrase_parsed[1] == NULL)
 		return (0);
-	count = 0;
-	count = count_args(cmds->input->cmd_args);
-	exit_code = check_errors_exit(cmds->input->cmd_args, count);
+	count = count_args(cmds->current->phrase_parsed[1]);
+	exit_code = check_errors_exit(cmds->current->phrase_parsed[1], count);
 	exit_code = (exit_code % 256 + 256) % 256;
 	cmds->exit_code.code = exit_code;
 	return (exit_code);
