@@ -12,15 +12,19 @@
 
 #include "../../includes/minishell.h"
 
-int	cd_adapter(t_cmds *cmds)
+int cd_adapter(t_cmds *cmds)
 {
-	const char	*path;
+	const char *path;
+	char *temp;
 
-	path = cmds->input->cmd_args;
+	temp = ft_strtrim(cmds->current->full_args, " ");
+	path = temp;
 	if (chdir(path) != 0)
 	{
-		printf("cd: %s: No such file or directory\n", path);
-		return (1);
+		perror("cd");
+		free(temp);
+		return 1;
 	}
-	return (0);
+	free(temp);
+	return 0;
 }

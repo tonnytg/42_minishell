@@ -89,6 +89,5 @@ int	echo_adapter(t_cmds *cmds)
 	exit_code = echo_exec_print(cmds, settings, filter_words);
 	cmds->exit_code.code = exit_code;
 	free(filter_words);
-	free_arr(words);
 	return (exit_code);
 }

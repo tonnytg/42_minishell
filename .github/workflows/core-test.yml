@@ -23,25 +23,25 @@ jobs:
       run: make      
     - name: test command exit
       run: |
-        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --quiet ./minishell << EOF
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
         exit
         EOF
     - name: test command echo exit
       run: |
-        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --quiet ./minishell << EOF
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
         echo "Hello World"
         exit
         EOF
     - name: test command echo pwd exit
       run: |
-        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --quiet ./minishell << EOF
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
         echo "Hello World"
         pwd
         exit
         EOF
     - name: test command echo pwd empty and exit
       run: |
-        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --quiet ./minishell << EOF
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
         echo "Hello World"
         pwd
         

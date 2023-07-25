@@ -19,14 +19,14 @@ jobs:
       run: make      
     - name: test command exit
       run: |
-        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --quiet ./minishell << EOF
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
         exit
         EOF
         [[ $? -eq 0 ]] && echo "OK" || echo "KO"
     - name: test command exit -2
       run: |
         set +e
-        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --quiet ./minishell << EOF
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
         exit -2
         EOF
         EXIT_CODE=$?
@@ -41,7 +41,7 @@ jobs:
     - name: test command exit a
       run: |
         set +e
-        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --quiet ./minishell << EOF
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
         exit a
         EOF
         EXIT_CODE=$?
