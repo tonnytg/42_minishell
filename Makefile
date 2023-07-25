@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/07/23 22:19:58 by caalbert          #+#    #+#              #
+#    Updated: 2023/07/24 20:14:08 by caalbert         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 NAME	= minishell
 HEADER	= $(NAME).h
 FILES	= \
@@ -32,12 +44,25 @@ OBJS	= $(FILES:.c=.o)
 CC		= gcc
 CC_ARGS = -Wextra -Wall -Werror -g3
 LIBS	= libs
+CYAN			:= \033[1;36m
+YELLOW			:= \033[1;33m
+GREEN			:= \033[1;32m
+RED				:= \033[1;31m
+GRAY			:= \033[1;30m
+RESET			:= \033[0m
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $(CC_ARGS) $(OBJS) -L $(LIBS) -lft -lreadline -o $(NAME)
 	ar rsc $(LIBS)/lib$(NAME).a $(OBJS)
+	@echo "${GREEN}\nMinishell has been successfully compiled!${RESET}"
+	@echo "$(CYAN)\n\tTo use Minishell, follow these steps in your terminal:$(RESET)"
+	@echo "$(GRAY)\n\t1. Switch to the bash shell if you're currently using other:$(RESET)"
+	@echo "\n\t\t > bash"
+	@echo "$(GRAY)\n\t2. Then, run the Minishell executable:$(RESET)"
+	@echo "\n\t\t > ./minishell"
+	@echo ""
 
 %.o: %.c
 	mkdir -p libs
@@ -74,5 +99,8 @@ fclean: clean
 	rm -rf $(LIBS)
 
 re: fclean all
+
+valgrind: $(NAME)
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
 
 .PHONY: all clean fclean re
