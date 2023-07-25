@@ -99,12 +99,17 @@ int	token_analysis(t_cmds *cmds)
 
 	list_tokens = NULL;
 	data_copy = ft_strdup(cmds->input->datacpy);
-	free(cmds->input->datacpy);
 	token = ft_strtok(data_copy, " ", 1);
 	while (token != NULL)
 	{
 		add_tk_node(&list_tokens, token, "undefined");
-		token = ft_strtok(NULL, " ", 0);
+		if (cmds->has_quote == 1)
+		{
+			token = ft_strtok(NULL, "\0", 0);
+			cmds->has_quote = 0;
+		}
+		else
+			token = ft_strtok(NULL, " ", 0);
 	}
 	classify_tk_nodes(list_tokens);
 	concat_tk_nodes(cmds, list_tokens);
