@@ -41,15 +41,9 @@ int	minishell(t_cmds *cmds)
 {
 	int			exit_code;
 
-	cmds->exit = 0;
-	cmds->new = 0;
-	signals_handlers(cmds);
-	cmds->input->datacpy = NULL;
 	while (1)
 	{
 		if (read_keyboard(cmds))
-			continue ;
-		if (cmds->input->datacpy == NULL)
 			continue ;
 		token_analysis(cmds);
 		syntax_analysis(cmds);
@@ -58,7 +52,6 @@ int	minishell(t_cmds *cmds)
 		exit_code = cmds->exit_code.code;
 		if (is_exit(cmds))
 			break ;
-		cmds->input->datacpy = NULL;
 	}
 	return (exit_code);
 }
@@ -69,13 +62,13 @@ int	main(int argc, char **argv, char **envp)
 	int		exit_code;
 
 	check_args(argc, argv);
-	cmds = malloc(sizeof(t_cmds) * 1);
-	cmds->input = malloc(sizeof(t_input) * 1);
-	cmds->cmd_finded = malloc(sizeof(t_command));
+	cmds = ft_calloc(1, sizeof(t_cmds));
+	cmds->input = ft_calloc(1, sizeof(t_input));
+	cmds->cmd_finded = ft_calloc(1, sizeof(t_command));
 	cmds->exit_code.code = 0;
 	cmds->exit_code.last_cmd = NULL;
 	cmds->signal_exit = -1;
-	cmds->envs = malloc(sizeof(char *) * (count_envp(envp) + 2));
+	cmds->envs = ft_calloc(count_envp(envp) + 2, sizeof(char *));
 	set_envs(envp, cmds);
 	set_commands(cmds);
 	exit_code = minishell(cmds);

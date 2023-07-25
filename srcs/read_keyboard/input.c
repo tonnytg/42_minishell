@@ -12,28 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-void	read_keyboard_old(t_cmds *cmds)
-{
-	printf("\033[0;32mminishell: > \033[0;0m");
-	if (cmds->new == 0
-		&& fgets(cmds->input->data, sizeof(cmds->input->data), stdin) == NULL)
-	{
-		cmds->exit = 1;
-		return ;
-	}
-	cmds->input->data[strcspn(cmds->input->data, "\n")] = 0;
-	if (cmds->input->data[0] == '\0')
-	{
-		cmds->input->cmd_name = NULL;
-		return ;
-	}
-	if (cmds->input->datacpy != NULL)
-		free(cmds->input->datacpy);
-	cmds->input->datacpy = ft_strdup(cmds->input->data);
-	cmds->input->cmd_name = ft_strtok(cmds->input->data, " ", 1);
-	cmds->input->cmd_args = ft_strtok(NULL, "", 0);
-}
-
 void	remove_empty(t_cmds *cmds)
 {
 	char	*clean_phrase;
@@ -85,24 +63,16 @@ char	*remove_duplicate_spaces(char *input_string)
 
 int	read_keyboard(t_cmds *cmds)
 {
-	printf("\033[0;32mminishell: > \033[0;0m");
-	if (fgets(cmds->input->data, sizeof(cmds->input->data), stdin) == NULL)
+	load_signals();
+	cmds->input->datacpy = readline("\033[0;32mminishell: > \033[0;0m");
+	if (cmds->input->datacpy == NULL)
 	{
-		cmds->exit = 1;
-		return (1);
+		cmds->input->datacpy = ft_strdup("exit");
+		cmds->signal_exit = 1;
+		return (0);
 	}
-	if (check_data_input(cmds) == NULL)
-	{
+	if (ft_strlen(cmds->input->datacpy) == 0)
 		return (1);
-	}
-	cmds->input->data[strcspn(cmds->input->data, "\n")] = 0;
-	if (cmds->input->data[0] == '\0')
-	{
-		cmds->input->cmd_name = NULL;
-		return (1);
-	}
-	cmds->input->datacpy = remove_duplicate_spaces(cmds->input->data);
-	cmds->input->cmd_name = ft_strtok(cmds->input->data, " ", 1);
-	cmds->input->cmd_args = ft_strtok(NULL, "", 0);
+	add_history(cmds->input->datacpy);
 	return (0);
 }

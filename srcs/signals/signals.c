@@ -12,48 +12,20 @@
 
 #include "../../includes/minishell.h"
 
-void	signal_handler_ctrlc(int signal)
+void	signal_generic_handler(int signal)
 {
-	strsignal(signal);
-	printf("\n");
+	if (signal == 2)
+	{
+		write(1, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
 }
 
-void	signal_handler_ctrlslash(int signal)
+void	load_signals(void)
 {
-	(void)signal;
-}
-
-void	signal_handler_ctrld(int signal, siginfo_t *siginfo, void *context)
-{
-	t_cmds	*cmds;
-
-	cmds = ((
-				struct s_signal_handler_data *)
-			siginfo->si_value.sival_ptr)->cmds;
-	printf("signal_handler_ctrld: %d\n", signal);
-	printf("signal_handler_ctrld: %p\n", cmds);
-	printf("context: %p\n", context);
-}
-
-void	signals_handlers(t_cmds *cmds)
-{
-	struct sigaction				sa_ctrlc;
-	struct sigaction				sa_ctrlslash;
-	struct sigaction				sa_ctrld;
-	struct s_signal_handler_data	data;
-
-	data.cmds = cmds;
-	data.cmds->exit_code.code = 0;
-	sa_ctrlc.sa_handler = signal_handler_ctrlc;
-	sigemptyset(&sa_ctrlc.sa_mask);
-	sa_ctrlc.sa_flags = 0;
-	sigaction(SIGINT, &sa_ctrlc, NULL);
-	sa_ctrlslash.sa_handler = signal_handler_ctrlslash;
-	sigemptyset(&sa_ctrlslash.sa_mask);
-	sa_ctrlslash.sa_flags = 0;
-	sigaction(SIGQUIT, &sa_ctrlslash, NULL);
-	sa_ctrld.sa_flags = SA_SIGINFO;
-	sa_ctrld.sa_sigaction = signal_handler_ctrld;
-	sigemptyset(&sa_ctrld.sa_mask);
-	sigaction(SIGTERM, &sa_ctrld, NULL);
+	signal(SIGINT, signal_generic_handler);
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGTERM, signal_generic_handler);
 }
