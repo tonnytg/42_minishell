@@ -12,25 +12,29 @@
 
 #include "../../includes/minishell.h"
 
-int	set_env_var(char **args)
+int	set_env_var(t_cmds *cmds, char *key, char *value)
 {
-	char	*var_name;
-	char	*var_value;
-	int		result;
+	char	**envs;
+	char	*new_key_value;
+	int		envs_len;
+	int		i;
 
-	var_name = ft_strtok(args[0], "=", 0);
-	var_value = ft_strtok(NULL, "=", 0);
-	if (var_name && var_value)
-	{
-		result = setenv(var_name, var_value, 1);
-		if (result != 0)
-		{
-			perror("Error to export var");
-			return (1);
-		}
-	}
-	else
+	if (cmds->envs == NULL)
 		return (1);
+	envs_len = count_arr(cmds->envs);
+	envs = ft_calloc(envs_len + 2, sizeof(char *));
+	new_key_value = ft_strjoin(key, "=");
+	new_key_value = ft_strjoin(new_key_value, value);
+	i = 0;
+	while (cmds->envs[i] != NULL)
+	{
+		envs[i] = ft_strdup(cmds->envs[i]);
+		i++;
+	}
+	envs[i] = ft_strdup(new_key_value);
+	envs[i + 1] = NULL;
+	free_arr(cmds->envs);
+	cmds->envs = envs;
 	return (0);
 }
 
@@ -41,7 +45,7 @@ int	export_adapter(t_cmds *cmds)
 	int		result;
 
 	env = cmds->envs;
-	if (cmds->input->cmd_args == NULL)
+	if (cmds->current->full_args == NULL)
 	{
 		while (*env)
 		{
@@ -50,8 +54,10 @@ int	export_adapter(t_cmds *cmds)
 		}
 		return (0);
 	}
-	args = ft_split(cmds->input->cmd_args, ' ');
-	result = set_env_var(args);
+	args = ft_split(cmds->current->full_args, ' ');
+	char *key = args[0];
+	char *value = args[1];
+	result = set_env_var(cmds, key, value);
 	free_arr(args);
 	return (result);
 }
