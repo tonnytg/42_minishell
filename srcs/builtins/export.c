@@ -12,27 +12,43 @@
 
 #include "../../includes/minishell.h"
 
+void	save_envs(t_cmds *cmds, char **envs, char *key, char *new_key_value)
+{
+	int	trigger;
+	int	i;
+
+	i = 0;
+	trigger = 0;
+	while (cmds->envs[i] != NULL)
+	{
+		if (ft_strncmp(cmds->envs[i], key, ft_strlen(key)) == 0)
+		{
+			envs[i] = ft_strdup(new_key_value);
+			trigger = 1;
+		}
+		else
+			envs[i] = ft_strdup(cmds->envs[i]);
+		i++;
+	}
+	if (trigger == 0)
+	{
+		envs[i] = ft_strdup(new_key_value);
+		i++;
+	}
+	envs[i] = NULL;
+}
+
 int	set_env_var(t_cmds *cmds, char *key, char *value)
 {
 	char	**envs;
 	char	*new_key_value;
-	int		envs_len;
-	int		i;
 
 	if (cmds->envs == NULL)
 		return (1);
-	envs_len = count_arr(cmds->envs);
-	envs = ft_calloc(envs_len + 2, sizeof(char *));
+	envs = ft_calloc(count_arr(cmds->envs) + 2, sizeof(char *));
 	new_key_value = ft_strjoin(key, "=");
 	new_key_value = ft_strjoin(new_key_value, value);
-	i = 0;
-	while (cmds->envs[i] != NULL)
-	{
-		envs[i] = ft_strdup(cmds->envs[i]);
-		i++;
-	}
-	envs[i] = ft_strdup(new_key_value);
-	envs[i + 1] = NULL;
+	save_envs(cmds, envs, key, new_key_value);
 	free_arr(cmds->envs);
 	cmds->envs = envs;
 	return (0);
@@ -43,6 +59,8 @@ int	export_adapter(t_cmds *cmds)
 	char	**args;
 	char	**env;
 	int		result;
+	char	*value;
+	char	*key;
 
 	env = cmds->envs;
 	if (cmds->current->full_args == NULL)
@@ -56,8 +74,8 @@ int	export_adapter(t_cmds *cmds)
 	}
 	args = ft_split(cmds->current->full_args, '=');
 	args[1] = remove_string(args[1], '"');
-	char *key = args[0];
-	char *value = args[1];
+	key = args[0];
+	value = args[1];
 	result = set_env_var(cmds, key, value);
 	free_arr(args);
 	return (result);
