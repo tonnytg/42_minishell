@@ -50,12 +50,12 @@ void	parse_values_args(t_cmds *cmds)
 	args_ptr = original_args;
 	while (*args_ptr != NULL)
 	{
-		if (strcmp(*args_ptr, "$PWD") == 0)
+		if (ft_strcmp(*args_ptr, "$PWD") == 0)
 		{
 			if (getenv("PWD") != NULL)
 				cmds->current->phrase_parsed[i] = ft_strdup(getenv("PWD"));
 		}
-		else if (strcmp(*args_ptr, "$?") == 0)
+		else if (ft_strcmp(*args_ptr, "$?") == 0)
 			cmds->current->phrase_parsed[i] = ft_itoa(cmds->exit_code.code);
 		else
 			cmds->current->phrase_parsed[i] = ft_strdup(*args_ptr);

@@ -12,6 +12,16 @@
 
 #include "../includes/minishell.h"
 
+int	count_arr(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i] != NULL)
+		i++;
+	return (i);
+}
+
 int	interactive_exit(t_cmds *cmds)
 {
 	if (cmds->exit)
