@@ -14,7 +14,13 @@
 
 int	env_adapter(t_cmds *cmds)
 {
-	(void) cmds;
-	printf("⚠️ Need to create!!! ⚠️\n");
+	int i;
+
+	i = 0;
+	while (cmds->envs != NULL)
+	{
+		printf("%s\n", cmds->envs[i]);
+		i++;
+	}
 	return (0);
 }
