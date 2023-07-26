@@ -159,14 +159,25 @@ void		free_commands(t_cmds *cmds);
 /* Commands */
 void		init_interpreter(t_cmds *cmds);
 
-/* Command Echo echo_utils.c */
+/* Command Echo echo_utils1.c */
 void		echo_print_envs(char *word);
 char		*echo_extract_word(char *word);
 int			echo_exec_print(t_cmds *cmds, int settings, char **words);
 void		signal_handler_ctrld(int signal, siginfo_t *siginfo, void *context);
 
+/* Command Echo echo_utils2.c */
+int			echo_arg_with_quotes(t_cmds *cmds);
+
 /* Pipes */
 void		open_pipe(t_cmd_node *current);
+int			count_pipes(t_cmds *cmds, char *str);
+
+/* Quotes srcs/quotes/quotes.c */
+int			is_single_quote(char *str);
+int			is_double_quote(char *str);
+char		*remove_single_quotes(t_cmds *cmds);
+char		*remove_double_quotes(t_cmds *cmds);
+int			check_quotes(t_cmds *cmds);
 
 /* Redirects */
 void		check_exist_redirect(t_cmds *cmds);
@@ -197,6 +208,7 @@ void		signal_generic_handler(int signal);
 /* Minishell Utils */
 int			interactive_exit(t_cmds *cmds);
 void		free_arr(char **arr);
+char		*remove_string(char *str, char to_remove);
 
 /* Minishell  main.c */
 int			minishell(t_cmds *cmds);
