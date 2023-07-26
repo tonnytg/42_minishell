@@ -54,7 +54,8 @@ int	export_adapter(t_cmds *cmds)
 		}
 		return (0);
 	}
-	args = ft_split(cmds->current->full_args, ' ');
+	args = ft_split(cmds->current->full_args, '=');
+	args[1] = remove_string(args[1], '"');
 	char *key = args[0];
 	char *value = args[1];
 	result = set_env_var(cmds, key, value);
