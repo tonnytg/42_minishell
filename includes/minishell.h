@@ -209,6 +209,7 @@ void		signal_generic_handler(int signal);
 int			interactive_exit(t_cmds *cmds);
 void		free_arr(char **arr);
 char		*remove_string(char *str, char to_remove);
+int			count_arr(char **arr);
 
 /* Minishell  main.c */
 int			minishell(t_cmds *cmds);
