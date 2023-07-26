@@ -83,6 +83,12 @@ int	echo_adapter(t_cmds *cmds)
 		cmds->exit_code.code = 0;
 		return (0);
 	}
+	check_quotes(cmds);
+	if (cmds->has_quote)
+	{
+		exit_code = echo_arg_with_quotes(cmds);
+		return (exit_code);
+	}
 	settings = 0;
 	words = cmds->current->phrase_parsed;
 	filter_words = set_echo_settings(words, &settings);

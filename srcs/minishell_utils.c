@@ -37,3 +37,45 @@ void	free_arr(char **arr)
 	}
 	free(arr);
 }
+
+int	count_string(char *str, char to_count)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (str[i] != '\0')
+	{
+		if (str[i] == to_count)
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+char	*remove_string(char *str, char to_remove)
+{
+	char	*temp;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	temp = ft_calloc(ft_strlen(str) + 1, sizeof(char));
+	if (temp == NULL)
+		return (NULL);
+	while (str[i] != '\0')
+	{
+		if (str[i] == to_remove)
+			i++;
+		else
+		{
+			temp[j] = str[i];
+			j++;
+			i++;
+		}
+	}
+	temp[i] = '\0';
+	return (temp);
+}
