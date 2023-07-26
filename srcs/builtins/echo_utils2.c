@@ -37,31 +37,36 @@ char	*concatenate_strings(const char **arr)
 	return (result);
 }
 
-char	*parse_string_to_envs(char *str)
+void	set_vars_in_envs(char **temp_str, char *temp, char **converted_str)
 {
-	char	**temp_str;
-	char	**converted_str;
-	char	*value;
-	char	*temp;
-	int		i;
-	int		j;
+	int	i;
+	int	j;
 
-	temp_str = ft_split(str, ' ');
-	converted_str = ft_calloc(count_arr(temp_str) + 1, sizeof(char *));
-	temp = NULL;
 	i = 0;
 	j = 0;
 	while (temp_str[i] != NULL)
 	{
 		temp = remove_string(temp_str[i], '$');
 		if (getenv(temp) != NULL)
-			converted_str[j++] = ft_strdup(
-					getenv(temp));
+			converted_str[j++] = ft_strdup(getenv(temp));
 		else
 			converted_str[j++] = ft_strdup(temp_str[i]);
 		i++;
 		free(temp);
 	}
+}
+
+char	*parse_string_to_envs(char *str)
+{
+	char	**temp_str;
+	char	**converted_str;
+	char	*value;
+	char	*temp;
+
+	temp_str = ft_split(str, ' ');
+	converted_str = ft_calloc(count_arr(temp_str) + 1, sizeof(char *));
+	temp = NULL;
+	set_vars_in_envs(temp_str, temp, converted_str);
 	value = concatenate_strings((const char **)converted_str);
 	free_arr(converted_str);
 	free_arr(temp_str);

@@ -183,6 +183,7 @@ int			check_quotes(t_cmds *cmds);
 void		check_exist_redirect(t_cmds *cmds);
 
 /* Set envs */
+int			set_env_var(t_cmds *cmds, char *key, char *value);
 void		set_envs(char **envp, t_cmds *cmds);
 int			count_envp(char **envp);
 int			append_envs(t_cmds *cmds, char *name, char *value);
