@@ -26,7 +26,7 @@ void	delete_envs(t_cmds *cmds, char **envs, char *key)
 		printf("key: '%s'\n", key);
 		printf("key size: %ld\n", strlen(key));
 		printf("check with: %s\n", cmds->envs[i]);
-		if (ft_strncmp(cmds->envs[i], ft_strtrim(key), strlen(key)) == 0)
+		if (ft_strncmp(cmds->envs[i], key, strlen(key)) == 0)
 		{
 			write(1, key, strlen(key));
 			printf("Removendo %s\n", cmds->envs[i]);
