@@ -44,20 +44,26 @@ char	*remove_single_quotes(t_cmds *cmds)
 {
 	t_cmd_node	*node;
 	char		*new_value;
+	char		*temp;
 
 	node = cmds->current;
 	new_value = remove_string(node->full_args, '\'');
-	return (new_value);
+	temp = ft_strdup(new_value);
+	free(new_value);
+	return (temp);
 }
 
 char	*remove_double_quotes(t_cmds *cmds)
 {
 	t_cmd_node	*node;
 	char		*new_value;
+	char		*temp;
 
 	node = cmds->current;
 	new_value = remove_string(node->full_args, '\"');
-	return (new_value);
+	temp = ft_strdup(new_value);
+	free(new_value);
+	return (temp);
 }
 
 int	check_quotes(t_cmds *cmds)

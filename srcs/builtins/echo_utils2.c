@@ -12,28 +12,42 @@
 
 #include "../../includes/minishell.h"
 
+int	count_all_len_in_arr(char **arr)
+{
+	int	letters;
+	int	spaces;
+
+	spaces = 0;
+	letters = 0;
+	while (arr[spaces] != NULL)
+	{
+		letters += ft_strlen(arr[spaces]);
+		spaces++;
+	}
+	return (letters + spaces);
+}
+
 char	*concatenate_strings(const char **arr)
 {
 	char	*result;
 	int		i;
-	int		offset;
 
 	if (arr == NULL)
 		return (NULL);
-	result = (char *)malloc(count_arr((char **)arr) + 1);
-	if (result == NULL)
+	result = ft_calloc(count_all_len_in_arr((char **)arr) + 1, sizeof(char *));
+	if (result == NULL) {
 		return (NULL);
-	offset = 0;
+	}
 	i = 0;
 	while (arr[i] != NULL)
 	{
-		ft_strlcpy(result + offset, arr[i], strlen(arr[i]) + 1);
-		offset += strlen(arr[i]);
-		result[offset] = ' ';
-		offset++;
+		result = ft_strjoin(result, arr[i]);
+		result = ft_strjoin(result, " ");
+		printf("[%d] - concatenate_strings: '%s' - len: %ld\n", i, result, ft_strlen(result));
 		i++;
 	}
-	result[offset - 1] = '\0';
+	result[i + 1] = '\0';
+	printf("resultado final: '%s'\n", result);
 	return (result);
 }
 
@@ -63,9 +77,11 @@ char	*parse_string_to_envs(char *str)
 		free(temp);
 	}
 	value = concatenate_strings((const char **)converted_str);
-	free_arr(converted_str);
+	temp = ft_strdup(value);
+	free(value);
 	free_arr(temp_str);
-	return (value);
+	free_arr(converted_str);
+	return (temp);
 }
 
 int	echo_arg_with_quotes(t_cmds *cmds)
@@ -82,7 +98,7 @@ int	echo_arg_with_quotes(t_cmds *cmds)
 		new_arg = remove_double_quotes(cmds);
 		temp_arg = parse_string_to_envs(new_arg);
 		free(new_arg);
-		new_arg = temp_arg;
+		new_arg = ft_strdup(temp_arg);
 		free(temp_arg);
 	}
 	if (new_arg == NULL)
