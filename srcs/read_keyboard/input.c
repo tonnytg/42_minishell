@@ -6,7 +6,7 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/07/02 12:43:45 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/07/28 11:11:52 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,8 @@ void	extract_input_values(t_cmds *cmds)
 int	read_keyboard(t_cmds *cmds)
 {
 	load_signals();
+	if (cmds->input->datacpy != NULL)
+		free(cmds->input->datacpy);
 	cmds->input->datacpy = readline("\033[0;32mminishell: > \033[0;0m");
 	if (cmds->input->datacpy == NULL)
 	{
