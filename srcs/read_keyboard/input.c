@@ -69,6 +69,8 @@ void	extract_input_values(t_cmds *cmds)
 int	read_keyboard(t_cmds *cmds)
 {
 	load_signals();
+	if (cmds->input->datacpy != NULL)
+		free(cmds->input->datacpy);
 	cmds->input->datacpy = readline("\033[0;32mminishell: > \033[0;0m");
 	if (cmds->input->datacpy == NULL)
 	{
@@ -80,7 +82,7 @@ int	read_keyboard(t_cmds *cmds)
 		return (1);
 	add_history(cmds->input->datacpy);
 	extract_input_values(cmds);
-	if (check_quotes(cmds))
+	if (check_quotes(cmds) == -1)
 		return (1);
 	return (0);
 }

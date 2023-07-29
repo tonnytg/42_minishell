@@ -43,7 +43,7 @@ char	**filter_echo_words(char **words)
 	{
 		if (ft_strcmp(words[i], "-n") != 0 && ft_strcmp(words[i], "-e") != 0)
 		{
-			filtered_words[j] = words[i];
+			filtered_words[j] = ft_strdup(words[i]);
 			j++;
 		}
 		i++;
@@ -51,49 +51,51 @@ char	**filter_echo_words(char **words)
 	return (filtered_words);
 }
 
-char	**set_echo_settings(char **words, int *settings)
+char	**set_echo_settings(t_cmds *cmds, int *settings)
 {
 	int		i;
 	char	**filter_words;
 
 	i = 0;
 	*settings = 0;
-	while (words[i] != NULL)
+	while (cmds->current->phrase_parsed[i] != NULL)
 	{
-		if (ft_strcmp(words[i], "-n") == 0)
+		if (ft_strcmp(cmds->current->phrase_parsed[i], "-n") == 0)
 			*settings = *settings + 1;
-		if (ft_strcmp(words[i], "-e") == 0)
+		if (ft_strcmp(cmds->current->phrase_parsed[i], "-e") == 0)
 			*settings = *settings + 2;
 		i++;
 	}
-	filter_words = filter_echo_words(words);
+	filter_words = filter_echo_words(cmds->current->phrase_parsed);
 	return (filter_words);
+}
+
+int	echo_print(char **words, int *settings)
+{
+	int	i;
+
+	i = 0;
+	while (words[i] != NULL)
+	{
+		if (words[i + 1] == NULL)
+			printf("%s", words[i]);
+		else if (words[i + 1] != NULL)
+			printf("%s ", words[i]);
+		i++;
+	}
+	if (*settings == 0)
+		printf("\n");
+	return (0);
 }
 
 int	echo_adapter(t_cmds *cmds)
 {
-	int		settings;
 	int		exit_code;
+	int		settings;
 	char	**words;
-	char	**filter_words;
 
-	if (cmds->current->full_args == NULL)
-	{
-		printf("\n");
-		cmds->exit_code.code = 0;
-		return (0);
-	}
-	check_quotes(cmds);
-	if (cmds->has_quote)
-	{
-		exit_code = echo_arg_with_quotes(cmds);
-		return (exit_code);
-	}
-	settings = 0;
-	words = cmds->current->phrase_parsed;
-	filter_words = set_echo_settings(words, &settings);
-	exit_code = echo_exec_print(cmds, settings, filter_words);
-	cmds->exit_code.code = exit_code;
-	free(filter_words);
+	words = set_echo_settings(cmds, &settings);
+	exit_code = echo_print(words, &settings);
+	free_arr(words);
 	return (exit_code);
 }

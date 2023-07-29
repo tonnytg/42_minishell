@@ -27,8 +27,6 @@ FILES	= \
 			srcs/commands/pipes.c 					\
 			srcs/builtins/cd.c						\
 			srcs/builtins/echo.c					\
-			srcs/builtins/echo_utils1.c				\
-			srcs/builtins/echo_utils2.c				\
 			srcs/builtins/env.c						\
 			srcs/builtins/exit.c					\
 			srcs/builtins/export.c					\
@@ -40,7 +38,8 @@ FILES	= \
 			srcs/parser/syntax_analysis.c 			\
 			srcs/parser/build_struct_to_exec.c 		\
 			srcs/parser/redirects.c					\
-			srcs/quotes/quotes.c
+			srcs/quotes/quotes.c					\
+			srcs/quotes/quotes_utils.c
 
 OBJS	= $(FILES:.c=.o)
 CC		= gcc
