@@ -35,20 +35,41 @@ char	*concatenate_strings(const char **arr)
 	if (arr == NULL)
 		return (NULL);
 	result = ft_calloc(count_all_len_in_arr((char **)arr) + 1, sizeof(char *));
-	if (result == NULL) {
+	if (result == NULL)
 		return (NULL);
-	}
 	i = 0;
 	while (arr[i] != NULL)
 	{
 		result = ft_strjoin(result, arr[i]);
 		result = ft_strjoin(result, " ");
-		printf("[%d] - concatenate_strings: '%s' - len: %ld\n", i, result, ft_strlen(result));
 		i++;
 	}
-	result[i + 1] = '\0';
-	printf("resultado final: '%s'\n", result);
+	result[ft_strlen(result) - 1] = '\0';
 	return (result);
+}
+
+int	faz_algo(char **temp_str, char **converted_str, char *temp)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (temp_str[i] != NULL)
+	{
+		if (temp_str[i][0] == '$')
+		{
+			temp = remove_string(temp_str[i], '$');
+			temp = remove_string(temp, '{');
+			temp = remove_string(temp, '}');
+			converted_str[j++] = ft_strdup(getenv(temp));
+		}
+		else
+			converted_str[j++] = ft_strdup(temp_str[i]);
+		i++;
+		free(temp);
+	}
+	return (0);
 }
 
 char	*parse_string_to_envs(char *str)
@@ -57,25 +78,11 @@ char	*parse_string_to_envs(char *str)
 	char	**converted_str;
 	char	*value;
 	char	*temp;
-	int		i;
-	int		j;
 
 	temp_str = ft_split(str, ' ');
 	converted_str = ft_calloc(count_arr(temp_str) + 1, sizeof(char *));
 	temp = NULL;
-	i = 0;
-	j = 0;
-	while (temp_str[i] != NULL)
-	{
-		temp = remove_string(temp_str[i], '$');
-		if (getenv(temp) != NULL)
-			converted_str[j++] = ft_strdup(
-					getenv(temp));
-		else
-			converted_str[j++] = ft_strdup(temp_str[i]);
-		i++;
-		free(temp);
-	}
+	faz_algo(temp_str, converted_str, temp);
 	value = concatenate_strings((const char **)converted_str);
 	temp = ft_strdup(value);
 	free(value);

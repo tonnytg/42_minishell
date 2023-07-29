@@ -14,7 +14,7 @@
 
 int	env_adapter(t_cmds *cmds)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (cmds->envs != NULL)

@@ -158,6 +158,10 @@ void		free_commands(t_cmds *cmds);
 
 /* Commands */
 void		init_interpreter(t_cmds *cmds);
+char		**set_echo_settings(char **words, int *settings);
+
+/* Interpreter */
+void		parse_values_args(t_cmds *cmds);
 
 /* Command Echo echo_utils1.c */
 void		echo_print_envs(char *word);

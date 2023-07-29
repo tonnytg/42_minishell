@@ -112,41 +112,8 @@ int	token_analysis(t_cmds *cmds)
 			token = ft_strtok(NULL, " ", 0);
 	}
 	classify_tk_nodes(list_tokens);
-
-	t_tk_node *actual1; // TODO: Deletar
-	actual1 = list_tokens;
-	while (actual1 != NULL)
-	{
-		printf("[1] - token: '%s', type: %s\n", actual1->token, actual1->tk_type);
-		actual1 = actual1->next;
-	}
-
 	concat_tk_nodes(cmds, list_tokens);
-
-	t_tk_node *actual2; // TODO: Deletar
-	actual2 = list_tokens;
-	while (actual2 != NULL)
-	{
-		printf("[2] - token: '%s', type: %s\n", actual2->token, actual2->tk_type);
-		actual2 = actual2->next;
-	}
-	build_struct_to_exec(cmds, list_tokens); // TODO: problema está aqui
-	t_tk_node *actual3; // TODO: Deletar
-	actual3 = list_tokens;
-	while (actual3 != NULL)
-	{
-		printf("[3] - token: '%s', type: %s\n", actual3->token, actual3->tk_type);
-		actual3 = actual3->next;
-	}
-
-	t_cmd_node *actual4; // TODO: Deletar
-	actual4 = cmds->cmd_list;
-	while (actual4 != NULL)
-	{
-		printf("[4] - token: '%s', type: %s\n", actual4->phrase, actual4->type);
-		actual4 = actual4->next;
-	}
-
+	build_struct_to_exec(cmds, list_tokens);
 	free_tk_nodes(list_tokens);
 	free(data_copy);
 	return (1);
