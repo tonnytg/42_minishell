@@ -31,7 +31,8 @@ void	delete_envs(t_cmds *cmds, char **envs, char *key)
 			write(1, key, strlen(key));
 			printf("Removendo %s\n", cmds->envs[i]);
 			i++;
-		} else
+		}
+		else
 		{
 			envs[j] = strdup(cmds->envs[i]);
 			i++;
@@ -39,13 +40,6 @@ void	delete_envs(t_cmds *cmds, char **envs, char *key)
 		}
 	}
 	envs[j] = NULL;
-
-	int ii = 0;
-	while (envs[ii] != NULL)
-	{
-		printf("envs[%d] = %s\n", ii, envs[ii]);
-		ii++;
-	}
 }
 
 int	del_env_var(t_cmds *cmds, char *key)
