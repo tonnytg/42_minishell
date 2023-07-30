@@ -35,6 +35,8 @@ int	check_errors_exit(const char *arg, int count)
 		ft_printf("minishell: exit: too many arguments\n");
 		return (1);
 	}
+	if (arg == NULL)
+		return (0);
 	if (arg[0] != '-' && ft_isdigit(arg[0]) == 0)
 	{
 		ft_printf("minishell: exit: %s: numeric argument required\n", arg);
@@ -60,7 +62,7 @@ int	exit_adapter(t_cmds *cmds)
 	cmds->signal_exit = 1;
 	printf("exit\n");
 	cmds->exit_code.last_cmd = ft_strdup("exit");
-	if (cmds->current->phrase_parsed[1] == NULL)
+	if (cmds->current->phrase_parsed == NULL)
 		return (0);
 	count = count_args(cmds->current->phrase_parsed[1]);
 	exit_code = check_errors_exit(cmds->current->phrase_parsed[1], count);

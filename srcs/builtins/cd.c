@@ -14,17 +14,28 @@
 
 int	cd_adapter(t_cmds *cmds)
 {
-	const char	*path;
-	char		*temp;
+	char	*path;
+	char	*temp;
 
-	temp = ft_strtrim(cmds->current->full_args, " ");
-	path = temp;
-	if (chdir(path) != 0)
+	if (cmds->current->phrase_parsed != NULL)
+	{
+		if (cmds->current->phrase_parsed[1] != NULL)
+		{
+			temp = ft_strdup(cmds->current->phrase_parsed[1]);
+		}
+		else
+			temp = ft_strdup(".");
+	}
+	path = ft_strdup(temp);
+	printf("going to: %s\n", path);
+	if (chdir((const char *)path) != 0)
 	{
 		perror("cd");
 		free(temp);
+		free(path);
 		return (1);
 	}
 	free(temp);
+	free(path);
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/23 22:19:58 by caalbert          #+#    #+#              #
-#    Updated: 2023/07/24 20:14:08 by caalbert         ###   ########.fr        #
+#    Updated: 2023/07/27 21:18:52 by caalbert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ HEADER	= $(NAME).h
 FILES	= \
 			srcs/main.c								\
 			srcs/minishell_utils.c					\
+			srcs/minishell_utils2.c					\
 			srcs/read_keyboard/input.c				\
 			srcs/read_keyboard/check_data_input.c	\
 			srcs/commands/commands.c				\
@@ -27,8 +28,6 @@ FILES	= \
 			srcs/commands/pipes.c 					\
 			srcs/builtins/cd.c						\
 			srcs/builtins/echo.c					\
-			srcs/builtins/echo_utils1.c				\
-			srcs/builtins/echo_utils2.c				\
 			srcs/builtins/env.c						\
 			srcs/builtins/exit.c					\
 			srcs/builtins/export.c					\
@@ -40,12 +39,13 @@ FILES	= \
 			srcs/parser/syntax_analysis.c 			\
 			srcs/parser/build_struct_to_exec.c 		\
 			srcs/parser/redirects.c					\
-			srcs/quotes/quotes.c
+			srcs/quotes/quotes.c					\
+			srcs/quotes/quotes_utils.c
 
 OBJS	= $(FILES:.c=.o)
 CC		= gcc
 CC_ARGS = -Wextra -Wall -Werror -g3
-LIBS	= libs
+LIBS	= libft
 CYAN			:= \033[1;36m
 YELLOW			:= \033[1;33m
 GREEN			:= \033[1;32m
@@ -53,7 +53,7 @@ RED				:= \033[1;31m
 GRAY			:= \033[1;30m
 RESET			:= \033[0m
 
-all: $(NAME)
+all: $(LIBS) $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $(CC_ARGS) $(OBJS) -L $(LIBS) -lft -lreadline -o $(NAME)
@@ -67,11 +67,10 @@ $(NAME): $(OBJS)
 	@echo ""
 
 %.o: %.c
-	mkdir -p libs
-	make -C libft
-	cp -a libft/libft.h ./includes/
-	cp -a libft/libft.a ./libs/
-	gcc $(CC_ARGS) -c $< -o $@
+	$(CC) $(CC_ARGS) -I$(LIBS) -c $< -o $@
+
+$(LIBS):
+	make -C $(LIBS)
 
 test: all
 	make -C tests
@@ -91,15 +90,13 @@ v: all
 	valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --quiet ./minishell
 
 clean:
-	make -C libft clean
+	make -C $(LIBS) clean
 	rm -f $(OBJS)
 
 fclean: clean
-	make -C libft fclean
+	make -C $(LIBS) fclean
 	rm -f $(NAME)
-	rm -f includes/libft.h
-	rm -rf $(LIBS)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re $(LIBS)

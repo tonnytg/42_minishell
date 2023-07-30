@@ -44,47 +44,53 @@ char	*remove_single_quotes(t_cmds *cmds)
 {
 	t_cmd_node	*node;
 	char		*new_value;
+	char		*temp;
 
 	node = cmds->current;
 	new_value = remove_string(node->full_args, '\'');
-	return (new_value);
+	temp = ft_strdup(new_value);
+	free(new_value);
+	return (temp);
 }
 
 char	*remove_double_quotes(t_cmds *cmds)
 {
 	t_cmd_node	*node;
 	char		*new_value;
+	char		*temp;
 
 	node = cmds->current;
 	new_value = remove_string(node->full_args, '\"');
-	return (new_value);
+	temp = ft_strdup(new_value);
+	free(new_value);
+	return (temp);
 }
 
 int	check_quotes(t_cmds *cmds)
 {
 	int	i;
-	int	count_simple_quotes;
-	int	count_double_quotes;
+	int	quotes[2];
 
 	i = 0;
-	count_simple_quotes = 0;
-	count_double_quotes = 0;
-	if (cmds->input->datacpy == NULL)
-		return (0);
+	quotes[0] = 0;
+	quotes[1] = 0;
 	while (cmds->input->datacpy[i] != '\0')
 	{
 		if (cmds->input->datacpy[i] == '\'')
-			count_simple_quotes++;
+			quotes[0]++;
 		if (cmds->input->datacpy[i] == '\"')
-			count_double_quotes++;
+			quotes[1]++;
 		i++;
 	}
-	if (count_simple_quotes % 2 != 0 || count_double_quotes % 2 != 0)
+	if (quotes[0] % 2 != 0 || quotes[1] % 2 != 0)
 	{
 		printf("Error: quotes not closed\n");
+		return (-1);
+	}
+	if (quotes[0] > 0 || quotes[1] > 0)
+	{
+		cmds->has_quote = 1;
 		return (1);
 	}
-	if (count_simple_quotes > 0 || count_double_quotes > 0)
-		cmds->has_quote = 1;
 	return (0);
 }

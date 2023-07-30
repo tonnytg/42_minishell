@@ -6,7 +6,7 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/07/02 19:24:01 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/07/27 20:57:53 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <stdio.h>
 # include <signal.h>
 # include <sys/wait.h>
-# include "libft.h"
+# include "../libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 
@@ -159,11 +159,8 @@ void		free_commands(t_cmds *cmds);
 /* Commands */
 void		init_interpreter(t_cmds *cmds);
 
-/* Command Echo echo_utils1.c */
-void		echo_print_envs(char *word);
-char		*echo_extract_word(char *word);
-int			echo_exec_print(t_cmds *cmds, int settings, char **words);
-void		signal_handler_ctrld(int signal, siginfo_t *siginfo, void *context);
+/* Interpreter */
+void		parse_values_args(t_cmds *cmds);
 
 /* Command Echo echo_utils2.c */
 int			echo_arg_with_quotes(t_cmds *cmds);
@@ -178,6 +175,7 @@ int			is_double_quote(char *str);
 char		*remove_single_quotes(t_cmds *cmds);
 char		*remove_double_quotes(t_cmds *cmds);
 int			check_quotes(t_cmds *cmds);
+int			search_code_caracter(char *str);
 
 /* Redirects */
 void		check_exist_redirect(t_cmds *cmds);
@@ -188,6 +186,7 @@ void		set_envs(char **envp, t_cmds *cmds);
 int			count_envp(char **envp);
 int			append_envs(t_cmds *cmds, char *name, char *value);
 void		free_envs(t_cmds *cmds);
+char		*get_env(char *str);
 
 /* Syntax Analysis */
 void		syntax_analysis(t_cmds *cmds);
@@ -211,6 +210,10 @@ int			interactive_exit(t_cmds *cmds);
 void		free_arr(char **arr);
 char		*remove_string(char *str, char to_remove);
 int			count_arr(char **arr);
+
+/* Minishell Utils minishell_utils2.c */
+int			count_all_len_in_arr(char **arr);
+char		*concatenate_strings(const char **arr);
 
 /* Minishell  main.c */
 int			minishell(t_cmds *cmds);

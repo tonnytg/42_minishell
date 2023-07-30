@@ -12,6 +12,31 @@
 
 #include "../../includes/minishell.h"
 
+char	*get_env(char *str)
+{
+	char	*env_1;
+	char	*env_2;
+	char	*temp;
+	char	*result;
+
+	env_1 = ft_strdup(str);
+	env_2 = remove_string(env_1, '$');
+	free(env_1);
+	env_1 = remove_string(env_2, '{');
+	free(env_2);
+	env_2 = remove_string(env_1, '}');
+	temp = getenv(env_2);
+	free(env_1);
+	free(env_2);
+	if (temp == NULL)
+	{
+		result = ft_strdup("");
+		return (result);
+	}
+	result = ft_strdup(temp);
+	return (result);
+}
+
 void	free_envs(t_cmds *cmds)
 {
 	int	i;

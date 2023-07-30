@@ -12,60 +12,59 @@
 
 #include "../../includes/minishell.h"
 
-int	ft_count_arr(char **arr)
-{
-	int	i;
-
-	i = 0;
-	while (arr[i] != NULL)
-		i++;
-	return (i);
-}
-
-void	ft_free_arr(char **arr)
-{
-	char	**ptr;
-
-	if (arr == NULL)
-		return ;
-	ptr = arr;
-	while (*ptr != NULL)
-	{
-		free(*ptr);
-		ptr++;
-	}
-	free(arr);
-}
-
 void	parse_values_args(t_cmds *cmds)
 {
-	char	**original_args;
-	char	**args_ptr;
 	int		i;
+	char	**words;
 
-	original_args = ft_split(cmds->current->phrase, ' ');
-	cmds->current->phrase_parsed = ft_calloc(sizeof(char *),
-			ft_count_arr(original_args) + 1);
 	i = 0;
-	args_ptr = original_args;
-	while (*args_ptr != NULL)
+	words = ft_split(cmds->current->phrase, ' ');
+	cmds->current->phrase_parsed = ft_calloc(sizeof(char *),
+			count_arr(words) + 1);
+	while (words[i] != NULL)
 	{
-		if (ft_strcmp(*args_ptr, "$PWD") == 0)
+		if (ft_strncmp(words[i], "$", 1) == 0
+			&& is_single_quote(cmds->input->datacpy) == 0)
 		{
-			if (getenv("PWD") != NULL)
-				cmds->current->phrase_parsed[i] = ft_strdup(getenv("PWD"));
+			if (ft_strncmp(words[i] + 1, "?", 1) == 0)
+				cmds->current->phrase_parsed[i] = ft_itoa(cmds->exit_code.code);
+			else
+				cmds->current->phrase_parsed[i] = get_env(words[i]);
 		}
-		else if (ft_strcmp(*args_ptr, "$?") == 0)
-			cmds->current->phrase_parsed[i] = ft_itoa(cmds->exit_code.code);
 		else
-			cmds->current->phrase_parsed[i] = ft_strdup(*args_ptr);
-		args_ptr++;
+			cmds->current->phrase_parsed[i] = ft_strdup(words[i]);
 		i++;
 	}
-	ft_free_arr(original_args);
+	free_arr(words);
+}
+
+void	prepare_phrase(t_cmds *cmds)
+{
+	char	**splited_phrase;
+	char	**temp;
+	char	*temp_str;
+	char	*temp_str1;
+	int		i;
+
+	splited_phrase = ft_split(cmds->current->phrase, ' ');
+	temp = ft_calloc(sizeof(char *), count_arr(splited_phrase) + 1);
+	i = 0;
+	while (splited_phrase[i] != NULL)
+	{
+		temp_str = remove_string(splited_phrase[i], '\"');
+		temp[i] = remove_string(temp_str, '\'');
+		free(temp_str);
+		i++;
+	}
+	temp_str1 = concatenate_strings((const char **)splited_phrase);
+	free(cmds->current->phrase);
+	cmds->current->phrase = ft_strdup(temp_str1);
+	free_arr(temp);
+	free_arr(splited_phrase);
 }
 
 void	init_interpreter(t_cmds *cmds)
 {
+	prepare_phrase(cmds);
 	parse_values_args(cmds);
 }
