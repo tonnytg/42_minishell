@@ -52,7 +52,7 @@ void	new_node_cmd(t_cmd_node **head, char *str, char *type)
 	}
 }
 
-char *copy_if_firstword(int *firstword2, char *str, t_tk_node *actual_tk)
+char	*copy_if_firstword(int *firstword2, char *str, t_tk_node *actual_tk)
 {
 	int		first_word;
 	char	*temp;

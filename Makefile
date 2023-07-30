@@ -15,6 +15,7 @@ HEADER	= $(NAME).h
 FILES	= \
 			srcs/main.c								\
 			srcs/minishell_utils.c					\
+			srcs/minishell_utils2.c					\
 			srcs/read_keyboard/input.c				\
 			srcs/read_keyboard/check_data_input.c	\
 			srcs/commands/commands.c				\
