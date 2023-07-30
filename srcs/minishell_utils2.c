@@ -27,7 +27,7 @@ int	count_all_len_in_arr(char **arr)
 	return (letters + spaces);
 }
 
-char	*concatenate_strings(const char **arr)
+char	*concatenate_strings(char **arr)
 {
 	char	*result;
 	int		total_len;
@@ -38,8 +38,6 @@ char	*concatenate_strings(const char **arr)
 	if (arr == NULL)
 		return (NULL);
 	result = ft_calloc(total_len + count_arr((char **)arr), sizeof(char));
-	if (result == NULL)
-		return (NULL);
 	i = 0;
 	j = 0;
 	while (arr[i] != NULL)

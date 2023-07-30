@@ -14,6 +14,8 @@
 
 void	free_commands(t_cmds *cmds)
 {
+	if (cmds->input->datacpy != NULL)
+		free(cmds->input->datacpy);
 	free(cmds->input);
 	free(cmds->exit_code.last_cmd);
 	free(cmds->arr_cmds);
