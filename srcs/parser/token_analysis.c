@@ -17,7 +17,7 @@ void	add_tk_node(t_tk_node **head, char *token, char *tk_type)
 	t_tk_node	*new_token;
 	t_tk_node	*actual;
 
-	new_token = (t_tk_node *)malloc(sizeof(t_tk_node));
+	new_token = ft_calloc(1, sizeof(t_tk_node));
 	strcpy(new_token->token, token);
 	strcpy(new_token->tk_type, tk_type);
 	new_token->next = NULL;

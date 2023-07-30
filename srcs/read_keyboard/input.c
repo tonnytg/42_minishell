@@ -12,58 +12,35 @@
 
 #include "../../includes/minishell.h"
 
-void	remove_empty(t_cmds *cmds)
-{
-	char	*clean_phrase;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	clean_phrase = ft_calloc(ft_strlen(cmds->input->datacpy) + 1, sizeof(char));
-	while (cmds->input->datacpy[i] != '\0')
-	{
-		if (cmds->input->datacpy[i] != ' ')
-		{
-			clean_phrase[j] = cmds->input->datacpy[i];
-			j++;
-		}
-		i++;
-	}
-	clean_phrase[j] = '\0';
-	free(clean_phrase);
-}
-
-char	*remove_duplicate_spaces(char *input_string)
-{
-	int		i;
-	int		j;
-	char	*clean_phrase;
-
-	i = 0;
-	j = 0;
-	clean_phrase = (char *)malloc(strlen(input_string) + 1);
-	while (input_string[i] != '\0')
-	{
-		if (input_string[i] != ' ')
-		{
-			clean_phrase[j] = input_string[i];
-			j++;
-		}
-		else if (input_string[i + 1] != ' ')
-		{
-			clean_phrase[j] = input_string[i];
-			j++;
-		}
-		i++;
-	}
-	clean_phrase[j] = '\0';
-	return (clean_phrase);
-}
-
 void	extract_input_values(t_cmds *cmds)
 {
-	cmds->input->cmd_name = cmds->input->datacpy;
+	char	*temp;
+
+	temp = ft_strdup(cmds->input->datacpy);
+	cmds->input->cmd_name = ft_strtok(temp, " ", 1);
+	cmds->input->cmd_args = ft_strtok(NULL, "\0", 0);
+	free(temp);
+}
+
+int	ft_isspace(int c)
+{
+	return (c == ' '
+		|| c == '\t'
+		|| c == '\n'
+		|| c == '\r'
+		|| c == '\v'
+		|| c == '\f');
+}
+
+int	contains_only_spaces_or_tabs(const char *str)
+{
+	while (*str)
+	{
+		if (!ft_isspace(*str))
+			return (0);
+		str++;
+	}
+	return (1);
 }
 
 int	read_keyboard(t_cmds *cmds)
@@ -78,11 +55,11 @@ int	read_keyboard(t_cmds *cmds)
 		cmds->signal_exit = 1;
 		return (0);
 	}
-	if (ft_strlen(cmds->input->datacpy) == 0)
+	if (contains_only_spaces_or_tabs(cmds->input->datacpy))
 		return (1);
 	add_history(cmds->input->datacpy);
 	extract_input_values(cmds);
-	if (check_quotes(cmds))
+	if (check_quotes(cmds) == -1)
 		return (1);
 	return (0);
 }

@@ -14,7 +14,6 @@
 
 void	free_builtin_cmd(t_cmds *cmds)
 {
-	free(cmds->input->cmd_name);
 	free_arr(cmds->current->phrase_parsed);
 	free_arr(cmds->envs);
 	free_cmd_nodes(cmds->cmd_list);
@@ -42,6 +41,8 @@ int	skip_commands_child(t_cmds *cmds)
 	if (ft_strcmp(cmds->current->cmd_name, "exit") == 0)
 		return (1);
 	else if (ft_strcmp(cmds->current->cmd_name, "cd") == 0)
+		return (1);
+	else if (ft_strcmp(cmds->current->cmd_name, "env") == 0)
 		return (1);
 	else if (ft_strcmp(cmds->current->cmd_name, "export") == 0)
 		return (1);
