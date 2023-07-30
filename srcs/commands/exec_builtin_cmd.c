@@ -46,6 +46,8 @@ int	skip_commands_child(t_cmds *cmds)
 		return (1);
 	else if (ft_strcmp(cmds->current->cmd_name, "export") == 0)
 		return (1);
+	else if (ft_strcmp(cmds->current->cmd_name, "unset") == 0)
+		return (1);
 	return (0);
 }
 

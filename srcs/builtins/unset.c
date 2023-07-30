@@ -12,22 +12,58 @@
 
 #include "../../includes/minishell.h"
 
-int	unset_adapter(t_cmds *cmds)
+#include "../../includes/minishell.h"
+
+void	delete_envs(t_cmds *cmds, char **envs, char *key)
 {
-	if (getenv(cmds->input->cmd_args) != NULL)
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (cmds->envs[i] != NULL)
 	{
-		unsetenv(cmds->input->cmd_args);
-		if (getenv(cmds->input->cmd_args) == NULL)
-			return (0);
+		printf("key: '%s'\n", key);
+		printf("key size: %ld\n", strlen(key));
+		printf("check with: %s\n", cmds->envs[i]);
+		if (ft_strncmp(cmds->envs[i], key, strlen(key)) == 0)
+		{
+			write(1, key, strlen(key));
+			printf("Removendo %s\n", cmds->envs[i]);
+			i++;
+		}
 		else
-			return (1);
+		{
+			envs[j] = strdup(cmds->envs[i]);
+			i++;
+			j++;
+		}
 	}
-	else
-		return (1);
+	envs[j] = NULL;
 }
 
-	/*
-	(void) cmds;
-	printf("⚠️ Need to create!!! ⚠️\n");
+int	del_env_var(t_cmds *cmds, char *key)
+{
+	char	**envs;
+
+	if (cmds->envs == NULL)
+		return (1);
+	envs = ft_calloc(count_arr(cmds->envs), sizeof(char *));
+	delete_envs(cmds, envs, key);
+	free_arr(cmds->envs);
+	cmds->envs = envs;
 	return (0);
-	*/
+}
+
+int	unset_adapter(t_cmds *cmds)
+{
+	char	**args;
+	int		result;
+	char	*key;
+
+	args = ft_split(cmds->current->full_args, '=');
+	key = args[0];
+	result = del_env_var(cmds, key);
+	free_arr(args);
+	return (result);
+}
