@@ -33,7 +33,7 @@ void	new_node_cmd(t_cmd_node **head, char *str, char *type)
 	t_cmd_node	*new_cmd;
 
 	actual = *head;
-	new_cmd = (t_cmd_node *)malloc(sizeof(t_cmd_node));
+	new_cmd = ft_calloc(1, sizeof(t_cmd_node));
 	new_cmd->phrase = ft_strdup(str);
 	new_cmd->phrase_temp = ft_strdup(str);
 	new_cmd->type = ft_strdup(type);

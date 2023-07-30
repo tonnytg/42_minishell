@@ -60,7 +60,7 @@ int	exit_adapter(t_cmds *cmds)
 	cmds->signal_exit = 1;
 	printf("exit\n");
 	cmds->exit_code.last_cmd = ft_strdup("exit");
-	if (cmds->current->phrase_parsed[1] == NULL)
+	if (cmds->current->phrase_parsed == NULL)
 		return (0);
 	count = count_args(cmds->current->phrase_parsed[1]);
 	exit_code = check_errors_exit(cmds->current->phrase_parsed[1], count);

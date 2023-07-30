@@ -63,7 +63,11 @@ char	*remove_duplicate_spaces(char *input_string)
 
 void	extract_input_values(t_cmds *cmds)
 {
-	cmds->input->cmd_name = cmds->input->datacpy;
+	char *temp;
+
+	temp = ft_strdup(cmds->input->datacpy);
+	cmds->input->cmd_name = ft_strtok(temp, " ", 1);
+	cmds->input->cmd_args = ft_strtok(NULL, "\0", 0);
 }
 
 int	read_keyboard(t_cmds *cmds)

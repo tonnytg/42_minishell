@@ -231,7 +231,29 @@ int	echo_arg_with_quotes(t_cmds *cmds)
 	return (0);
 }
 
-void	parse_values_args(t_cmds *cmds)
+char *get_env(char *str)
+{
+	char *env;
+	char *temp;
+	char *result;
+
+	env = ft_strdup(str);
+	env = remove_string(env, '$');
+	env = remove_string(env, '{');
+	env = remove_string(env, '}');
+
+	temp = getenv(env);
+	if (temp == NULL)
+	{
+		result = ft_strdup("");
+		return (result);
+	}
+	result = ft_strdup(temp);
+	free(env);
+	return (result);
+}
+
+void	parse_values_args_old(t_cmds *cmds)
 {
 	char	**original_args;
 	char	**args_ptr;
@@ -244,13 +266,13 @@ void	parse_values_args(t_cmds *cmds)
 	args_ptr = original_args;
 	while (*args_ptr != NULL)
 	{
-		if (ft_strcmp(*args_ptr, "$PWD") == 0)
+		if (ft_strncmp(*args_ptr, "$", 1) == 0)
 		{
-			if (getenv("PWD") != NULL)
-				cmds->current->phrase_parsed[i] = ft_strdup(getenv("PWD"));
+			if (ft_strncmp(*args_ptr + 1, "?", 1) == 0)
+				cmds->current->phrase_parsed[i] = ft_itoa(cmds->exit_code.code);
+			else
+				cmds->current->phrase_parsed[i] = get_env(*args_ptr);
 		}
-		else if (ft_strcmp(*args_ptr, "$?") == 0)
-			cmds->current->phrase_parsed[i] = ft_itoa(cmds->exit_code.code);
 		else
 			cmds->current->phrase_parsed[i] = ft_strdup(*args_ptr);
 		args_ptr++;
@@ -259,8 +281,62 @@ void	parse_values_args(t_cmds *cmds)
 	ft_free_arr(original_args);
 }
 
+char *str_converted(char *str)
+{
+	char *temp;
+	char *result;
+
+	temp = ft_strdup(str);
+	result = remove_string(temp, '\'');
+	free(temp);
+	return (result);
+}
+
+void	parse_values_args(t_cmds *cmds)
+{
+	int		i;
+	char	**words;
+
+	i = 0;
+	words = ft_split(cmds->current->phrase, ' ');
+	cmds->current->phrase_parsed = ft_calloc(sizeof(char *), count_arr(words) + 1);
+	while (words[i] != NULL)
+	{
+		if (ft_strncmp(words[i], "$", 1) == 0 && is_single_quote(cmds->input->datacpy) == 0)
+		{
+			if (ft_strncmp(words[i] + 1, "?", 1) == 0)
+				cmds->current->phrase_parsed[i] = ft_itoa(cmds->exit_code.code);
+			else
+				cmds->current->phrase_parsed[i] = get_env(words[i]);
+		}
+		else
+			cmds->current->phrase_parsed[i] = ft_strdup(words[i]);
+		i++;
+	}
+}
+
+void prepare_phrase(t_cmds *cmds)
+{
+	char **splited_phrase;
+
+	splited_phrase = ft_split(cmds->current->phrase, ' ');
+	int i = 0;
+	while (splited_phrase[i] != NULL)
+	{
+		splited_phrase[i] = remove_string(splited_phrase[i], '\"');
+		splited_phrase[i] = remove_string(splited_phrase[i], '\'');
+		i++;
+	}
+	cmds->current->phrase = concatenate_strings((const char **)splited_phrase);
+}
+
 void	init_interpreter(t_cmds *cmds)
 {
-	parse_values_args(cmds);
+	if (cmds->current->phrase != NULL)
+	{
+		prepare_phrase(cmds);
+
+		parse_values_args(cmds);
+	}
 }
 

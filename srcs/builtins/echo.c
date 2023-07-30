@@ -58,6 +58,8 @@ char	**set_echo_settings(t_cmds *cmds, int *settings)
 
 	i = 0;
 	*settings = 0;
+	if (cmds->current->phrase_parsed == NULL)
+		return (NULL);
 	while (cmds->current->phrase_parsed[i] != NULL)
 	{
 		if (ft_strcmp(cmds->current->phrase_parsed[i], "-n") == 0)
@@ -75,6 +77,11 @@ int	echo_print(char **words, int *settings)
 	int	i;
 
 	i = 0;
+	if (words == NULL)
+	{
+		printf("\n");
+		return (0);
+	}
 	while (words[i] != NULL)
 	{
 		if (words[i + 1] == NULL)
@@ -94,6 +101,11 @@ int	echo_adapter(t_cmds *cmds)
 	int		settings;
 	char	**words;
 
+	if (cmds->current->full_args == NULL)
+	{
+		printf("\n");
+		return (0);
+	}
 	words = set_echo_settings(cmds, &settings);
 	exit_code = echo_print(words, &settings);
 	free_arr(words);
