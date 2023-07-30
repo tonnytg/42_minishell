@@ -35,6 +35,8 @@ int	check_errors_exit(const char *arg, int count)
 		ft_printf("minishell: exit: too many arguments\n");
 		return (1);
 	}
+	if (arg == NULL)
+		return (0);
 	if (arg[0] != '-' && ft_isdigit(arg[0]) == 0)
 	{
 		ft_printf("minishell: exit: %s: numeric argument required\n", arg);

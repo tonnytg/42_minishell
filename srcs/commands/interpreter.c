@@ -143,9 +143,10 @@ int	count_all_len_in_arr(char **arr)
 	return (letters + spaces);
 }
 
-char	*concatenate_strings(const char **arr)
+char	*concatenate_strings_old(const char **arr)
 {
 	char	*result;
+	char	*temp;
 	int		i;
 
 	if (arr == NULL)
@@ -156,11 +157,37 @@ char	*concatenate_strings(const char **arr)
 	i = 0;
 	while (arr[i] != NULL)
 	{
-		result = ft_strjoin(result, arr[i]);
-		result = ft_strjoin(result, " ");
+		temp = ft_strjoin(result, arr[i]);
+		result = ft_strjoin(temp, " ");
 		i++;
 	}
 	result[ft_strlen(result) - 1] = '\0';
+	free(temp);
+	return (result);
+}
+
+char *concatenate_strings(const char **arr)
+{
+	char *result;
+	int total_len;
+	int i;
+	int j;
+
+	total_len = count_all_len_in_arr((char **)arr);
+	if (arr == NULL)
+		return NULL;
+	result = ft_calloc(total_len + count_arr((char **)arr), sizeof(char));
+	if (result == NULL)
+		return NULL;
+	i = 0;
+	j = 0;
+	while (arr[i] != NULL)
+	{
+		j += ft_strlcpy(&result[j], arr[i], total_len - j);
+		result[j++] = ' ';
+		i++;
+	}
+	result[--j] = '\0';
 	return (result);
 }
 
@@ -313,30 +340,43 @@ void	parse_values_args(t_cmds *cmds)
 			cmds->current->phrase_parsed[i] = ft_strdup(words[i]);
 		i++;
 	}
+	free_arr(words);
 }
 
 void prepare_phrase(t_cmds *cmds)
 {
 	char **splited_phrase;
+	char **temp;
+	char *temp_str;
 
 	splited_phrase = ft_split(cmds->current->phrase, ' ');
+	temp = ft_calloc(sizeof(char *), count_arr(splited_phrase) + 1);
 	int i = 0;
 	while (splited_phrase[i] != NULL)
 	{
-		splited_phrase[i] = remove_string(splited_phrase[i], '\"');
-		splited_phrase[i] = remove_string(splited_phrase[i], '\'');
+		temp[i] = remove_string(splited_phrase[i], '\"');
+		free(splited_phrase[i]);
+		splited_phrase[i] = remove_string(temp[i], '\'');
 		i++;
 	}
-	cmds->current->phrase = concatenate_strings((const char **)splited_phrase);
+	if (cmds->current->phrase != NULL)
+	{
+		free(cmds->current->phrase);
+		cmds->current->phrase = NULL;
+	}
+	temp_str = concatenate_strings((const char **)splited_phrase);
+	cmds->current->phrase = ft_strdup(temp_str);
+	free(temp_str);
+	free_arr(temp);
+	free_arr(splited_phrase);
 }
 
 void	init_interpreter(t_cmds *cmds)
 {
 	if (cmds->current->phrase != NULL)
 	{
-		prepare_phrase(cmds);
-
-		parse_values_args(cmds);
+		prepare_phrase(cmds);  // cmds->current->phrase
+		parse_values_args(cmds); // cmds->current->phrase_parsed
 	}
 }
 

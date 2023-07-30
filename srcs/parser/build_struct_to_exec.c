@@ -20,10 +20,12 @@ void	free_cmd_nodes(t_cmd_node *list_cmds)
 	{
 		temp = list_cmds;
 		list_cmds = list_cmds->next;
-		free(temp->phrase);
-		free(temp->phrase_temp);
-		free(temp->type);
-		free(temp);
+		if (temp->phrase_temp != NULL)
+			free(temp->phrase_temp);
+		if (temp->type != NULL)
+			free(temp->type);
+		if (temp != NULL)
+			free(temp);
 	}
 }
 

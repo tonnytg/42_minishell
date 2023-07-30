@@ -47,5 +47,10 @@ void	run_node(t_cmds *cmds)
 			cmds->exit_code.code = 127;
 		}
 		free_arr(cmds->current->phrase_parsed);
+		if (cmds->current->phrase != NULL)
+		{
+			free(cmds->current->phrase);
+			cmds->current->phrase = NULL;
+		}
 	}
 }

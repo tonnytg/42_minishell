@@ -68,6 +68,7 @@ void	extract_input_values(t_cmds *cmds)
 	temp = ft_strdup(cmds->input->datacpy);
 	cmds->input->cmd_name = ft_strtok(temp, " ", 1);
 	cmds->input->cmd_args = ft_strtok(NULL, "\0", 0);
+	free(temp);
 }
 
 int	read_keyboard(t_cmds *cmds)
