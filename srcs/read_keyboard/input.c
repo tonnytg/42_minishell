@@ -53,7 +53,6 @@ int	read_keyboard(t_cmds *cmds)
 	{
 		cmds->input->datacpy = ft_strdup("exit");
 		cmds->signal_exit = 1;
-		return (0);
 	}
 	if (contains_only_spaces_or_tabs(cmds->input->datacpy))
 		return (1);

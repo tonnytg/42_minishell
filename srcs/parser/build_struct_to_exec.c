@@ -20,6 +20,8 @@ void	free_cmd_nodes(t_cmd_node *list_cmds)
 	{
 		temp = list_cmds;
 		list_cmds = list_cmds->next;
+		if (temp->phrase != NULL)
+			free(temp->phrase);
 		if (temp->phrase_temp != NULL)
 			free(temp->phrase_temp);
 		if (temp->type != NULL)

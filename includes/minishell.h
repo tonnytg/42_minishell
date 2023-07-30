@@ -213,7 +213,7 @@ int			count_arr(char **arr);
 
 /* Minishell Utils minishell_utils2.c */
 int			count_all_len_in_arr(char **arr);
-char		*concatenate_strings(const char **arr);
+char		*concatenate_strings(char **arr);
 
 /* Minishell  main.c */
 int			minishell(t_cmds *cmds);

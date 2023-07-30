@@ -56,9 +56,10 @@ void	prepare_phrase(t_cmds *cmds)
 		free(temp_str);
 		i++;
 	}
-	temp_str1 = concatenate_strings((const char **)splited_phrase);
+	temp_str1 = concatenate_strings(temp);
 	free(cmds->current->phrase);
 	cmds->current->phrase = ft_strdup(temp_str1);
+	free(temp_str1);
 	free_arr(temp);
 	free_arr(splited_phrase);
 }
