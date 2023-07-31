@@ -17,6 +17,8 @@ int	count_arr(char **arr)
 	int	i;
 
 	i = 0;
+	if (arr == NULL)
+		return (i);
 	while (arr[i] != NULL)
 		i++;
 	return (i);

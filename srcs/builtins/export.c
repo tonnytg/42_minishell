@@ -19,16 +19,19 @@ void	save_envs(t_cmds *cmds, char **envs, char *key, char *key_and_value)
 
 	i = 0;
 	trigger = 0;
-	while (cmds->envs[i] != NULL)
+	if (cmds->envs != NULL)
 	{
-		if (ft_strncmp(cmds->envs[i], key, ft_strlen(key)) == 0)
+		while (cmds->envs[i] != NULL)
 		{
-			envs[i] = ft_strdup(key_and_value);
-			trigger = 1;
+			if (ft_strncmp(cmds->envs[i], key, ft_strlen(key)) == 0)
+			{
+				envs[i] = ft_strdup(key_and_value);
+				trigger = 1;
+			}
+			else
+				envs[i] = ft_strdup(cmds->envs[i]);
+			i++;
 		}
-		else
-			envs[i] = ft_strdup(cmds->envs[i]);
-		i++;
 	}
 	if (trigger == 0)
 	{
@@ -44,7 +47,7 @@ int	set_env_var(t_cmds *cmds, char *key, char *value)
 	char	*new_key;
 	char	*key_and_value;
 
-	if (cmds->envs == NULL)
+	if (cmds->envs == NULL && cmds->current->full_args == NULL)
 		return (1);
 	envs = ft_calloc(count_arr(cmds->envs) + 2, sizeof(char *));
 	new_key = ft_strjoin(key, "=");
@@ -52,7 +55,8 @@ int	set_env_var(t_cmds *cmds, char *key, char *value)
 	save_envs(cmds, envs, key, key_and_value);
 	free(new_key);
 	free(key_and_value);
-	free_arr(cmds->envs);
+	if (cmds->envs != NULL)
+		free_arr(cmds->envs);
 	cmds->envs = envs;
 	return (0);
 }
@@ -60,19 +64,14 @@ int	set_env_var(t_cmds *cmds, char *key, char *value)
 int	export_adapter(t_cmds *cmds)
 {
 	char	**args;
-	char	**env;
 	int		result;
 
-	env = cmds->envs;
+	if (cmds->envs == NULL && cmds->current->full_args == NULL)
+		return (1);
 	if (cmds->current->full_args == NULL)
-	{
-		while (*env)
-		{
-			printf("%s\n", *env);
-			env++;
-		}
-		return (0);
-	}
+		env_adapter(cmds);
+	if (cmds->current->phrase_parsed[1] == NULL)
+		return (1);
 	args = ft_split(cmds->current->phrase_parsed[1], '=');
 	if (args[0] == NULL || args[1] == NULL)
 	{
