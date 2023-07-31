@@ -4,7 +4,6 @@ function tests() {
   echo "Start Unit Commands Tests"
   make debug >> /dev/null
 
-
   export COMMAND="exit1"
   echo $COMMAND
   valgrind --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp srcs/minishell > valgrind_output_${COMMAND}.log 2>&1 << EOF
@@ -205,14 +204,13 @@ function reportTests() {
   deleteTests
   tests
   for FILE in valgrind_output_*; do
-    result=$(cat $FILE | grep at -a2 | wc -l)
+    result=$(cat $FILE | grep -e ' at ' -a2 | wc -l)
     if [ $result -gt 0 ]; then
       echo file ${FILE} has ${result} errors >> report.log
     else
       echo file ${FILE} has no errors
       rm -rf ${FILE}
     fi
-
   done
   ReportMove
 }
