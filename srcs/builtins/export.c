@@ -42,7 +42,7 @@ int	set_env_var(t_cmds *cmds, char *key, char *value)
 {
 	char	**envs;
 	char	*new_key;
-	char 	*key_and_value;
+	char	*key_and_value;
 
 	if (cmds->envs == NULL)
 		return (1);
