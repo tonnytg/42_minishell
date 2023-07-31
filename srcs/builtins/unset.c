@@ -52,13 +52,6 @@ int	unset_adapter(t_cmds *cmds)
 	int		result;
 	char	*key;
 
-	int i = 0;
-
-	while (cmds->current->phrase_parsed[i] != NULL)
-	{
-		printf("unset: %s\n", cmds->current->phrase_parsed[i]);
-		i++;
-	}
 	key = cmds->current->phrase_parsed[1];
 	result = del_env_var(cmds, key);
 	return (result);
