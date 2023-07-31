@@ -1,0 +1,116 @@
+[0;32mminishell: > [0;0menv
+==3588== Invalid read of size 1
+==3588==    at 0x484ED16: strlen (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3588==    by 0x4933EE7: puts (ioputs.c:35)
+==3588==    by 0x10B27D: env_adapter (env.c:22)
+==3588==    by 0x10A9BA: exec_builtin (exec_builtin_cmd.c:61)
+==3588==    by 0x10A447: run_node (nodes.c:41)
+==3588==    by 0x10A044: execute_cmd (commands.c:69)
+==3588==    by 0x1095BB: minishell (main.c:52)
+==3588==    by 0x1096E1: main (main.c:78)
+==3588==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+==3588== 
+==3588== 
+==3588== Process terminating with default action of signal 11 (SIGSEGV)
+==3588==  Access not within mapped region at address 0x0
+==3588==    at 0x484ED16: strlen (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3588==    by 0x4933EE7: puts (ioputs.c:35)
+==3588==    by 0x10B27D: env_adapter (env.c:22)
+==3588==    by 0x10A9BA: exec_builtin (exec_builtin_cmd.c:61)
+==3588==    by 0x10A447: run_node (nodes.c:41)
+==3588==    by 0x10A044: execute_cmd (commands.c:69)
+==3588==    by 0x1095BB: minishell (main.c:52)
+==3588==    by 0x1096E1: main (main.c:78)
+==3588==  If you believe this happened as a result of a stack
+==3588==  overflow in your program's main thread (unlikely but
+==3588==  possible), you can try to increase the size of the
+==3588==  main thread stack using the --main-stacksize= flag.
+==3588==  The main thread stack size used in this run was 8388608.
+==3588== 4 bytes in 1 blocks are still reachable in loss record 3 of 85
+==3588==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3588==    by 0x10D6F3: ft_strdup (in /app/srcs/minishell)
+==3588==    by 0x10C65E: new_node_cmd (build_struct_to_exec.c:42)
+==3588==    by 0x10C91B: build_struct_to_exec (build_struct_to_exec.c:115)
+==3588==    by 0x10C26F: token_analysis (token_analysis.c:116)
+==3588==    by 0x1095A3: minishell (main.c:50)
+==3588==    by 0x1096E1: main (main.c:78)
+==3588== 
+==3588== 4 bytes in 1 blocks are still reachable in loss record 4 of 85
+==3588==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3588==    by 0x10D6F3: ft_strdup (in /app/srcs/minishell)
+==3588==    by 0x10A33D: prepare_phrase (interpreter.c:61)
+==3588==    by 0x10A387: init_interpreter (interpreter.c:69)
+==3588==    by 0x10A435: run_node (nodes.c:39)
+==3588==    by 0x10A044: execute_cmd (commands.c:69)
+==3588==    by 0x1095BB: minishell (main.c:52)
+==3588==    by 0x1096E1: main (main.c:78)
+==3588== 
+==3588== 4 bytes in 1 blocks are still reachable in loss record 5 of 85
+==3588==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3588==    by 0x10D6F3: ft_strdup (in /app/srcs/minishell)
+==3588==    by 0x10A1F7: parse_values_args (interpreter.c:35)
+==3588==    by 0x10A393: init_interpreter (interpreter.c:70)
+==3588==    by 0x10A435: run_node (nodes.c:39)
+==3588==    by 0x10A044: execute_cmd (commands.c:69)
+==3588==    by 0x1095BB: minishell (main.c:52)
+==3588==    by 0x1096E1: main (main.c:78)
+==3588== 
+==3588== 5 bytes in 1 blocks are still reachable in loss record 6 of 85
+==3588==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3588==    by 0x10D6F3: ft_strdup (in /app/srcs/minishell)
+==3588==    by 0x10C672: new_node_cmd (build_struct_to_exec.c:43)
+==3588==    by 0x10C91B: build_struct_to_exec (build_struct_to_exec.c:115)
+==3588==    by 0x10C26F: token_analysis (token_analysis.c:116)
+==3588==    by 0x1095A3: minishell (main.c:50)
+==3588==    by 0x1096E1: main (main.c:78)
+==3588== 
+==3588== 16 bytes in 1 blocks are still reachable in loss record 16 of 85
+==3588==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3588==    by 0x10CECC: ft_calloc (in /app/srcs/minishell)
+==3588==    by 0x109650: main (main.c:69)
+==3588== 
+==3588== 16 bytes in 1 blocks are still reachable in loss record 18 of 85
+==3588==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3588==    by 0x10CECC: ft_calloc (in /app/srcs/minishell)
+==3588==    by 0x10A0C3: parse_values_args (interpreter.c:22)
+==3588==    by 0x10A393: init_interpreter (interpreter.c:70)
+==3588==    by 0x10A435: run_node (nodes.c:39)
+==3588==    by 0x10A044: execute_cmd (commands.c:69)
+==3588==    by 0x1095BB: minishell (main.c:52)
+==3588==    by 0x1096E1: main (main.c:78)
+==3588== 
+==3588== 40 bytes in 1 blocks are still reachable in loss record 27 of 85
+==3588==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3588==    by 0x10CECC: ft_calloc (in /app/srcs/minishell)
+==3588==    by 0x10963A: main (main.c:68)
+==3588== 
+==3588== 96 bytes in 1 blocks are still reachable in loss record 35 of 85
+==3588==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3588==    by 0x10CECC: ft_calloc (in /app/srcs/minishell)
+==3588==    by 0x10C63B: new_node_cmd (build_struct_to_exec.c:40)
+==3588==    by 0x10C91B: build_struct_to_exec (build_struct_to_exec.c:115)
+==3588==    by 0x10C26F: token_analysis (token_analysis.c:116)
+==3588==    by 0x1095A3: minishell (main.c:50)
+==3588==    by 0x1096E1: main (main.c:78)
+==3588== 
+==3588== 112 bytes in 1 blocks are still reachable in loss record 36 of 85
+==3588==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3588==    by 0x109EF9: set_commands (commands.c:48)
+==3588==    by 0x1096D5: main (main.c:77)
+==3588== 
+==3588== 120 bytes in 1 blocks are still reachable in loss record 37 of 85
+==3588==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3588==    by 0x10CECC: ft_calloc (in /app/srcs/minishell)
+==3588==    by 0x109698: main (main.c:73)
+==3588== 
+==3588== 136 bytes in 1 blocks are still reachable in loss record 39 of 85
+==3588==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3588==    by 0x10CECC: ft_calloc (in /app/srcs/minishell)
+==3588==    by 0x109627: main (main.c:67)
+==3588== 
+==3588== 1,869 bytes in 13 blocks are still reachable in loss record 57 of 85
+==3588==    at 0x4848899: malloc (in /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so)
+==3588==    by 0x10D6F3: ft_strdup (in /app/srcs/minishell)
+==3588==    by 0x10BCFA: set_envs (envs.c:70)
+==3588==    by 0x1096C9: main (main.c:76)
+==3588== 

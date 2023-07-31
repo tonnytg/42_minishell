@@ -12,8 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-#include "../../includes/minishell.h"
-
 void	delete_envs(t_cmds *cmds, char **envs, char *key)
 {
 	int	i;
@@ -23,15 +21,9 @@ void	delete_envs(t_cmds *cmds, char **envs, char *key)
 	j = 0;
 	while (cmds->envs[i] != NULL)
 	{
-		printf("key: '%s'\n", key);
-		printf("key size: %ld\n", strlen(key));
-		printf("check with: %s\n", cmds->envs[i]);
-		if (ft_strncmp(cmds->envs[i], key, strlen(key)) == 0)
-		{
-			write(1, key, strlen(key));
-			printf("Removendo %s\n", cmds->envs[i]);
+		if (ft_strncmp(cmds->envs[i], key, ft_strlen(key)) == 0
+			&& cmds->envs[i][ft_strlen(key)] == '=')
 			i++;
-		}
 		else
 		{
 			envs[j] = strdup(cmds->envs[i]);
@@ -57,13 +49,10 @@ int	del_env_var(t_cmds *cmds, char *key)
 
 int	unset_adapter(t_cmds *cmds)
 {
-	char	**args;
 	int		result;
 	char	*key;
 
-	args = ft_split(cmds->current->full_args, '=');
-	key = args[0];
+	key = cmds->current->phrase_parsed[1];
 	result = del_env_var(cmds, key);
-	free_arr(args);
 	return (result);
 }
