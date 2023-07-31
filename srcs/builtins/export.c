@@ -64,24 +64,14 @@ int	set_env_var(t_cmds *cmds, char *key, char *value)
 int	export_adapter(t_cmds *cmds)
 {
 	char	**args;
-	char	**env;
 	int		result;
 
-	env = cmds->envs;
-	if (env == NULL && cmds->current->full_args == NULL)
-	{
-		printf("returning\n");
+	if (cmds->envs == NULL && cmds->current->full_args == NULL)
 		return (1);
-	}
 	if (cmds->current->full_args == NULL)
-	{
-		while (*env)
-		{
-			printf("%s\n", *env);
-			env++;
-		}
-		return (0);
-	}
+		env_adapter(cmds);
+	if (cmds->current->phrase_parsed[1] == NULL)
+		return (1);
 	args = ft_split(cmds->current->phrase_parsed[1], '=');
 	if (args[0] == NULL || args[1] == NULL)
 	{
