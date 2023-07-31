@@ -192,6 +192,7 @@ EOF
 function deleteTests() {
   rm -rf valgrind_output_*
   rm -rf reports
+  rm -rf report.log
 }
 
 function ReportMove() {

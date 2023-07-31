@@ -74,6 +74,12 @@ int	export_adapter(t_cmds *cmds)
 		return (0);
 	}
 	args = ft_split(cmds->current->phrase_parsed[1], '=');
+	if (args[0] == NULL || args[1] == NULL)
+	{
+		printf("minishell: export: `%s': not a valid identifier\n", args[0]);
+		free_arr(args);
+		return (1);
+	}
 	result = set_env_var(cmds, args[0], args[1]);
 	free_arr(args);
 	return (result);
