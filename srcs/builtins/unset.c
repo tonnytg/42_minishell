@@ -52,6 +52,8 @@ int	clean_envs(t_cmds *cmds)
 	int	i;
 
 	i = 0;
+	if (cmds->envs == NULL)
+		return (1);
 	while (cmds->envs[i] != NULL)
 	{
 		free(cmds->envs[i]);
