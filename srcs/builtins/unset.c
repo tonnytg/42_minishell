@@ -47,7 +47,7 @@ int	del_env_var(t_cmds *cmds, char *key)
 	return (0);
 }
 
-int clean_envs(t_cmds *cmds)
+int	clean_envs(t_cmds *cmds)
 {
 	int	i;
 
