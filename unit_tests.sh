@@ -5,37 +5,37 @@ function tests() {
   make debug >> /dev/null
 
 
-  COMMAND="exit1"
+  export COMMAND="exit1"
   echo $COMMAND
   valgrind --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp srcs/minishell > valgrind_output_${COMMAND}.log 2>&1 << EOF
 exit
 EOF
 
-  COMMAND="exit1"
+  export COMMAND="exit2"
   echo $COMMAND
   valgrind --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp srcs/minishell > valgrind_output_${COMMAND}.log 2>&1 << EOF
 exit
-EOF
-
-  COMMAND="exit2"
-  echo $COMMAND
-  valgrind --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp srcs/minishell > valgrind_output_${COMMAND}.log 2>&1 << EOF
-exit 1
 EOF
 
   export COMMAND="exit3"
   echo $COMMAND
   valgrind --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp srcs/minishell > valgrind_output_${COMMAND}.log 2>&1 << EOF
-exit  $PWD
+exit 1
 EOF
 
   export COMMAND="exit4"
   echo $COMMAND
   valgrind --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp srcs/minishell > valgrind_output_${COMMAND}.log 2>&1 << EOF
-exit a
+exit  $PWD
 EOF
 
   export COMMAND="exit5"
+  echo $COMMAND
+  valgrind --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp srcs/minishell > valgrind_output_${COMMAND}.log 2>&1 << EOF
+exit a
+EOF
+
+  export COMMAND="exit6"
   echo $COMMAND
   valgrind --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp srcs/minishell > valgrind_output_${COMMAND}.log 2>&1 << EOF
 mkdir p

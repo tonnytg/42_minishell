@@ -42,6 +42,8 @@ void	free_envs(t_cmds *cmds)
 	int	i;
 
 	i = 0;
+	if (cmds->envs == NULL)
+		return ;
 	while (cmds->envs[i] != NULL)
 	{
 		free(cmds->envs[i]);
