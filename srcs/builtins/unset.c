@@ -47,11 +47,28 @@ int	del_env_var(t_cmds *cmds, char *key)
 	return (0);
 }
 
+int	clean_envs(t_cmds *cmds)
+{
+	int	i;
+
+	i = 0;
+	while (cmds->envs[i] != NULL)
+	{
+		free(cmds->envs[i]);
+		i++;
+	}
+	free(cmds->envs);
+	cmds->envs = NULL;
+	return (0);
+}
+
 int	unset_adapter(t_cmds *cmds)
 {
 	int		result;
 	char	*key;
 
+	if (cmds->current->phrase_parsed[1] == NULL)
+		clean_envs(cmds);
 	key = cmds->current->phrase_parsed[1];
 	result = del_env_var(cmds, key);
 	return (result);
