@@ -55,6 +55,8 @@ int	count_envp(char **envp)
 	int	i;
 
 	i = 0;
+	if (envp == NULL)
+		return (0);
 	while (envp[i] != NULL)
 		i++;
 	return (i);

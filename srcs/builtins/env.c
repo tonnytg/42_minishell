@@ -17,9 +17,14 @@ int	env_adapter(t_cmds *cmds)
 	int	i;
 
 	i = 0;
-	while (cmds->envs != NULL)
+	if (cmds->envs == NULL)
+		return (1);
+	while (cmds->envs[i] != NULL)
 	{
-		printf("%s\n", cmds->envs[i]);
+		if (cmds->envs[i] != NULL)
+		{
+			printf("%s\n", cmds->envs[i]);
+		}
 		i++;
 	}
 	return (0);

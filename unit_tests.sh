@@ -108,6 +108,14 @@ export | grep NAME
 exit
 EOF
 
+  export COMMAND="export3"
+  echo $COMMAND
+  valgrind --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp srcs/minishell > valgrind_output_${COMMAND}.txt 2>&1 << EOF
+export NAME
+export | grep NAME
+exit
+EOF
+
   export COMMAND="unset1"
   echo $COMMAND
   valgrind --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp srcs/minishell > valgrind_output_${COMMAND}.txt 2>&1 << EOF
@@ -115,6 +123,17 @@ export NAME="Antonio"
 export | grep NAME
 unset NAME
 export | grep NAME
+exit
+EOF
+
+  export COMMAND="unset1"
+  echo $COMMAND
+  valgrind --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp srcs/minishell > valgrind_output_${COMMAND}.txt 2>&1 << EOF
+export NAME="Antonio"
+export NAME2="Antonio2"
+export
+unset NAME2
+export
 exit
 EOF
 
