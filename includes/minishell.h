@@ -75,7 +75,6 @@ typedef struct s_exit_code
 {
 	int		code;
 	char	*msg;
-	char	*last_cmd;
 }	t_exit_code;
 
 /* Read Keyboard command and arguments */

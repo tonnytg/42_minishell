@@ -17,7 +17,6 @@ void	free_commands(t_cmds *cmds)
 	if (cmds->input->datacpy != NULL)
 		free(cmds->input->datacpy);
 	free(cmds->input);
-	free(cmds->exit_code.last_cmd);
 	free(cmds->arr_cmds);
 	free(cmds->cmd_finded);
 	free(cmds);
@@ -68,7 +67,6 @@ int	main(int argc, char **argv, char **envp)
 	cmds->input = ft_calloc(1, sizeof(t_input));
 	cmds->cmd_finded = ft_calloc(1, sizeof(t_command));
 	cmds->exit_code.code = 0;
-	cmds->exit_code.last_cmd = NULL;
 	cmds->signal_exit = -1;
 	cmds->envs = ft_calloc(count_envp(envp) + 2, sizeof(char *));
 	cmds->has_quote = 0;
