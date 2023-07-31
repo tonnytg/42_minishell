@@ -206,7 +206,16 @@ function deleteTests() {
 function ReportMove() {
   echo "Moving files to $1"
   mkdir -p reports
-  mv valgrind_output_* reports
+  result=$(ls -1 valgrind_output_* | wc -l)
+  if [ $result -gt 0 ]; then
+    echo "Moving files to $1"
+    mv -v valgrind_output_* reports
+  else
+    echo "No files to move, this means that there are no errors!"
+    echo "[WINNER] Go to sleep or another Taks! [WINNER]"
+    return
+  fi
+
 }
 
 function reportTests() {
