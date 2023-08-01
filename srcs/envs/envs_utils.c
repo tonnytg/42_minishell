@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   envs_utils.c                                             :+:      :+:    :+:   */
+/*   envs_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: antthoma <antthoma@student.42sp.org.br>    +#+  +:+       +#+        */
 /*       calbert  <calbert@student.42sp.org.br>   +#+#+#+#+#+   +#+           */
@@ -31,4 +31,3 @@ char	*getvarenv(t_cmds *cmds, char *var)
 	}
 	return (NULL);
 }
-
