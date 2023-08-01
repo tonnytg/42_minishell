@@ -21,11 +21,11 @@ FILES	= \
 			srcs/commands/commands.c				\
 			srcs/commands/interpreter.c				\
 			srcs/commands/nodes.c					\
-			srcs/commands/path.c					\
 			srcs/commands/type_commands.c 			\
 			srcs/commands/exec_builtin_cmd.c 		\
 			srcs/commands/exec_external_cmd.c 		\
 			srcs/commands/pipes.c 					\
+			srcs/path/path.c						\
 			srcs/builtins/cd.c						\
 			srcs/builtins/echo.c					\
 			srcs/builtins/env.c						\
