@@ -43,7 +43,8 @@ void	run_node(t_cmds *cmds)
 			exec_external(cmds);
 		else
 		{
-			printf("minishell: %s: command not found\n", cmds->input->cmd_name);
+			printf("minishell: %s: command not found\n",
+				cmds->current->cmd_name);
 			cmds->exit_code.code = 127;
 		}
 		free_arr(cmds->current->phrase_parsed);

@@ -12,21 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-void	free_split(char **split_array)
-{
-	int	i;
-
-	i = 0;
-	if (split_array == NULL)
-		return ;
-	while (split_array[i] != NULL)
-	{
-		free(split_array[i]);
-		i++;
-	}
-	free(split_array);
-}
-
 char	*build_complete_path(t_cmds *cmds, char *path, char *cmd_name)
 {
 	char	*path_complete;
@@ -55,23 +40,26 @@ int	check_access(char *path_complete)
 char	*get_fullpath(t_cmds *cmds)
 {
 	char	**path;
-	int		i;
-	char	*path_complete;
+	char	*result;
 	int		return_access;
+	int		i;
 
-	path = ft_split(getenv("PATH"), ':');
+	result = getvarenv(cmds, "PATH");
+	printf("result: '%s'\n", result);
+	path = ft_split(result, ':');
 	i = 0;
-	while (path[i])
+	free(result);
+	while (path != NULL && path[i])
 	{
-		path_complete = build_complete_path(cmds, path[i],
+		result = build_complete_path(cmds, path[i],
 				cmds->current->cmd_name);
-		return_access = check_access(path_complete);
+		return_access = check_access(result);
 		if (return_access)
 		{
 			free_split(path);
-			return (path_complete);
+			return (result);
 		}
-		free(path_complete);
+		free(result);
 		i++;
 	}
 	free_split(path);

@@ -4,6 +4,15 @@ function tests() {
   echo "Start Unit Commands Tests"
   make debug >> /dev/null
 
+#------ Commands below ------
+  export COMMAND="invalidCommand"
+  echo $COMMAND
+  valgrind --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp srcs/minishell > valgrind_output_${COMMAND}.log 2>&1 << EOF
+laranja
+pera
+exit
+EOF
+
   export COMMAND="exit1"
   echo $COMMAND
   valgrind --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp srcs/minishell > valgrind_output_${COMMAND}.log 2>&1 << EOF
@@ -196,6 +205,20 @@ EOF
 exit
 EOF
 }
+
+  export COMMAND="Environment1"
+  echo $COMMAND
+  valgrind --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp srcs/minishell > valgrind_output_${COMMAND}.log 2>&1 << EOF
+env
+mkdir p
+unset PATH
+mkdir
+export PATH="/usr/bin"
+mkdir p
+env
+exit
+EOF
+
 
 function deleteTests() {
   rm -rf valgrind_output_*
