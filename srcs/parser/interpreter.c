@@ -12,6 +12,20 @@
 
 #include "../../includes/minishell.h"
 
+char	*parse_to_folder(char *str)
+{
+	char	*dir;
+	char	*temp_str;
+	char	*result;
+
+	dir = getcwd(NULL, 0);
+	temp_str = remove_string(str, '.');
+	result = ft_strjoin(dir, temp_str);
+	free(dir);
+	free(temp_str);
+	return (result);
+}
+
 void	parse_values_args(t_cmds *cmds)
 {
 	int		i;
@@ -31,6 +45,8 @@ void	parse_values_args(t_cmds *cmds)
 			else
 				cmds->current->phrase_parsed[i] = get_env(words[i]);
 		}
+		else if (ft_strncmp(words[i], ".", 1) == 0)
+			cmds->current->phrase_parsed[i] = parse_to_folder(words[i]);
 		else
 			cmds->current->phrase_parsed[i] = ft_strdup(words[i]);
 		i++;

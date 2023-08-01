@@ -66,12 +66,28 @@ int	count_envp(char **envp)
 
 void	set_envs(char **envp, t_cmds *cmds)
 {
-	int	i;
+	int		i;
+	int		shlvl;
+	char	*shlvl_str;
+	char	*temp_itoa;
+	char	**temp;
 
 	i = 0;
 	while (envp[i] != NULL)
 	{
-		cmds->envs[i] = ft_strdup(envp[i]);
+		if (ft_strncmp(envp[i], "SHLVL", 5) == 0)
+		{
+			temp = ft_split(envp[i], '=');
+			shlvl = ft_atoi(temp[1]);
+			temp_itoa = ft_itoa(shlvl + 1);
+			shlvl_str = ft_strjoin("SHLVL=", temp_itoa);
+			cmds->envs[i] = ft_strdup(shlvl_str);
+			free_arr(temp);
+			free(shlvl_str);
+			free(temp_itoa);
+		}
+		else
+			cmds->envs[i] = ft_strdup(envp[i]);
 		i++;
 	}
 	cmds->envs[i] = NULL;

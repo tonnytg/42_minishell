@@ -92,7 +92,7 @@ v: all
 
 docker:
 	docker build -t minishell .
-	docker run -it --name minishell -v $(PWD):/app minishell
+	docker run -it --rm --name minishell -v $(PWD):/app minishell /bin/bash
 
 clean:
 	make -C $(LIBS) clean
