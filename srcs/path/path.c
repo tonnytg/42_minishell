@@ -45,7 +45,6 @@ char	*get_fullpath(t_cmds *cmds)
 	int		i;
 
 	result = getvarenv(cmds, "PATH");
-	printf("result: '%s'\n", result);
 	path = ft_split(result, ':');
 	i = 0;
 	free(result);
