@@ -66,11 +66,11 @@ int	count_envp(char **envp)
 
 void	set_envs(char **envp, t_cmds *cmds)
 {
-	int	i;
-	int	shlvl;
-	char *shlvl_str;
-	char *temp_itoa;
-	char **temp;
+	int		i;
+	int		shlvl;
+	char	*shlvl_str;
+	char	*temp_itoa;
+	char	**temp;
 
 	i = 0;
 	while (envp[i] != NULL)

@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-void free_current_cmds(t_cmds *cmds)
+void	free_current_cmds(t_cmds *cmds)
 {
 	free(cmds->current->cmd_name);
 	free(cmds->current->full_args);
