@@ -60,6 +60,5 @@ dkms.conf
 .idea
 minishell
 includes/libft.h
-Dockerfile
 error_42_minishell_v0-0-2.log
 minishell_tester.sh

@@ -79,6 +79,8 @@ char	**ft_split(char const *s, char c)
 	char	**arr;
 	int		total_words;
 
+	if (!s)
+		return (NULL);
 	total_words = ft_count_words(s, c);
 	arr = malloc((total_words + 1) * sizeof(char *));
 	if (!arr)
