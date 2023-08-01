@@ -12,6 +12,18 @@
 
 #include "../../includes/minishell.h"
 
+void free_current_cmds(t_cmds *cmds)
+{
+	free(cmds->current->cmd_name);
+	free(cmds->current->full_args);
+	free_arr(cmds->current->phrase_parsed);
+	if (cmds->current->phrase != NULL)
+	{
+		free(cmds->current->phrase);
+		cmds->current->phrase = NULL;
+	}
+}
+
 int	count_nodes(t_cmds *cmds)
 {
 	t_cmd_node	*current;
@@ -35,8 +47,8 @@ void	run_node(t_cmds *cmds)
 	type_command = -1;
 	if (ft_strcmp(cmds->current->type, "WORD") == 0)
 	{
-		type_command = check_type_command(cmds);
 		init_interpreter(cmds);
+		type_command = check_type_command(cmds);
 		if (type_command == 0)
 			exec_builtin(cmds);
 		else if (type_command == 1)
@@ -47,11 +59,6 @@ void	run_node(t_cmds *cmds)
 				cmds->current->cmd_name);
 			cmds->exit_code.code = 127;
 		}
-		free_arr(cmds->current->phrase_parsed);
-		if (cmds->current->phrase != NULL)
-		{
-			free(cmds->current->phrase);
-			cmds->current->phrase = NULL;
-		}
+		free_current_cmds(cmds);
 	}
 }

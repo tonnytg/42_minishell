@@ -56,8 +56,16 @@ void	set_commands(t_cmds *cmds)
 
 void	load_commands(t_cmds *cmds)
 {
-	cmds->current->cmd_name = ft_strtok(cmds->current->phrase_temp, " ", 1);
-	cmds->current->full_args = ft_strtok(NULL, "", 0);
+//	cmds->current->cmd_name = ft_strtok(cmds->current->phrase_temp, " ", 1);
+//	cmds->current->full_args = ft_strtok(NULL, "", 0);
+
+	if (cmds->current->phrase_parsed != NULL)
+	{
+		if (cmds->current->phrase_parsed[0] != NULL)
+			cmds->current->cmd_name = ft_strdup(cmds->current->phrase_parsed[0]);
+		if (cmds->current->phrase_parsed[1] != NULL)
+			cmds->current->full_args = concatenate_strings(cmds->current->phrase_parsed + 1);
+	}
 }
 
 void	execute_cmd(t_cmds *cmds)
