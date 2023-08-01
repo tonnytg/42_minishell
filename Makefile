@@ -19,12 +19,11 @@ FILES	= \
 			srcs/read_keyboard/input.c				\
 			srcs/read_keyboard/check_data_input.c	\
 			srcs/commands/commands.c				\
-			srcs/commands/interpreter.c				\
 			srcs/commands/nodes.c					\
 			srcs/commands/type_commands.c 			\
 			srcs/commands/exec_builtin_cmd.c 		\
 			srcs/commands/exec_external_cmd.c 		\
-			srcs/commands/pipes.c 					\
+			srcs/pipes/pipes.c 						\
 			srcs/path/path.c						\
 			srcs/builtins/cd.c						\
 			srcs/builtins/echo.c					\
@@ -36,6 +35,7 @@ FILES	= \
 			srcs/signals/signals.c					\
 			srcs/envs/envs.c						\
 			srcs/envs/envs_utils.c					\
+			srcs/parser/interpreter.c				\
 			srcs/parser/token_analysis.c 			\
 			srcs/parser/syntax_analysis.c 			\
 			srcs/parser/build_struct_to_exec.c 		\

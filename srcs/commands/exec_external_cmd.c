@@ -28,6 +28,7 @@ void	exec_external(t_cmds *cmds)
 			perror("fork");
 		if (pid == 0)
 		{
+			printf("[exec_external] - path: '%s'\n", path);
 			execve(path, cmds->current->phrase_parsed, cmds->envs);
 			perror("execve");
 		}
