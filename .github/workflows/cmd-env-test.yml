@@ -1,4 +1,4 @@
-name: Minishell Command echo Test
+name: Minishell Command env Test
 
 on:
   pull_request:
@@ -15,50 +15,56 @@ jobs:
       run: sudo apt-get install libreadline-dev
     - name: make
       run: make      
-    - name: test command echo 1
+    - name: test command env 1
       run: |
         valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
-        echo
-        echo a b c
-        echo -n a b c
-        echo
+        env
         exit
         EOF
 
-    - name: test command echo Hello World
+    - name: test command env 2
       run: |
         valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
-        echo "Hello World"
-        echo
-        echo $PWD
-        echo $?
-        echo $?
-        echo
+        env 1
         exit
         EOF
 
-    - name: test command echo Hello World
+    - name: test command env 3
       run: |
         valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
-        echo "Olá eu estou na pasta ${PWD}"
-        echo "Olá eu estou na pasta $PWD"
-        echo
-        echo $PWD
-        echo $?
-        echo $?
-        echo
+        env a
         exit
         EOF
 
-    - name: test command echo Hello World
+    - name: test command env 4
       run: |
         valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
-        echo 'Olá eu estou na pasta ${PWD}'
-        echo 'Olá eu estou na pasta $PWD'
-        echo
-        echo $PWD
-        echo $?
-        echo $?
-        echo
+        mkdir p
+        mkdir p
+        env $?
+        exit
+        EOF    
+
+    - name: test command env 5
+      run: |
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
+        env env
+        exit
+        EOF     
+
+    - name: test command env 6
+      run: |
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
+        env
+        env
+        exit
+        EOF      
+
+    - name: test command env 7
+      run: |
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
+        env
+        
+        env
         exit
         EOF

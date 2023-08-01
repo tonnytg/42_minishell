@@ -1,4 +1,4 @@
-name: Minishell Command echo Test
+name: Minishell Command pwd Test
 
 on:
   pull_request:
@@ -15,50 +15,41 @@ jobs:
       run: sudo apt-get install libreadline-dev
     - name: make
       run: make      
-    - name: test command echo 1
+    - name: test command pwd 1
       run: |
         valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
-        echo
-        echo a b c
-        echo -n a b c
-        echo
+        pwd
         exit
         EOF
 
-    - name: test command echo Hello World
+    - name: test command pwd 2
       run: |
         valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
-        echo "Hello World"
-        echo
-        echo $PWD
-        echo $?
-        echo $?
-        echo
+        pwd a
         exit
-        EOF
+        EOF     
 
-    - name: test command echo Hello World
+    - name: test command pwd 3
       run: |
         valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
-        echo "Olá eu estou na pasta ${PWD}"
-        echo "Olá eu estou na pasta $PWD"
-        echo
-        echo $PWD
-        echo $?
-        echo $?
-        echo
+        pwd pwd
         exit
-        EOF
+        EOF   
 
-    - name: test command echo Hello World
+    - name: test command pwd 4
       run: |
         valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
-        echo 'Olá eu estou na pasta ${PWD}'
-        echo 'Olá eu estou na pasta $PWD'
-        echo
-        echo $PWD
-        echo $?
-        echo $?
-        echo
+        pwd
+        pwd
+        pwd
+        exit
+        EOF          
+
+    - name: test command pwd 5
+      run: |
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
+        pwd
+         
+        pwd 1
         exit
         EOF
