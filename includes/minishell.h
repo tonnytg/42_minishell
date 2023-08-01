@@ -186,6 +186,7 @@ int			count_envp(char **envp);
 int			append_envs(t_cmds *cmds, char *name, char *value);
 void		free_envs(t_cmds *cmds);
 char		*get_env(char *str);
+char		*getvarenv(t_cmds *cmds, char *var);
 
 /* Syntax Analysis */
 void		syntax_analysis(t_cmds *cmds);

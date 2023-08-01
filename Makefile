@@ -35,6 +35,7 @@ FILES	= \
 			srcs/builtins/unset.c					\
 			srcs/signals/signals.c					\
 			srcs/envs/envs.c						\
+			srcs/envs/envs_utils.c					\
 			srcs/parser/token_analysis.c 			\
 			srcs/parser/syntax_analysis.c 			\
 			srcs/parser/build_struct_to_exec.c 		\

@@ -12,41 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-char	*getvarenv(t_cmds *cmds, char *var)
-{
-	char	*found_env;
-	int		i;
-
-	i = 0;
-	if (cmds->envs == NULL)
-		return (NULL);
-	while (cmds->envs[i] != NULL)
-	{
-		if (ft_strncmp(cmds->envs[i], var, ft_strlen(var)) == 0)
-		{
-			found_env = ft_strdup(cmds->envs[i]);
-			return (found_env);
-		}
-		i++;
-	}
-	return (NULL);
-}
-
-void	free_split(char **split_array)
-{
-	int	i;
-
-	i = 0;
-	if (split_array == NULL)
-		return ;
-	while (split_array[i] != NULL)
-	{
-		free(split_array[i]);
-		i++;
-	}
-	free(split_array);
-}
-
 char	*build_complete_path(t_cmds *cmds, char *path, char *cmd_name)
 {
 	char	*path_complete;
@@ -75,40 +40,26 @@ int	check_access(char *path_complete)
 char	*get_fullpath(t_cmds *cmds)
 {
 	char	**path;
-	int		i;
-	char	*path_complete;
+	char	*result;
 	int		return_access;
-	char	*value_path;
+	int		i;
 
-	// TODO: pegar o cmds->envs
+	result = getvarenv(cmds, "PATH");
+	printf("result: '%s'\n", result);
+	path = ft_split(result, ':');
 	i = 0;
-	if (cmds->envs == NULL)
-		return (NULL);
-	value_path = NULL;
-	while (cmds->envs[i])
+	free(result);
+	while (path != NULL && path[i])
 	{
-		if (ft_strncmp(cmds->envs[i], "PATH=", 5) == 0)
-			value_path = ft_strdup(cmds->envs[i] + 5);
-		i++;
-	}
-	path = ft_split(value_path, ':');
-	if (path == NULL)
-		return (NULL);
-	i = 0;
-	while (path[i])
-	{
-		printf("[get_fullpath] path: '%s'\n", path[i]);
-		path_complete = build_complete_path(cmds, path[i],
+		result = build_complete_path(cmds, path[i],
 				cmds->current->cmd_name);
-		return_access = check_access(path_complete);
-		printf("[get_fullpath] path_complete: '%s'\n", path_complete);
-		printf("[get_fullpath] return_access: '%d'\n", return_access);
+		return_access = check_access(result);
 		if (return_access)
 		{
 			free_split(path);
-			return (path_complete);
+			return (result);
 		}
-		free(path_complete);
+		free(result);
 		i++;
 	}
 	free_split(path);

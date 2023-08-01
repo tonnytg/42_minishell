@@ -49,3 +49,18 @@ char	*concatenate_strings(char **arr)
 	result[--j] = '\0';
 	return (result);
 }
+
+void	free_split(char **split_array)
+{
+	int	i;
+
+	i = 0;
+	if (split_array == NULL)
+		return ;
+	while (split_array[i] != NULL)
+	{
+		free(split_array[i]);
+		i++;
+	}
+	free(split_array);
+}
