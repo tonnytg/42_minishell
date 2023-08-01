@@ -90,6 +90,10 @@ va:
 v: all
 	valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all --quiet ./minishell
 
+docker:
+	docker build -t minishell .
+	docker run -it --name minishell -v $(PWD):/app minishell
+
 clean:
 	make -C $(LIBS) clean
 	rm -f $(OBJS)
