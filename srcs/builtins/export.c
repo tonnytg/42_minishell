@@ -85,6 +85,7 @@ char	*convert_values(const char *value)
 				arr[a] = ft_strdup(converted);
 				a++;
 			}
+			free(converted);
 			w = 0;
 		}
 		if (trigger == 1)
@@ -150,6 +151,7 @@ char	*convert_values(const char *value)
 
 	char *converted_arr = concatenate_strings(arr, ':');
 	printf("converted_arr: '%s'\n", converted_arr);
+	free_arr(arr);
 	return(converted_arr);
 }
 
@@ -168,6 +170,7 @@ int	set_env_var(t_cmds *cmds, char *key, char *value)
 	envs = ft_calloc(count_arr(cmds->envs) + 2, sizeof(char *));
 	new_key = ft_strjoin(key, "=");
 	key_and_value = ft_strjoin(new_key, new_value);
+	free(new_value);
 	printf("[set_env_var] key_and_value: %s\n", key_and_value);
 	save_envs(cmds, envs, key, key_and_value);
 	free(new_key);
