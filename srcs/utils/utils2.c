@@ -27,13 +27,15 @@ int	count_all_len_in_arr(char **arr)
 	return (letters + spaces);
 }
 
-char	*concatenate_strings(char **arr)
+char	*concatenate_strings(char **arr, char c)
 {
 	char	*result;
 	int		total_len;
 	int		i;
 	int		j;
 
+	if (c == 0)
+		c = ' ';
 	total_len = count_all_len_in_arr((char **)arr);
 	if (arr == NULL)
 		return (NULL);
@@ -43,7 +45,7 @@ char	*concatenate_strings(char **arr)
 	while (arr[i] != NULL)
 	{
 		j += ft_strlcpy(&result[j], arr[i], total_len - j);
-		result[j++] = ' ';
+		result[j++] = c;
 		i++;
 	}
 	result[--j] = '\0';

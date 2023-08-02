@@ -185,7 +185,7 @@ void		set_envs(char **envp, t_cmds *cmds);
 int			count_envp(char **envp);
 int			append_envs(t_cmds *cmds, char *name, char *value);
 void		free_envs(t_cmds *cmds);
-char		*get_env(char *str);
+char		*get_env(char *str, int config);
 char		*getvarenv(t_cmds *cmds, char *var);
 
 /* Syntax Analysis */
@@ -213,7 +213,7 @@ int			count_arr(char **arr);
 
 /* Minishell Utils minishell_utils2.c */
 int			count_all_len_in_arr(char **arr);
-char		*concatenate_strings(char **arr);
+char		*concatenate_strings(char **arr, char c);
 
 /* Minishell  main.c */
 int			minishell(t_cmds *cmds);

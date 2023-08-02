@@ -63,7 +63,7 @@ void	load_commands(t_cmds *cmds)
 					cmds->current->phrase_parsed[0]);
 		if (cmds->current->phrase_parsed[1] != NULL)
 			cmds->current->full_args = concatenate_strings(
-					cmds->current->phrase_parsed + 1);
+					cmds->current->phrase_parsed + 1, 0);
 	}
 }
 

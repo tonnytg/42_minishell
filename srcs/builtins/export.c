@@ -43,67 +43,114 @@ void	save_envs(t_cmds *cmds, char **envs, char *key, char *key_and_value)
 
 char	*convert_values(const char *value)
 {
-	int i;
-	int	j;
-	int k;
-	int	trigger;
+	int i = 0;
+	int r = 0;
+	int w = 0;
+	int a = 0;
+	int trigger = 0;
+	int rest_active = 0;
+	char *converted;
+	char rest[256];
 	char word[256];
-	char **arr_str;
 	char **arr;
 
-	i = 0;
-	j = 0;
-	k = 0;
-	trigger = 0;
-	arr_str = ft_calloc(256, sizeof(char *) + 3);
-	arr = ft_calloc(256, sizeof(char *) + 3);
-	while (value[i] != '\0')
+	arr = ft_calloc(256, sizeof(char *) + 5);
+	while (value[i] != '\0') // export PATH=$HOME:$PATH:/opt
 	{
-		if (value[i] == '$' && trigger == 0)
+		if (value[i] == '$')
 		{
+			if (rest_active == 1)
+			{
+				rest_active = 0;
+				rest[r] = '\0';
+				printf("[1] - rest: %s\n", rest);
+				arr[a] = ft_strdup(rest);
+				a++;
+				r = 0;
+			}
 			trigger = 1;
+			printf("trigger activated\n");
 			i++;
 		}
-		if (value[i] == '$' && trigger == 1)
-		{
-			word[j++] = '\0';
-			arr_str[k] = ft_strdup(word);
-			k++;
-			j = 0;
-			trigger = 1;
-			i++;
-		}
-		if (value[i] == ' ' || value[i] == ':')
+		if (trigger == 1 && (value[i] == ':' || value[i] == ' '))
 		{
 			trigger = 0;
-			i++;
+			printf("trigger deactivated\n");
+			word[w] = '\0';
+			printf("[1] - word: %s\n", word);
+			converted = get_env(word, 0);
+			if (converted != NULL)
+			{
+				printf("[1] - converted - '%s'\n", converted);
+				arr[a] = ft_strdup(converted);
+				a++;
+			}
+			w = 0;
 		}
 		if (trigger == 1)
 		{
-			if (value[i] != '$')
+			printf("[1] - word letter: %c\n", value[i]);
+			word[w] = value[i];
+			w++;
+		}
+		if (trigger == 0 && value[i] != '$')
+		{
+			if (value[i] != ':')
 			{
-				word[j] = value[i];
-				j++;
+				rest_active = 1;
+				printf("[2] - rest letter: %c\n", value[i]);
+				rest[r] = value[i];
+				r++;
+			}
+			else if (value[i] == ':' && rest_active == 1)
+			{
+				rest_active = 0;
+				rest[r] = '\0';
+				printf("[2] - rest: %s\n", rest);
+				arr[a] = ft_strdup(rest);
+				a++;
+				r = 0;
 			}
 		}
 		i++;
 	}
-	word[j + 1] = '\0';
-	arr_str[k] = ft_strdup(word);
-	k++;
-	arr_str[k] = NULL;
-	i = 0;
-	while (arr_str[i] != NULL)
+	if (rest_active == 1)
 	{
-		printf("arr_str[%d]: %s\n", i, arr_str[i]);
-		arr[i] = get_env(arr_str[i]);
-		printf("arr[%d]: %s\n", i, arr[i]);
+		rest_active = 0;
+		rest[r] = '\0';
+		printf("[2] - rest: %s\n", rest);
+		arr[a] = ft_strdup(rest);
+		a++;
+		r = 0;
+	}
+
+	if (trigger == 1)
+	{
+		trigger = 0;
+		printf("trigger deactivated\n");
+		word[w] = '\0';
+		printf("[1] - word: %s\n", word);
+		converted = get_env(word, 0);
+		if (converted != NULL)
+		{
+			printf("[1] - converted - '%s'\n", converted);
+			arr[a] = ft_strdup(converted);
+			a++;
+		}
+		w = 0;
+	}
+	arr[a] = NULL;
+
+	i = 0;
+	while (arr[i] != NULL)
+	{
+		printf("arr[%d]: '%s'\n", i, arr[i]);
 		i++;
 	}
-	char *result = concatenate_strings(arr);
-	free_arr(arr_str);
-	printf("result: %s\n", result);
-	return(result);
+
+	char *converted_arr = concatenate_strings(arr, ':');
+	printf("converted_arr: '%s'\n", converted_arr);
+	return(converted_arr);
 }
 
 int	set_env_var(t_cmds *cmds, char *key, char *value)
@@ -120,7 +167,7 @@ int	set_env_var(t_cmds *cmds, char *key, char *value)
 		return (1);
 	envs = ft_calloc(count_arr(cmds->envs) + 2, sizeof(char *));
 	new_key = ft_strjoin(key, "=");
-	key_and_value = ft_strjoin(new_key, value);
+	key_and_value = ft_strjoin(new_key, new_value);
 	printf("[set_env_var] key_and_value: %s\n", key_and_value);
 	save_envs(cmds, envs, key, key_and_value);
 	free(new_key);
