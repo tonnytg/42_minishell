@@ -48,6 +48,8 @@ int	minishell(t_cmds *cmds)
 			continue ;
 		token_analysis(cmds);
 		syntax_analysis(cmds);
+		connect_nodes_with_pipes(cmds);
+		set_strategy(cmds);
 		execute_cmd(cmds);
 		free_cmd_nodes(cmds->cmd_list);
 		exit_code = cmds->exit_code.code;

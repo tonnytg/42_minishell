@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_external_cmd.c                                :+:      :+:    :+:   */
+/*   file.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,30 +12,27 @@
 
 #include "../../includes/minishell.h"
 
-void	exec_external(t_cmds *cmds)
+void	open_file(t_cmds *cmds, char *type)
 {
-	pid_t	pid;
-	char	*path;
-	int		child_return_status;
+	printf("open file fd in node %p\n", cmds);
 
-	cmds->exit_code.code = 0;
-	if (ft_strcmp(cmds->current->type, "WORD") == 0)
+	if (ft_strcmp(type, "DGREAT") == 0)
 	{
-		run_strategy(cmds);
-		path = get_fullpath(cmds);
-		cmds->current->split_args = ft_split(cmds->current->phrase, ' ');
-		pid = fork();
-		if (pid == -1)
-			perror("fork");
-		if (pid == 0)
-		{
-			execve(path, cmds->current->phrase_parsed, cmds->envs);
-			perror("execve");
-		}
-		if (pid > 0)
-			waitpid(pid, &child_return_status, 0);
-		free(path);
+		printf("[open_file] - File type is DGREAT\n");
 	}
-	free_split(cmds->current->split_args);
-	cmds->exit_code.code = WEXITSTATUS(child_return_status);
+
+	if (ft_strcmp(type, "GREAT") == 0)
+	{
+		printf("[open_file] - File type is GREAT\n");
+	}
+
+	if (ft_strcmp(type, "LESS") == 0)
+	{
+		printf("[open_file] - File type is LESS\n");
+	}
+
+	if (ft_strcmp(type, "DLESS") == 0)
+	{
+		printf("[open_file] - File type is DLESS\n");
+	}
 }

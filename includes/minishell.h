@@ -36,6 +36,10 @@
 # define STDOUT_FILENO 1
 # define STDERR_FILENO 2
 
+# define HEAD 1
+# define MID 2
+# define TAIL 3
+
 /* Structs */
 struct	s_cmds;
 struct	s_command;
@@ -60,13 +64,20 @@ typedef struct s_cmd_node
 	char				*phrase;
 	char				*phrase_temp;
 	char				**phrase_parsed;
+	int					is_active_to_run;
 	char				*cmd_name;
 	char				*full_args;
 	char				**split_args;
 	t_command			*cmd_builtin;
 	char				*type;
+	int					position;
 	pid_t				pid;
 	int					fd[2];
+	int					fd_is_active;
+	int 				fd_is_file;
+	int					*fd_file_is_active;
+	int					*fd_ptr_input;
+	int					*fd_ptr_output;
 	struct s_cmd_node	*next;
 	struct s_cmd_node	*prev;
 }	t_cmd_node;
@@ -117,6 +128,18 @@ typedef struct s_path
 	char	*name;
 }	t_path;
 
+typedef struct s_strategy
+{
+	int	strategy;
+	int	c_words;
+	int c_pipe;
+	int	c_dgreat;
+	int	c_great;
+	int	c_dless;
+	int	c_less;
+	int	c_unknown;
+}	t_strategy;
+
 /* Array of commands */
 typedef struct s_cmds
 {
@@ -124,6 +147,7 @@ typedef struct s_cmds
 	t_command	*cmd_finded;
 	size_t		num_cmds;
 	t_command	*arr_cmds;
+	int			strategy;
 	int			has_quote;
 	int			is_quote_opened;
 	t_path		*path;
@@ -140,6 +164,9 @@ typedef struct s_cmds
 	int			new;
 	void		(*signal_handler)(int);
 }	t_cmds;
+
+/* file */
+void		open_file(t_cmds *cmds, char *type);
 
 /* Commands */
 void		find_command(t_cmds *cmds);
@@ -170,6 +197,10 @@ void		execute_cmd(t_cmds *cmds);
 void		set_commands(t_cmds *cmds);
 void		free_commands(t_cmds *cmds);
 
+/* Strategy */
+void		set_strategy(t_cmds *cmds);
+void		run_strategy(t_cmds *cmds);
+
 /* Export Command Utils srcs/builtins/export_utils.c */
 void		save_converted_word(t_env_convert *env_c);
 void		save_rest(t_env_convert *env_c);
@@ -186,8 +217,9 @@ void		parse_values_args(t_cmds *cmds);
 int			echo_arg_with_quotes(t_cmds *cmds);
 
 /* Pipes */
-void		open_pipe(t_cmd_node *current);
+void		open_pipe(t_cmds *cmds);
 int			count_pipes(t_cmds *cmds, char *str);
+void		connect_nodes_with_pipes(t_cmds *cmds);
 
 /* Quotes srcs/quotes/quotes.c */
 int			is_single_quote(char *str);
