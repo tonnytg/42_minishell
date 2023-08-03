@@ -87,6 +87,21 @@ typedef struct s_input
 	char		**phrase;
 }	t_input;
 
+typedef struct s_env_convert
+{
+	int		trigger;
+	int		rest_active;
+	char	*converted;
+	char	rest[256];
+	char	word[256];
+	char	*converted_arr;
+	char	**arr;
+	int		i;
+	int		r;
+	int		w;
+	int		a;
+}	t_env_convert;
+
 typedef struct s_envs
 {
 	char	*name;
@@ -154,6 +169,12 @@ int			export_adapter(t_cmds *cmds);
 void		execute_cmd(t_cmds *cmds);
 void		set_commands(t_cmds *cmds);
 void		free_commands(t_cmds *cmds);
+
+/* Export Command Utils srcs/builtins/export_utils.c */
+void		save_converted_word(t_env_convert *env_c);
+void		save_rest(t_env_convert *env_c);
+void		search_for_word(t_env_convert *env_c, const char *value);
+void		search_for_rest(t_env_convert *env_c, const char *value);
 
 /* Commands */
 void		init_interpreter(t_cmds *cmds);
