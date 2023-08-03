@@ -41,17 +41,46 @@ void	save_envs(t_cmds *cmds, char **envs, char *key, char *key_and_value)
 	envs[i] = NULL;
 }
 
+char	*convert_values(const char *value)
+{
+	t_env_convert	*env_c;
+	char			*result;
+
+	env_c = ft_calloc(1, sizeof(t_env_convert));
+	env_c->arr = ft_calloc(256, sizeof(char *) + 5);
+	while (value[env_c->i] != '\0')
+	{
+		search_for_word(env_c, value);
+		search_for_rest(env_c, value);
+		env_c->i++;
+	}
+	if (env_c->rest_active == 1)
+		save_rest(env_c);
+	if (env_c->trigger == 1)
+		save_converted_word(env_c);
+	env_c->arr[env_c->a] = NULL;
+	env_c->converted_arr = concatenate_strings(env_c->arr, ':');
+	free_arr(env_c->arr);
+	result = ft_strdup(env_c->converted_arr);
+	free(env_c->converted_arr);
+	free(env_c);
+	return (result);
+}
+
 int	set_env_var(t_cmds *cmds, char *key, char *value)
 {
 	char	**envs;
 	char	*new_key;
 	char	*key_and_value;
+	char	*new_value;
 
+	new_value = convert_values(value);
 	if (cmds->envs == NULL && cmds->current->full_args == NULL)
 		return (1);
 	envs = ft_calloc(count_arr(cmds->envs) + 2, sizeof(char *));
 	new_key = ft_strjoin(key, "=");
-	key_and_value = ft_strjoin(new_key, value);
+	key_and_value = ft_strjoin(new_key, new_value);
+	free(new_value);
 	save_envs(cmds, envs, key, key_and_value);
 	free(new_key);
 	free(key_and_value);

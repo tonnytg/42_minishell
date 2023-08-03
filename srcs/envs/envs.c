@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-char	*get_env(char *str)
+char	*get_env(char *str, int config)
 {
 	char	*env_1;
 	char	*env_2;
@@ -30,7 +30,10 @@ char	*get_env(char *str)
 	free(env_2);
 	if (temp == NULL)
 	{
-		result = ft_strdup("");
+		if (config == 1)
+			result = ft_strdup("");
+		else
+			result = NULL;
 		return (result);
 	}
 	result = ft_strdup(temp);

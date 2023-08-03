@@ -1,0 +1,47 @@
+
+name: Minishell Command export Test
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: install valgrind
+      run: sudo apt install valgrind
+    - name: readline
+      run: sudo apt-get install libreadline-dev
+    - name: make
+      run: make      
+    - name: test command export 1
+      run: |
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
+        export
+        export PATH=$PATH:/opt
+        export
+        export NAME="Test"
+        export NAME="Text1"
+        export
+        unset NAME
+        export
+        exit
+        EOF
+
+    - name: test command export 1
+      run: |
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
+        mkdir -p a/b/c
+        export BKP=$PATH:/opt
+        export
+        unset PATH
+        mkdir -p d/e/f
+        export
+        export PATH=$BKP
+        mkdir -p g/h/i
+        export
+        ls
+        exit
+        EOF

@@ -30,6 +30,7 @@ FILES	= \
 			srcs/builtins/env.c						\
 			srcs/builtins/exit.c					\
 			srcs/builtins/export.c					\
+			srcs/builtins/export_utils.c			\
 			srcs/builtins/pwd.c						\
 			srcs/builtins/unset.c					\
 			srcs/signals/signals.c					\

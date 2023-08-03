@@ -43,7 +43,7 @@ void	parse_values_args(t_cmds *cmds)
 			if (ft_strncmp(words[i] + 1, "?", 1) == 0)
 				cmds->current->phrase_parsed[i] = ft_itoa(cmds->exit_code.code);
 			else
-				cmds->current->phrase_parsed[i] = get_env(words[i]);
+				cmds->current->phrase_parsed[i] = get_env(words[i], 1);
 		}
 		else if (ft_strncmp(words[i], ".", 1) == 0)
 			cmds->current->phrase_parsed[i] = parse_to_folder(words[i]);
@@ -72,7 +72,7 @@ void	prepare_phrase(t_cmds *cmds)
 		free(temp_str);
 		i++;
 	}
-	temp_str1 = concatenate_strings(temp);
+	temp_str1 = concatenate_strings(temp, 0);
 	free(cmds->current->phrase);
 	cmds->current->phrase = ft_strdup(temp_str1);
 	free(temp_str1);
