@@ -17,6 +17,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
+# include <fcntl.h>
 # include <signal.h>
 # include <sys/wait.h>
 # include "../libft/libft.h"
@@ -40,6 +41,11 @@
 # define MID 2
 # define TAIL 3
 
+# define READ 0
+# define CREATE 1
+# define APPEND 2
+# define HEREDOC 3
+
 /* Structs */
 struct	s_cmds;
 struct	s_command;
@@ -62,6 +68,7 @@ typedef struct s_command
 typedef struct s_cmd_node
 {
 	char				*phrase;
+	int					disabled;
 	char				*phrase_temp;
 	char				**phrase_parsed;
 	int					is_active_to_run;
@@ -74,8 +81,9 @@ typedef struct s_cmd_node
 	pid_t				pid;
 	int					fd[2];
 	int					fd_is_active;
-	int 				fd_is_file;
-	int					*fd_file_is_active;
+	int					fd_file_is_active;
+	int 				fd_file;
+	int					file_type;
 	int					*fd_ptr_input;
 	int					*fd_ptr_output;
 	struct s_cmd_node	*next;

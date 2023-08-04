@@ -60,6 +60,7 @@ void	connect_nodes_with_pipes(t_cmds *cmds)
 	open_pipe(cmds);
 	count = 0;
 	current = cmds->cmd_list;
+	cmds->current = current;
 	printf("start redirect analysis\n");
 	while (current != NULL)
 	{
@@ -113,6 +114,8 @@ void	connect_nodes_with_pipes(t_cmds *cmds)
 			printf("[2] - Redirect Node Type: %s\n", current->type);
 			printf("[2] - Redirect file descriptor input: %d\n", current->fd[0]);
 			printf("[2] - Redirect file descriptor output: %d\n", current->fd[1]);
+			printf("[2] - Redirect file descriptor file: %d\n", current->fd_file);
+			printf("[2] - Redirect file descriptor file status: %d\n", current->fd_file_is_active);
 			printf("[2] - Redirect file descriptor ptr: %p\n", current->fd);
 			current->fd_ptr_input = NULL;
 			current->fd_ptr_output = NULL;
@@ -167,5 +170,6 @@ void	connect_nodes_with_pipes(t_cmds *cmds)
 		}
 		count++;
 		current = current->next;
+		cmds->current = current;
 	}
 }

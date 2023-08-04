@@ -78,12 +78,9 @@ void set_strategy(t_cmds *cmds)
 
 	s = ft_calloc(1, sizeof(t_strategy));
 	cmds->strategy = 0;
-	printf("[set_strategy] - Strategy step\n");
-	printf("[set_strategy] - Strategy setup: %d\n", cmds->strategy);
 
 	report_cmd_types(cmds, s);
 
 	cmds->strategy = 0;
-	printf("[set_strategy] - Strategy setup: %d\n", cmds->strategy);
 	return ;
 }

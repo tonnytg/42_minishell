@@ -47,18 +47,24 @@ void	run_node(t_cmds *cmds)
 	type_command = -1;
 	if (ft_strcmp(cmds->current->type, "WORD") == 0)
 	{
-		init_interpreter(cmds);
-		type_command = check_type_command(cmds);
-		if (type_command == 0)
-			exec_builtin(cmds);
-		else if (type_command == 1)
-			exec_external(cmds);
-		else
+		if (cmds->current->disabled == 0)
 		{
-			printf("minishell: %s: command not found\n",
-				cmds->current->cmd_name);
-			cmds->exit_code.code = 127;
+			printf("position: %d\n", cmds->current->position);
+			init_interpreter(cmds);
+			type_command = check_type_command(cmds);
+			if (type_command == 0)
+				exec_builtin(cmds);
+			else if (type_command == 1)
+				exec_external(cmds);
+			else
+			{
+				printf("minishell: %s: command not found\n",
+					   cmds->current->cmd_name);
+				cmds->exit_code.code = 127;
+			}
+			free_current_cmds(cmds);
 		}
-		free_current_cmds(cmds);
+		else
+			printf("Nothing to do\n");
 	}
 }
