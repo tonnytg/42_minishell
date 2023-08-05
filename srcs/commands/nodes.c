@@ -40,33 +40,34 @@ int	count_nodes(t_cmds *cmds)
 	return (count);
 }
 
-void	run_node(t_cmds *cmds)
+void	run_commands(t_cmds *cmds)
 {
 	int	type_command;
 
 	type_command = -1;
+	init_interpreter(cmds);
+	type_command = check_type_command(cmds);
+	if (type_command == 0)
+		exec_builtin(cmds);
+	else if (type_command == 1)
+		exec_external(cmds);
+	else
+	{
+		printf("minishell: %s: command not found\n",
+			cmds->current->cmd_name);
+		cmds->exit_code.code = 127;
+	}
+	free_current_cmds(cmds);
+}
+
+void	run_node(t_cmds *cmds)
+{
 	if (cmds->current->disabled == 0)
 	{
 		if (ft_strcmp(cmds->current->type, "WORD") == 0)
-		{
-			init_interpreter(cmds);
-			type_command = check_type_command(cmds);
-			if (type_command == 0)
-				exec_builtin(cmds);
-			else if (type_command == 1)
-				exec_external(cmds);
-			else
-			{
-				printf("minishell: %s: command not found\n",
-					cmds->current->cmd_name);
-				cmds->exit_code.code = 127;
-			}
-			free_current_cmds(cmds);
-		}
+			run_commands(cmds);
 		else
-		{
 			exec_redirect(cmds);
-		}
 	}
 	else
 		return ;
