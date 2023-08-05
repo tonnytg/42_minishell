@@ -65,10 +65,7 @@ void	exec_builtin(t_cmds *cmds)
 	{
 		pid = fork();
 		if (pid == -1)
-		{
-			perror("fork");
 			exit(EXIT_FAILURE);
-		}
 		else if (pid == 0)
 		{
 			run_strategy(cmds);

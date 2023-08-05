@@ -44,7 +44,7 @@ void	open_pipe(t_cmds *cmds)
 		if (ft_strcmp(current->type, "WORD") != 0)
 		{
 			if (pipe(current->fd) < 0)
-				exit (write (1, "[open_pipe] - Pipe error\n", 12));
+				printf("pipe has error\n");
 			current->fd_is_active = 1;
 		}
 		current = current->next;
