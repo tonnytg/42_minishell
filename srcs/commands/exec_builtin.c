@@ -65,12 +65,10 @@ void	exec_builtin(t_cmds *cmds)
 	{
 		pid = fork();
 		if (pid == -1)
-		{
-			perror("fork");
 			exit(EXIT_FAILURE);
-		}
 		else if (pid == 0)
 		{
+			run_strategy(cmds);
 			cmds->current->cmd_builtin->execute(cmds);
 			child_return_status = cmds->exit_code.code;
 			free_builtin_cmd(cmds);

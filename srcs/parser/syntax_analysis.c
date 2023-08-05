@@ -51,6 +51,7 @@ int	check_lexical_errors(char **lexical_line)
 	return (0);
 }
 
+/* TODO: Revisar talvez não faça nada */
 void	syntax_analysis(t_cmds *cmds)
 {
 	int	i;

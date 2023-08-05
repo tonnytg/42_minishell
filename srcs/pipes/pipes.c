@@ -34,9 +34,37 @@ int	count_pipes(t_cmds *cmds, char *str)
 	return (count_pipe);
 }
 
-void	open_pipe(t_cmd_node *current)
+void	open_pipe(t_cmds *cmds)
 {
-	printf("open pipe fd in node %p\n", current);
-	if (pipe(current->fd) < 0)
-		exit (write (1, "Pipe error\n", 12));
+	t_cmd_node	*current;
+
+	current = cmds->cmd_list;
+	while (current != NULL)
+	{
+		if (ft_strcmp(current->type, "WORD") != 0)
+		{
+			if (pipe(current->fd) < 0)
+				printf("pipe has error\n");
+			current->fd_is_active = 1;
+		}
+		current = current->next;
+	}
+}
+
+void	connect_nodes_with_pipes(t_cmds *cmds)
+{
+	int			count;
+
+	open_pipe(cmds);
+	count = 0;
+	cmds->current = cmds->cmd_list;
+	while (cmds->current != NULL)
+	{
+		set_head_word_fd(cmds);
+		set_mid_word_fd(cmds);
+		set_mid_redirect_fd(cmds);
+		set_tail_word_fd(cmds);
+		count++;
+		cmds->current = cmds->current->next;
+	}
 }

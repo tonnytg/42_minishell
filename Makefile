@@ -21,9 +21,13 @@ FILES	= \
 			srcs/commands/commands.c				\
 			srcs/commands/nodes.c					\
 			srcs/commands/type_commands.c 			\
-			srcs/commands/exec_builtin_cmd.c 		\
-			srcs/commands/exec_external_cmd.c 		\
+			srcs/commands/strategy.c	 			\
+			srcs/commands/exec_builtin.c 			\
+			srcs/commands/exec_external.c 			\
+			srcs/commands/exec_redirect.c 			\
+			srcs/commands/file.c			 		\
 			srcs/pipes/pipes.c 						\
+			srcs/pipes/pipes_utils.c				\
 			srcs/path/path.c						\
 			srcs/builtins/cd.c						\
 			srcs/builtins/echo.c					\
