@@ -41,6 +41,9 @@
 # define MID 2
 # define TAIL 3
 
+# define DGREAT 0
+# define GREAT 1
+
 # define READ 0
 # define CREATE 1
 # define APPEND 2
@@ -80,9 +83,11 @@ typedef struct s_cmd_node
 	int					position;
 	pid_t				pid;
 	int					fd[2];
+	int					fd_backup_in;
+	int					fd_backup_out;
 	int					fd_is_active;
 	int					fd_file_is_active;
-	int 				fd_file;
+	int					fd_file;
 	int					file_type;
 	int					*fd_ptr_input;
 	int					*fd_ptr_output;
@@ -140,7 +145,7 @@ typedef struct s_strategy
 {
 	int	strategy;
 	int	c_words;
-	int c_pipe;
+	int	c_pipe;
 	int	c_dgreat;
 	int	c_great;
 	int	c_dless;
@@ -174,7 +179,9 @@ typedef struct s_cmds
 }	t_cmds;
 
 /* file */
-void		open_file(t_cmds *cmds, char *type);
+void		create_fd_file(t_cmds *cmds);
+void		open_file(t_cmds *cmds);
+void		save_file(t_cmds *cmds);
 
 /* Commands */
 void		find_command(t_cmds *cmds);
@@ -186,6 +193,7 @@ void		load_commands(t_cmds *cmds);
 /* Types Commands */
 void		exec_builtin(t_cmds *cmds);
 void		exec_external(t_cmds *cmds);
+void		exec_redirect(t_cmds *cmds);
 int			check_type_command(t_cmds *cmds);
 
 /* Path */

@@ -103,6 +103,7 @@ char	*create_cmd_nodes(t_cmd_node **list_cmds, t_tk_node **list_tokens)
 	return (str);
 }
 
+/* TODO: Aqui tem um bug com >> e > usando aspas duplas */
 void	build_struct_to_exec(t_cmds *cmds, t_tk_node *list_tokens)
 {
 	t_cmd_node	*list_cmds;

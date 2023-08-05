@@ -47,109 +47,64 @@ void	open_pipe(t_cmds *cmds)
 				exit (write (1, "[open_pipe] - Pipe error\n", 12));
 			current->fd_is_active = 1;
 		}
-		printf("[open_pipe] - Redirect has fd status: %d\n", current->fd_is_active);
 		current = current->next;
 	}
 }
 
 void	connect_nodes_with_pipes(t_cmds *cmds)
 {
-	t_cmd_node	*current;
 	int			count;
 
 	open_pipe(cmds);
 	count = 0;
-	current = cmds->cmd_list;
-	cmds->current = current;
-	printf("start redirect analysis\n");
-	while (current != NULL)
+	cmds->current = cmds->cmd_list;
+	while (cmds->current != NULL)
 	{
-		printf("[%d] ----- Start -----\n", count);
-
-		// [1] - HEAD - WORD
-		if (current->prev == NULL
-			&& current->next != NULL
-			&& ft_strcmp(current->next->type, "WORD") != 0)
+		if (cmds->current->prev == NULL
+			&& cmds->current->next != NULL
+			&& ft_strcmp(cmds->current->next->type, "WORD") != 0)
 		{
-			// Inicio saber quando é Nó antes do File Descriptor
-			printf("[1] - Start Head Word\n");
-			current->position = HEAD;
-			current->fd_ptr_input = NULL;
-			current->fd_ptr_output = current->next->fd;
-			printf("[1] - Word fd is active: %d\n", current->fd_is_active);
-			printf("[1] - Word file descriptor input ptr: %p\n", current->fd_ptr_input);
-			printf("[1] - Word file descriptor output ptr: %p\n", current->fd_ptr_output);
-			printf("[1] - Word file descriptor output val: %d\n", current->fd_ptr_output[1]);
+			cmds->current->position = HEAD;
+			cmds->current->fd_ptr_input = NULL;
+			cmds->current->fd_ptr_output = cmds->current->next->fd;
 		}
-
-		// [2] - MIDDLE - REDIRECT
-		// Configuração do Pipe e o próximo nó para receber os dados
-		if (current->prev != NULL
-			&& current->next != NULL
-			&& ft_strcmp(current->type, "WORD") != 0)
+		if (cmds->current->prev != NULL
+			&& cmds->current->next != NULL
+			&& ft_strcmp(cmds->current->type, "WORD") != 0)
 		{
-			printf("[2] - Start Middle Redirect\n");
-			printf("[2] - Redirect fd status: %d\n", current->fd_is_active);
-			printf("[2] - Redirect Node Type: %s\n", current->type);
-			printf("[2] - Redirect file descriptor input: %d\n", current->fd[0]);
-			printf("[2] - Redirect file descriptor output: %d\n", current->fd[1]);
-			printf("[2] - Redirect file descriptor file: %d\n", current->fd_file);
-			printf("[2] - Redirect file descriptor file status: %d\n", current->fd_file_is_active);
-			printf("[2] - Redirect file descriptor ptr: %p\n", current->fd);
-			current->position = MID;
-			current->fd_ptr_input = NULL;
-			current->fd_ptr_output = NULL;
-
-			// [2] - MIDDLE - Redirect
-			// Define o FD para o próximo nó que só pode ser WORD
-			if (current->next->fd_is_active == 0
-				&& ft_strcmp(current->next->type, "WORD") == 0)
+			cmds->current->position = MID;
+			cmds->current->fd_ptr_input = NULL;
+			cmds->current->fd_ptr_output = NULL;
+			if (cmds->current->next->fd_is_active == 0
+				&& ft_strcmp(cmds->current->next->type, "WORD") == 0)
 			{
-				printf("[2] - Next Node Settings ok\n");
-				current->next->fd_ptr_input = current->fd;
-				current->next->fd_ptr_output = NULL;
+				cmds->current->next->fd_ptr_input = cmds->current->fd;
+				cmds->current->next->fd_ptr_output = NULL;
 			}
 		}
-
-		// [3] - MIDDLE WORD
-		// Configuração do Nó WORD somente MIDDLE // echo a b | grep b | tr -d " "
-		if (current->prev != NULL
-			&& ft_strcmp(current->prev->type, "WORD") == 0 // TODO: Verificar se tem erro
-			&& current->next != NULL
-			&& ft_strcmp(current->type, "WORD") == 0)
+		if (cmds->current->prev != NULL
+			&& ft_strcmp(cmds->current->prev->type, "WORD") == 0
+			&& cmds->current->next != NULL
+			&& ft_strcmp(cmds->current->type, "WORD") == 0)
 		{
-			printf("[3] - Start Middle Word\n");
-			current->position = MID;
-			if (current->fd_ptr_output == NULL)
+			cmds->current->position = MID;
+			if (cmds->current->fd_ptr_output == NULL)
 			{
-				if (current->next != NULL
-					&& ft_strcmp(current->next->type, "WORD") != 0)
+				if (cmds->current->next != NULL
+					&& ft_strcmp(cmds->current->next->type, "WORD") != 0)
 				{
-					printf("[3] - Next Pipe fd settings ok\n");
-					current->fd_ptr_output = current->next->fd;
+					cmds->current->fd_ptr_output = cmds->current->next->fd;
 				}
 			}
-			printf("[3] - Word file descriptor input ptr: %p\n", current->fd_ptr_input);
-			printf("[3] - Word file descriptor input val: %d\n", current->fd_ptr_input[0]);
-			printf("[3] - Word file descriptor output ptr: %p\n", current->fd_ptr_output);
-			printf("[3] - Word file descriptor output val: %d\n", current->fd_ptr_output[1]);
 		}
-
-		// [4] - TAIL - WORD
-		if (current->next == NULL
-			&& current->prev != NULL
-			&& ft_strcmp(current->type, "WORD") == 0)
+		if (cmds->current->next == NULL
+			&& cmds->current->prev != NULL
+			&& ft_strcmp(cmds->current->type, "WORD") == 0)
 		{
-			printf("[4] - Start Tail Word\n");
-			current->position = TAIL;
-			current->fd_ptr_output = NULL;
-			printf("[4] - Word fd is active: %d\n", current->fd_is_active);
-			printf("[4] - Word file descriptor input ptr: %p\n", current->fd_ptr_input);
-			printf("[4] - Word file descriptor input val: %d\n", current->fd_ptr_input[0]);
-			printf("[4] - Word file descriptor output ptr: %p\n", current->fd_ptr_output);
+			cmds->current->position = TAIL;
+			cmds->current->fd_ptr_output = NULL;
 		}
 		count++;
-		current = current->next;
-		cmds->current = current;
+		cmds->current = cmds->current->next;
 	}
 }

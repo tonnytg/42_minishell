@@ -12,90 +12,95 @@
 
 #include "../../includes/minishell.h"
 
-void save_file(t_cmds *cmds)
+/* TODO: Restore msg from fd */
+char	*restore_msg_from_fd(t_cmds *cmds)
 {
-	printf("[save_file] - File descriptor is %d\n", cmds->current->fd_file);
-	ssize_t	bytes_escritos;
-	char *msg = "Hello World\n";
+	char	*msg;
+	char	buffer[1024];
+	ssize_t	bytes_read;
 
+	bytes_read = read(cmds->current->fd[0], buffer, sizeof(buffer) - 1);
+	if (bytes_read < 0)
+	{
+		perror("read");
+		return (NULL);
+	}
+	buffer[bytes_read] = '\0';
+	msg = ft_strdup(buffer);
+	return (msg);
+}
+
+/* TODO: Save file */
+void	save_file(t_cmds *cmds)
+{
+	ssize_t	bytes_escritos;
+	char	*msg;
+
+	msg = restore_msg_from_fd(cmds);
+	if (!msg)
+		return ;
+	if (cmds->current->fd_file < 1)
+	{
+		perror("error: file descriptor not opened!\n");
+		exit(EXIT_FAILURE);
+	}
 	bytes_escritos = write(cmds->current->fd_file, msg, ft_strlen(msg));
 	if (bytes_escritos == -1)
 	{
-		perror("Erro ao escrever no arquivo");
+		perror("error: failed to write in file!\n");
 		close(cmds->current->fd_file);
 		exit(EXIT_FAILURE);
 	}
-	close(cmds->current->fd_file);
+	free(msg);
 }
 
-void create_fd_file(t_cmds *cmds)
+/* TODO: Maybe you can improve here */
+void	open_file(t_cmds *cmds)
 {
-	char *file_name;
-	char **temp = ft_split(cmds->current->next->phrase, ' ');
+	char	*file_name;
+	char	**temp;
+	int		config_file;
+
+	config_file = 0;
+	temp = ft_split(cmds->current->next->phrase, ' ');
 	file_name = ft_strdup(temp[0]);
-	cmds->current->next->disabled = 1; // TODO: Desabilita o nó pq ele não é mais necessário
-	printf("[create_fd_file] - Saving file name: '%s'\n", file_name);
+	free_arr(temp);
 	if (cmds->current->file_type == CREATE)
-	{
-		cmds->current->fd_file = open(file_name, O_TRUNC | O_WRONLY | O_CREAT, 0644);
-		if (cmds->current->fd_file < 0) {
-			perror("open");
-			return ;
-		}
-	}
+		config_file = O_TRUNC | O_WRONLY | O_CREAT;
 	if (cmds->current->file_type == APPEND)
-	{
-		cmds->current->fd_file = open(file_name, O_WRONLY | O_APPEND | O_CREAT, 0644);
-		if (cmds->current->fd_file < 0) {
-			perror("open");
-			return ;
-		}
-	}
-	if (cmds->current->file_type == READ)
-	{
+		config_file = O_APPEND | O_WRONLY | O_CREAT;
+	if (config_file == 0)
 		cmds->current->fd_file = open(file_name, O_RDONLY);
-		if (cmds->current->fd_file < 0)
-		{
-			perror("open");
-			return ;
-		}
+	else
+		cmds->current->fd_file = open(file_name, config_file, 0644);
+	if (cmds->current->fd_file < 0)
+	{
+		perror("open file");
+		return ;
 	}
 	if (cmds->current->fd_file > 0)
 		cmds->current->fd_file_is_active = 1;
-
-	save_file(cmds);
+	free(file_name);
 }
 
-void	open_file(t_cmds *cmds, char *type)
+/* TODO: Create file descriptor for file */
+void	create_fd_file(t_cmds *cmds)
 {
-	printf("open file fd in node %p\n", cmds);
-
-	if (ft_strcmp(type, "DGREAT") == 0)
+	if (ft_strcmp(cmds->current->type, "DGREAT") == 0)
 	{
-		printf("[open_file] - File type is DGREAT\n");
 		cmds->current->file_type = APPEND;
-		create_fd_file(cmds);
 	}
-
-	if (ft_strcmp(type, "GREAT") == 0)
+	else if (ft_strcmp(cmds->current->type, "GREAT") == 0)
 	{
-		printf("[open_file] - File type is GREAT\n");
 		cmds->current->file_type = CREATE;
-		create_fd_file(cmds);
 	}
-
-	if (ft_strcmp(type, "LESS") == 0)
+	else if (ft_strcmp(cmds->current->type, "LESS") == 0)
 	{
-		printf("[open_file] - File type is LESS\n");
 		cmds->current->file_type = READ;
-		create_fd_file(cmds);
 	}
-
-	if (ft_strcmp(type, "DLESS") == 0)
+	else if (ft_strcmp(cmds->current->type, "DLESS") == 0)
 	{
-		printf("[open_file] - File type is DLESS\n");
-		printf("[open_file] - HERE_DOC\n");
+		return ;
 	}
-	printf("[create_fd_file] - Meu File Descriptor do file: %d\n", cmds->current->fd_file);
-	printf("[create_fd_file] - Type File Descriptor: %d\n", cmds->current->file_type);
+	open_file(cmds);
 }
