@@ -27,6 +27,7 @@ FILES	= \
 			srcs/commands/exec_redirect.c 			\
 			srcs/commands/file.c			 		\
 			srcs/pipes/pipes.c 						\
+			srcs/pipes/pipes_utils.c				\
 			srcs/path/path.c						\
 			srcs/builtins/cd.c						\
 			srcs/builtins/echo.c					\

@@ -236,6 +236,10 @@ int			echo_arg_with_quotes(t_cmds *cmds);
 void		open_pipe(t_cmds *cmds);
 int			count_pipes(t_cmds *cmds, char *str);
 void		connect_nodes_with_pipes(t_cmds *cmds);
+void		set_head_word_fd(t_cmds *cmds);
+void		set_mid_word_fd(t_cmds *cmds);
+void		set_mid_redirect_fd(t_cmds *cmds);
+void		set_tail_word_fd(t_cmds *cmds);
 
 /* Quotes srcs/quotes/quotes.c */
 int			is_single_quote(char *str);
