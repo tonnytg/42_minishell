@@ -40,15 +40,42 @@ int	count_nodes(t_cmds *cmds)
 	return (count);
 }
 
+void exec_redirect(t_cmds *cmds)
+{
+	run_strategy(cmds);
+	printf("[exec_redirect] - Sou um REDIRECT agora!----!\n");
+	if (ft_strcmp(cmds->current->type, "GREAT") == 0)
+	{
+		printf("[exec_redirect] - Great\n");
+		open_file(cmds, cmds->current->type);
+	}
+	if (ft_strcmp(cmds->current->type, "DGREAT") == 0)
+	{
+		printf("[exec_redirect] - D Great\n");
+		open_file(cmds, cmds->current->type);
+	}
+	if (ft_strcmp(cmds->current->type, "DLESS") == 0)
+	{
+		printf("[exec_redirect] - DLESS\n");
+		open_file(cmds, cmds->current->type);
+	}
+	if (ft_strcmp(cmds->current->type, "LESS") == 0)
+	{
+		printf("[exec_redirect] - LESS\n");
+		open_file(cmds, cmds->current->type);
+	}
+}
+
 void	run_node(t_cmds *cmds)
 {
 	int	type_command;
 
 	type_command = -1;
-	if (ft_strcmp(cmds->current->type, "WORD") == 0)
+	if (cmds->current->disabled == 0)
 	{
-		if (cmds->current->disabled == 0)
+		if (ft_strcmp(cmds->current->type, "WORD") == 0)
 		{
+			printf("[run_node] - Sou um WORD agora!----!\n");
 			printf("position: %d\n", cmds->current->position);
 			init_interpreter(cmds);
 			type_command = check_type_command(cmds);
@@ -65,6 +92,11 @@ void	run_node(t_cmds *cmds)
 			free_current_cmds(cmds);
 		}
 		else
-			printf("Nothing to do\n");
+		{
+			printf("[run_node] - Sou um REDIRECT agora!----!\n");
+			exec_redirect(cmds);
+		}
 	}
+	else
+		return ;
 }

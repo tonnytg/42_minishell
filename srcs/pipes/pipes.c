@@ -89,27 +89,6 @@ void	connect_nodes_with_pipes(t_cmds *cmds)
 			&& ft_strcmp(current->type, "WORD") != 0)
 		{
 			printf("[2] - Start Middle Redirect\n");
-			current->position = MID;
-			if (ft_strcmp(current->type, "GREAT") == 0)
-			{
-				printf("[2] - Great\n");
-				open_file(cmds, current->type);
-			}
-			if (ft_strcmp(current->type, "DGREAT") == 0)
-			{
-				printf("[2] - D Great\n");
-				open_file(cmds, current->type);
-			}
-			if (ft_strcmp(current->type, "DLESS") == 0)
-			{
-				printf("[2] - DLESS\n");
-				open_file(cmds, current->type);
-			}
-			if (ft_strcmp(current->type, "LESS") == 0)
-			{
-				printf("[2] - LESS\n");
-				open_file(cmds, current->type);
-			}
 			printf("[2] - Redirect fd status: %d\n", current->fd_is_active);
 			printf("[2] - Redirect Node Type: %s\n", current->type);
 			printf("[2] - Redirect file descriptor input: %d\n", current->fd[0]);
@@ -117,6 +96,7 @@ void	connect_nodes_with_pipes(t_cmds *cmds)
 			printf("[2] - Redirect file descriptor file: %d\n", current->fd_file);
 			printf("[2] - Redirect file descriptor file status: %d\n", current->fd_file_is_active);
 			printf("[2] - Redirect file descriptor ptr: %p\n", current->fd);
+			current->position = MID;
 			current->fd_ptr_input = NULL;
 			current->fd_ptr_output = NULL;
 

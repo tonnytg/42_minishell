@@ -19,10 +19,41 @@ void	run_strategy(t_cmds *cmds)
 	if (cmds->current->position == HEAD)
 	{
 		printf("[run_strategy] - Head\n");
+		if (cmds->current->position == HEAD
+			&& ft_strcmp(cmds->current->type, "WORD") == 0)
+		{
+			dup2(cmds->current->fd_ptr_output[1], STDOUT_FILENO);
+		}
 	}
 	else if (cmds->current->position == MID)
 	{
 		printf("[run_strategy] - Mid\n");
+		if (ft_strcmp(cmds->current->type, "WORD") == 0)
+		{
+			printf("Sou MID e WORD\n");
+		}
+		else
+		{
+			dup2(cmds->current->fd[0], STDIN_FILENO);
+			close(cmds->current->fd[1]);
+			printf("Sou MID e REDIRECT\n");
+			printf("----File Write----\n");
+			int file = open("file_test.txt", O_WRONLY | O_APPEND | O_CREAT, 0644);
+			if (file < 0) {
+				perror("open");
+				return ;
+			}
+			char buffer[256];
+			ssize_t bytesRead;
+			while ((bytesRead = read(STDIN_FILENO, buffer, sizeof(buffer))) > 0) {
+				printf("quantidade de bytes lidos: %ld\n", bytesRead);
+				write(file, buffer, bytesRead);
+			}
+			close(file);
+			printf("Li isso: %s\n", buffer);
+			printf("----File Write----\n");
+			dup2(0, STDIN_FILENO);
+		}
 	}
 	else if (cmds->current->position == TAIL)
 	{
@@ -30,9 +61,8 @@ void	run_strategy(t_cmds *cmds)
 	}
 	else
 	{
-		printf("[run_strategy] - Unknown\n");
+		printf("[run_strategy] - Default Strategy\n");
 	}
-
 }
 
 void print_report(t_cmds *cmds, t_strategy *s)
@@ -82,5 +112,6 @@ void set_strategy(t_cmds *cmds)
 	report_cmd_types(cmds, s);
 
 	cmds->strategy = 0;
+	free(s);
 	return ;
 }
