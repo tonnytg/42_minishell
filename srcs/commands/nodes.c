@@ -66,10 +66,12 @@ void	run_node(t_cmds *cmds)
 	{
 		if (ft_strcmp(cmds->current->type, "WORD") == 0)
 		{
+			printf("[run_node] - iniciando word!\n");
 			run_commands(cmds);
 		}
 		else
 		{
+			printf("[run_node] - iniciando redirect!\n");
 			exec_redirect(cmds);
 		}
 	}

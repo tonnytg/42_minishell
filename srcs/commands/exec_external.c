@@ -23,6 +23,7 @@ void	exec_external(t_cmds *cmds)
 	{
 		path = get_fullpath(cmds);
 		cmds->current->split_args = ft_split(cmds->current->phrase, ' ');
+		printf("[exec_external] - crate child\n");
 		pid = fork();
 		if (pid == -1) {
 			perror("fork");
