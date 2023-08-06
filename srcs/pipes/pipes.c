@@ -36,18 +36,16 @@ int	count_pipes(t_cmds *cmds, char *str)
 
 void	open_pipe(t_cmds *cmds)
 {
-	t_cmd_node	*current;
-
-	current = cmds->cmd_list;
-	while (current != NULL)
+	cmds->current = cmds->cmd_list;
+	while (cmds->current != NULL)
 	{
-		if (ft_strcmp(current->type, "WORD") != 0)
+		if (ft_strcmp(cmds->current->type, "WORD") != 0)
 		{
-			if (pipe(current->fd) < 0)
+			if (pipe(cmds->current->fd) < 0)
 				printf("pipe has error\n");
-			current->fd_is_active = 1;
+			cmds->current->fd_is_active = 1;
 		}
-		current = current->next;
+		cmds->current = cmds->current->next;
 	}
 }
 

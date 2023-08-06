@@ -17,9 +17,13 @@ void	run_strategy(t_cmds *cmds)
 {
 	if (ft_strcmp(cmds->current->type, "WORD") == 0)
 	{
-		if (cmds->current->next)
+		if (cmds->current->next && cmds->current->strategy != S_RECEIVER)
 		{
 			dup2(cmds->current->fd_ptr_output[1], STDOUT_FILENO);
+		}
+		if (cmds->current->strategy == S_RECEIVER)
+		{
+			dup2(cmds->current->next->fd[0], STDIN_FILENO);
 		}
 	}
 	else
@@ -31,6 +35,48 @@ void	set_strategy(t_cmds *cmds)
 	t_strategy	*s;
 
 	s = ft_calloc(1, sizeof(t_strategy));
+
+	cmds->current = cmds->cmd_list;
+	while (cmds->current != NULL)
+	{
+
+		if (ft_strcmp(cmds->current->type, "LESS") == 0)
+		{
+//			read_file(cmds, "file.txt", cmds->current->fd);
+
+			char	*msg;
+			char	buffer[1024];
+			int		file;
+			ssize_t	bytes_read;
+
+			file = open("file.txt", O_RDONLY);
+			if (file < 1)
+			{
+				perror("error: file descriptor not opened!\n");
+				//exit(EXIT_FAILURE);
+			}
+			bytes_read = read(file, buffer, sizeof(buffer) - 1);
+			if (bytes_read < 0)
+			{
+				perror("read");
+				exit(EXIT_FAILURE);
+			}
+			buffer[bytes_read] = '\0';
+			msg = ft_strdup(buffer);
+			if (!msg)
+				return ;
+			write(cmds->current->fd[1], msg, ft_strlen(msg));
+			close(cmds->current->fd[1]);
+			free(msg);
+			if (ft_strcmp(cmds->current->type, "WORD") != 0)
+			{
+				cmds->current->disabled = 1;
+				cmds->current->next->disabled = 1;
+			}
+			cmds->current->prev->strategy = S_RECEIVER;
+		}
+		cmds->current = cmds->current->next;
+	}
 	cmds->strategy = 0;
 	free(s);
 	return ;

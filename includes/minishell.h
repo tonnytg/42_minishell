@@ -49,6 +49,9 @@
 # define APPEND 2
 # define HEREDOC 3
 
+# define S_RECEIVER 1
+# define S_SENDER 2
+
 /* Structs */
 struct	s_cmds;
 struct	s_command;
@@ -72,6 +75,7 @@ typedef struct s_cmd_node
 {
 	char				*phrase;
 	int					disabled;
+	int					strategy;
 	char				*phrase_temp;
 	char				**phrase_parsed;
 	int					is_active_to_run;
@@ -182,6 +186,7 @@ typedef struct s_cmds
 void		create_fd_file(t_cmds *cmds);
 void		open_file(t_cmds *cmds);
 void		save_file(t_cmds *cmds);
+void		read_file(t_cmds *cmds, char *file_name, int *write_in);
 
 /* Commands */
 void		find_command(t_cmds *cmds);

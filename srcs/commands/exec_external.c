@@ -21,14 +21,15 @@ void	exec_external(t_cmds *cmds)
 	cmds->exit_code.code = 0;
 	if (ft_strcmp(cmds->current->type, "WORD") == 0)
 	{
-		run_strategy(cmds);
 		path = get_fullpath(cmds);
 		cmds->current->split_args = ft_split(cmds->current->phrase, ' ');
 		pid = fork();
-		if (pid == -1)
+		if (pid == -1) {
 			perror("fork");
+		}
 		if (pid == 0)
 		{
+			run_strategy(cmds);
 			execve(path, cmds->current->phrase_parsed, cmds->envs);
 			perror("execve");
 		}
