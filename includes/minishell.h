@@ -51,6 +51,7 @@
 
 # define S_RECEIVER 1
 # define S_SENDER 2
+# define S_SKIP_NEXT_FD 3
 
 /* Structs */
 struct	s_cmds;
@@ -187,6 +188,9 @@ void		create_fd_file(t_cmds *cmds);
 void		open_file(t_cmds *cmds);
 void		save_file(t_cmds *cmds);
 void		read_file(t_cmds *cmds, char *file_name, int *write_in);
+
+/* Here Document */
+void		here_doc(t_cmds *cmds);
 
 /* Commands */
 void		find_command(t_cmds *cmds);

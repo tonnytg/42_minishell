@@ -25,6 +25,7 @@ FILES	= \
 			srcs/commands/exec_builtin.c 			\
 			srcs/commands/exec_external.c 			\
 			srcs/commands/exec_redirect.c 			\
+			srcs/commands/here_doc.c				\
 			srcs/commands/file.c			 		\
 			srcs/pipes/pipes.c 						\
 			srcs/pipes/pipes_utils.c				\
