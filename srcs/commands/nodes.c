@@ -65,9 +65,13 @@ void	run_node(t_cmds *cmds)
 	if (cmds->current->disabled == 0)
 	{
 		if (ft_strcmp(cmds->current->type, "WORD") == 0)
+		{
 			run_commands(cmds);
+		}
 		else
+		{
 			exec_redirect(cmds);
+		}
 	}
 	else
 		return ;

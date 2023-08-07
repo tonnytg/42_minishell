@@ -12,6 +12,35 @@
 
 #include "../../includes/minishell.h"
 
+/* TODO: Read file */
+void	read_file(t_cmds *cmds, char *file_name, int *write_in)
+{
+	char	*msg;
+	char	buffer[1024];
+	int		file;
+	ssize_t	bytes_read;
+
+	file = open(file_name, O_RDONLY);
+	if (file < 1)
+	{
+		perror("error: file descriptor not opened!\n");
+		cmds->exit_code.code = 1;
+		exit(EXIT_FAILURE);
+	}
+	bytes_read = read(file, buffer, sizeof(buffer) - 1);
+	if (bytes_read < 0)
+	{
+		perror("read");
+		exit(EXIT_FAILURE);
+	}
+	buffer[bytes_read] = '\0';
+	msg = ft_strdup(buffer);
+	if (!msg)
+		return ;
+	write(write_in[1], msg, ft_strlen(msg));
+	free(msg);
+}
+
 /* TODO: Restore msg from fd */
 char	*restore_msg_from_fd(t_cmds *cmds)
 {

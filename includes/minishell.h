@@ -49,6 +49,10 @@
 # define APPEND 2
 # define HEREDOC 3
 
+# define S_RECEIVER 1
+# define S_SENDER 2
+# define S_SKIP_NEXT_FD 3
+
 /* Structs */
 struct	s_cmds;
 struct	s_command;
@@ -72,6 +76,7 @@ typedef struct s_cmd_node
 {
 	char				*phrase;
 	int					disabled;
+	int					strategy;
 	char				*phrase_temp;
 	char				**phrase_parsed;
 	int					is_active_to_run;
@@ -110,6 +115,16 @@ typedef struct s_input
 	char		*cmd_args;
 	char		**phrase;
 }	t_input;
+
+typedef struct s_here_doc{
+	char	buffer[1024];
+	char	*eof_keyword;
+	char	*content;
+	ssize_t	bytes_read;
+	size_t	total_size;
+	size_t	buffer_size;
+	ssize_t	bytes_written;
+}	t_here_doc;
 
 typedef struct s_env_convert
 {
@@ -182,6 +197,10 @@ typedef struct s_cmds
 void		create_fd_file(t_cmds *cmds);
 void		open_file(t_cmds *cmds);
 void		save_file(t_cmds *cmds);
+void		read_file(t_cmds *cmds, char *file_name, int *write_in);
+
+/* Here Document */
+void		here_doc(t_cmds *cmds);
 
 /* Commands */
 void		find_command(t_cmds *cmds);
