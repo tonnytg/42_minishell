@@ -116,6 +116,16 @@ typedef struct s_input
 	char		**phrase;
 }	t_input;
 
+typedef struct s_here_doc{
+	char	buffer[1024];
+	char	*eof_keyword;
+	char	*content;
+	ssize_t	bytes_read;
+	size_t	total_size;
+	size_t	buffer_size;
+	ssize_t	bytes_written;
+}	t_here_doc;
+
 typedef struct s_env_convert
 {
 	int		trigger;

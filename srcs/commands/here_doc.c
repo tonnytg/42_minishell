@@ -12,54 +12,74 @@
 
 #include "../../includes/minishell.h"
 
-void	here_doc(t_cmds *cmds)
+void	initialize_here_doc_data(t_here_doc *data)
 {
-	char	buffer[1024];
-	char	*eof_keyword;
-	char	*content;
-	char	*temp;
-	ssize_t	bytes_read;
-	size_t	total_size;
-	size_t	buffer_size;
-	ssize_t bytes_written;
-
-	eof_keyword = ft_strdup("EOF\n");
-	total_size = 0;
-	buffer_size = 1024;
-	content = malloc(buffer_size);
-	while (1)
+	data->eof_keyword = ft_strdup("EOF\n");
+	data->total_size = 0;
+	data->buffer_size = 1024;
+	data->content = ft_calloc(data->buffer_size, sizeof(char));
+	if (!data->content)
 	{
-		write(1, ">", 2);
-		bytes_read = read(STDIN_FILENO, buffer, 1024);
-		if (bytes_read == -1)
-		{
-			perror("[here_doc] - error to read default stdin");
-			exit(EXIT_FAILURE);
-		}
-		if (ft_strncmp(buffer, eof_keyword, bytes_read) == 0)
-			break;
-		if (total_size + bytes_read >= buffer_size)
-		{
-			buffer_size *= 2;
-			temp = realloc(content, buffer_size);
-			if (!temp)
-			{
-				perror("[here_doc] - Erro ao alocar memória");
-				exit(EXIT_FAILURE);
-			}
-			content = temp;
-		}
-		ft_memcpy(content + total_size, buffer, bytes_read);
-		total_size += bytes_read;
-	}
-	content[total_size] = '\0';
-	bytes_written = write(cmds->current->fd[1], content, total_size);
-	if (bytes_written == -1)
-	{
-		perror("[here_doc] - Error to write in default stdout");
+		perror("[initialize_here_doc_data] - Error allocating memory");
 		exit(EXIT_FAILURE);
 	}
-	free(content);
-	free(eof_keyword);
-	return ;
+	data->content[data->total_size] = '\0';
+}
+
+void	read_here_doc(t_here_doc *data)
+{
+	while (1)
+	{
+		write(STDOUT_FILENO, "> ", 2);
+		data->bytes_read = read(STDIN_FILENO,
+				data->buffer, sizeof(data->buffer));
+		if (strncmp(data->buffer, data->eof_keyword,
+				ft_strlen(data->eof_keyword)) == 0)
+			break ;
+		if (data->total_size + data->bytes_read >= data->buffer_size)
+		{
+			data->buffer_size *= 2;
+			data->content = ft_calloc(data->buffer_size, sizeof(char));
+			if (!data->content)
+				exit(EXIT_FAILURE);
+		}
+		ft_memcpy(data->content + data->total_size,
+			data->buffer, data->bytes_read);
+		data->total_size += data->bytes_read;
+	}
+	if (data->bytes_read == -1)
+	{
+		perror("[read_here_doc] - Error reading from stdin");
+		exit(EXIT_FAILURE);
+	}
+	data->content[data->total_size] = '\0';
+}
+
+void	write_here_doc(t_here_doc *data, int file_descriptor)
+{
+	data->bytes_written = write(file_descriptor,
+			data->content, strlen(data->content));
+	if (data->bytes_written == -1)
+	{
+		perror("[write_here_doc] - Error writing to file descriptor");
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	cleanup_here_doc_data(t_here_doc *data)
+{
+	free(data->eof_keyword);
+	free(data->content);
+}
+
+void	here_doc(t_cmds *cmds)
+{
+	t_here_doc	*data;
+
+	data = ft_calloc(1, sizeof(t_here_doc));
+	initialize_here_doc_data(data);
+	read_here_doc(data);
+	write_here_doc(data, cmds->current->fd[1]);
+	cleanup_here_doc_data(data);
+	free(data);
 }

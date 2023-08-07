@@ -38,13 +38,51 @@ void	run_strategy(t_cmds *cmds)
 		cmds->current->next->disabled = 1;
 }
 
+void	check_dless(t_cmds *cmds)
+{
+	if (ft_strcmp(cmds->current->type, "DLESS") == 0)
+	{
+		here_doc(cmds);
+		cmds->current->prev->strategy = S_SKIP_NEXT_FD;
+		cmds->current->disabled = 1;
+		cmds->current->next->disabled = 1;
+		close(cmds->current->fd[1]);
+	}
+}
+
+char	*read_from_file(void)
+{
+	char	*msg;
+	char	buffer[1024];
+	int		bytes_read;
+	int		file;
+
+	file = open("file.txt", O_RDONLY);
+	if (file < 1)
+		perror("error: file descriptor not opened!\n");
+	bytes_read = read(file, buffer, sizeof(buffer) - 1);
+	if (bytes_read < 0)
+		exit(EXIT_FAILURE);
+	buffer[bytes_read] = '\0';
+	msg = ft_strdup(buffer);
+	if (!msg)
+		return (NULL);
+	return (msg);
+}
+
+void	write_in_fd(t_cmds *cmds, char *msg)
+{
+	if (msg == NULL)
+		return ;
+	write(cmds->current->fd[1], msg, ft_strlen(msg));
+	close(cmds->current->fd[1]);
+	free(msg);
+}
+
 void	set_strategy(t_cmds *cmds)
 {
 	t_strategy	*s;
 	char		*msg;
-	char		buffer[1024];
-	int			file;
-	ssize_t		bytes_read;
 
 	s = ft_calloc(1, sizeof(t_strategy));
 	cmds->current = cmds->cmd_list;
@@ -52,24 +90,8 @@ void	set_strategy(t_cmds *cmds)
 	{
 		if (ft_strcmp(cmds->current->type, "LESS") == 0)
 		{
-			file = open("file.txt", O_RDONLY);
-			if (file < 1)
-			{
-				perror("error: file descriptor not opened!\n");
-			}
-			bytes_read = read(file, buffer, sizeof(buffer) - 1);
-			if (bytes_read < 0)
-			{
-				perror("read");
-				exit(EXIT_FAILURE);
-			}
-			buffer[bytes_read] = '\0';
-			msg = ft_strdup(buffer);
-			if (!msg)
-				return ;
-			write(cmds->current->fd[1], msg, ft_strlen(msg));
-			close(cmds->current->fd[1]);
-			free(msg);
+			msg = read_from_file();
+			write_in_fd(cmds, msg);
 			if (ft_strcmp(cmds->current->type, "WORD") != 0)
 			{
 				cmds->current->disabled = 1;
@@ -77,14 +99,7 @@ void	set_strategy(t_cmds *cmds)
 			}
 			cmds->current->prev->strategy = S_RECEIVER;
 		}
-		if (ft_strcmp(cmds->current->type, "DLESS") == 0)
-		{
-			here_doc(cmds);
-			cmds->current->prev->strategy = S_SKIP_NEXT_FD;
-			cmds->current->disabled = 1;
-			cmds->current->next->disabled = 1;
-			close(cmds->current->fd[1]);
-		}
+		check_dless(cmds);
 		cmds->current = cmds->current->next;
 	}
 	cmds->strategy = 0;
