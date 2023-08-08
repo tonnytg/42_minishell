@@ -32,6 +32,7 @@
 # define UNSET_BUILTIN	"unset"
 # define ENV_BUILTIN	"env"
 # define EXIT_BUILTIN	"exit"
+# define TEST_FD		"test_fd"
 
 # define STDIN_FILENO 0
 # define STDOUT_FILENO 1
@@ -52,6 +53,7 @@
 # define S_RECEIVER 1
 # define S_SENDER 2
 # define S_SKIP_NEXT_FD 3
+# define S_PIPED 4
 
 /* Structs */
 struct	s_cmds;
@@ -224,6 +226,7 @@ void		free_split(char **split_array);
 int			echo_adapter(t_cmds *cmds);
 int			cd_adapter(t_cmds *cmds);
 int			env_adapter(t_cmds *cmds);
+int			test_fd_adapter(t_cmds *cmds);
 int			unset_adapter(t_cmds *cmds);
 int			pwd_adapter(t_cmds *cmds);
 int			exit_adapter(t_cmds *cmds);
@@ -235,6 +238,12 @@ void		free_commands(t_cmds *cmds);
 /* Strategy */
 void		set_strategy(t_cmds *cmds);
 void		run_strategy(t_cmds *cmds);
+void		check_dless(t_cmds *cmds);
+void		check_less(t_cmds *cmds);
+void		check_pipe(t_cmds *cmds);
+void		write_in_fd(t_cmds *cmds, char *msg);
+char		*read_from_file(void);
+void		run_strategy_piped(t_cmds *cmds);
 
 /* Export Command Utils srcs/builtins/export_utils.c */
 void		save_converted_word(t_env_convert *env_c);

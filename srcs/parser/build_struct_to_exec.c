@@ -42,15 +42,19 @@ void	new_node_cmd(t_cmd_node **head, char *str, char *type)
 	new_cmd->phrase_temp = ft_strdup(str);
 	new_cmd->type = ft_strdup(type);
 	new_cmd->next = NULL;
-	new_cmd->prev = actual;
 	if (*head == NULL)
+	{
+		new_cmd->prev = NULL;
 		*head = new_cmd;
+	}
 	else
 	{
-		actual = *head;
 		while (actual->next != NULL)
+		{
 			actual = actual->next;
+		}
 		actual->next = new_cmd;
+		new_cmd->prev = actual;
 	}
 }
 

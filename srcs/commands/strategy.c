@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-/* Redirect output to file */
+/* Redirect output to file TODO: Diferente pode causar um problma */
 void	run_strategy(t_cmds *cmds)
 {
 	if (ft_strcmp(cmds->current->type, "WORD") == 0)
@@ -33,20 +33,7 @@ void	run_strategy(t_cmds *cmds)
 				dup2(cmds->current->next->next->next->fd[1], STDOUT_FILENO);
 			}
 		}
-	}
-	else
-		cmds->current->next->disabled = 1;
-}
-
-void	check_dless(t_cmds *cmds)
-{
-	if (ft_strcmp(cmds->current->type, "DLESS") == 0)
-	{
-		here_doc(cmds);
-		cmds->current->prev->strategy = S_SKIP_NEXT_FD;
-		cmds->current->disabled = 1;
-		cmds->current->next->disabled = 1;
-		close(cmds->current->fd[1]);
+		run_strategy_piped(cmds);
 	}
 }
 
@@ -81,27 +68,13 @@ void	write_in_fd(t_cmds *cmds, char *msg)
 
 void	set_strategy(t_cmds *cmds)
 {
-	t_strategy	*s;
-	char		*msg;
-
-	s = ft_calloc(1, sizeof(t_strategy));
 	cmds->current = cmds->cmd_list;
 	while (cmds->current != NULL)
 	{
-		if (ft_strcmp(cmds->current->type, "LESS") == 0)
-		{
-			msg = read_from_file();
-			write_in_fd(cmds, msg);
-			if (ft_strcmp(cmds->current->type, "WORD") != 0)
-			{
-				cmds->current->disabled = 1;
-				cmds->current->next->disabled = 1;
-			}
-			cmds->current->prev->strategy = S_RECEIVER;
-		}
+		check_less(cmds);
 		check_dless(cmds);
+		check_pipe(cmds);
 		cmds->current = cmds->current->next;
 	}
 	cmds->strategy = 0;
-	free(s);
 }

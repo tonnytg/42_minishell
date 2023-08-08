@@ -79,19 +79,18 @@ int	echo_print(char **words, int *settings)
 	i = 0;
 	if (words == NULL)
 	{
-		printf("\n");
+		write(STDOUT_FILENO, "\n", 1);
 		return (0);
 	}
 	while (words[i] != NULL)
 	{
-		if (words[i + 1] == NULL)
-			printf("%s", words[i]);
-		else if (words[i + 1] != NULL)
-			printf("%s ", words[i]);
+		write(STDOUT_FILENO, words[i], ft_strlen(words[i]));
+		if (words[i + 1] != NULL)
+			write(STDOUT_FILENO, " ", 1);
 		i++;
 	}
 	if (*settings == 0)
-		printf("\n");
+		write(STDOUT_FILENO, "\n", 1);
 	return (0);
 }
 
@@ -103,7 +102,7 @@ int	echo_adapter(t_cmds *cmds)
 
 	if (cmds->current->full_args == NULL)
 	{
-		printf("\n");
+		write(STDOUT_FILENO, "\n", 1);
 		return (0);
 	}
 	words = set_echo_settings(cmds, &settings);

@@ -22,6 +22,8 @@ FILES	= \
 			srcs/commands/nodes.c					\
 			srcs/commands/type_commands.c 			\
 			srcs/commands/strategy.c	 			\
+			srcs/commands/strategy_set_utils.c		\
+			srcs/commands/strategy_run_utils.c		\
 			srcs/commands/exec_builtin.c 			\
 			srcs/commands/exec_external.c 			\
 			srcs/commands/exec_redirect.c 			\
@@ -32,6 +34,7 @@ FILES	= \
 			srcs/path/path.c						\
 			srcs/builtins/cd.c						\
 			srcs/builtins/echo.c					\
+			srcs/builtins/test_fd.c					\
 			srcs/builtins/env.c						\
 			srcs/builtins/exit.c					\
 			srcs/builtins/export.c					\

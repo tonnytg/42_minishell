@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_redirect.c                                :+:      :+:    :+:   */
+/*   strategy_set_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,17 +12,40 @@
 
 #include "../../includes/minishell.h"
 
-void	exec_redirect(t_cmds *cmds)
+void	check_dless(t_cmds *cmds)
 {
-	if (cmds->current->strategy == S_PIPED)
+	if (ft_strcmp(cmds->current->type, "DLESS") == 0)
 	{
-		run_strategy(cmds);
-	}
-	else
-	{
-		create_fd_file(cmds);
-		run_strategy(cmds);
-		save_file(cmds);
+		here_doc(cmds);
+		cmds->current->prev->strategy = S_SKIP_NEXT_FD;
+		cmds->current->disabled = 1;
 		cmds->current->next->disabled = 1;
+	}
+}
+
+void	check_less(t_cmds *cmds)
+{
+	char		*msg;
+
+	if (ft_strcmp(cmds->current->type, "LESS") == 0)
+	{
+		msg = read_from_file();
+		write_in_fd(cmds, msg);
+		if (ft_strcmp(cmds->current->type, "WORD") != 0)
+		{
+			cmds->current->disabled = 1;
+			cmds->current->next->disabled = 1;
+		}
+		cmds->current->prev->strategy = S_RECEIVER;
+	}
+}
+
+void	check_pipe(t_cmds *cmds)
+{
+	if (ft_strcmp(cmds->current->type, "PIPE") == 0)
+	{
+		cmds->current->prev->strategy = S_PIPED;
+		cmds->current->next->strategy = S_PIPED;
+		cmds->current->disabled = 1;
 	}
 }
