@@ -105,6 +105,7 @@ int	echo_adapter(t_cmds *cmds)
 		write(STDOUT_FILENO, "\n", 1);
 		return (0);
 	}
+	write(STDOUT_FILENO, "\nteste\n", 1);
 	words = set_echo_settings(cmds, &settings);
 	exit_code = echo_print(words, &settings);
 	free_arr(words);
