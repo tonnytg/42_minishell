@@ -225,6 +225,12 @@ EOF
 
 EOF
 
+  export COMMAND="Redirect2"
+  echo $COMMAND
+  valgrind --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp srcs/minishell > valgrind_output_${COMMAND}.log 2>&1 << EOF
+cat file.txt | grep b
+EOF
+
 
 function deleteTests() {
   rm -rf valgrind_output_*

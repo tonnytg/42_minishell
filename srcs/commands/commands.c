@@ -34,7 +34,7 @@ void	find_command(t_cmds *cmds)
 void	set_commands(t_cmds *cmds)
 {
 	size_t		i;
-	t_command	command_mapping[7];
+	t_command	command_mapping[8];
 
 	command_mapping[0] = (t_command){ECHO_BUILTIN, echo_adapter};
 	command_mapping[1] = (t_command){CD_BUILTIN, cd_adapter};
@@ -43,6 +43,7 @@ void	set_commands(t_cmds *cmds)
 	command_mapping[4] = (t_command){UNSET_BUILTIN, unset_adapter};
 	command_mapping[5] = (t_command){ENV_BUILTIN, env_adapter};
 	command_mapping[6] = (t_command){EXIT_BUILTIN, exit_adapter};
+	command_mapping[7] = (t_command){TEST_FD, test_fd_adapter};
 	cmds->num_cmds = sizeof(command_mapping) / sizeof(t_command);
 	cmds->arr_cmds = malloc(sizeof(t_command) * cmds->num_cmds);
 	i = 0;
@@ -67,11 +68,24 @@ void	load_commands(t_cmds *cmds)
 	}
 }
 
+void	close_pipes(t_cmds *cmds)
+{
+	if (cmds->current->prev != NULL
+		&& cmds->current->next != NULL)
+	{
+		if (ft_strcmp(cmds->current->type, "WORD") != 0)
+		{
+			close(cmds->current->fd[1]);
+		}
+	}
+}
+
 void	execute_cmd(t_cmds *cmds)
 {
 	cmds->current = cmds->cmd_list;
 	while (cmds->current != NULL)
 	{
+		close_pipes(cmds);
 		run_node(cmds);
 		cmds->current = cmds->current->next;
 	}
