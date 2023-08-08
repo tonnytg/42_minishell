@@ -231,6 +231,18 @@ EOF
 cat file.txt | grep b
 EOF
 
+  export COMMAND="Redirect3"
+  echo $COMMAND
+  valgrind --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp srcs/minishell > valgrind_output_${COMMAND}.log 2>&1 << EOF
+cat file.txt | grep b | tr [:lower:] [:upper:]
+EOF
+
+  export COMMAND="Redirect4"
+  echo $COMMAND
+  valgrind --quiet --leak-check=full --show-leak-kinds=all --track-origins=yes --suppressions=readline.supp srcs/minishell > valgrind_output_${COMMAND}.log 2>&1 << EOF
+cat file.txt | grep b | wc -l
+EOF
+
 
 function deleteTests() {
   rm -rf valgrind_output_*

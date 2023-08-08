@@ -1,0 +1,26 @@
+name: Minishell Redirect DLess Test
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: install valgrind
+      run: sudo apt install valgrind
+    - name: readline
+      run: sudo apt-get install libreadline-dev
+    - name: make
+      run: make      
+    - name: test redirect dless 1
+      run: |
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOT
+        cat << EOF > file.txt
+          a b
+            c d
+          EOF
+        cat file.txt
+        EOT
