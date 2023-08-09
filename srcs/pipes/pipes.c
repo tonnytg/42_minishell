@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   path.c                                             :+:      :+:    :+:   */
+/*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/06/06 10:21:31 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/08/09 00:18:58 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,7 @@ void	open_pipe(t_cmds *cmds)
 
 void	connect_nodes_with_pipes(t_cmds *cmds)
 {
-	int			count;
-
 	open_pipe(cmds);
-	count = 0;
 	cmds->current = cmds->cmd_list;
 	while (cmds->current != NULL)
 	{
@@ -62,7 +59,6 @@ void	connect_nodes_with_pipes(t_cmds *cmds)
 		set_mid_word_fd(cmds);
 		set_mid_redirect_fd(cmds);
 		set_tail_word_fd(cmds);
-		count++;
 		cmds->current = cmds->current->next;
 	}
 }
