@@ -79,7 +79,8 @@ void	here_doc(t_cmds *cmds)
 	data = ft_calloc(1, sizeof(t_here_doc));
 	initialize_here_doc_data(data);
 	read_here_doc(data);
-	write_here_doc(data, cmds->current->fd[1]);
+	write_here_doc(data, STDOUT_FILENO);
 	cleanup_here_doc_data(data);
+	cmds->exit_code.code = 0;
 	free(data);
 }
