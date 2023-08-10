@@ -103,13 +103,7 @@ int	token_analysis(t_cmds *cmds)
 	while (token != NULL)
 	{
 		add_tk_node(&list_tokens, token, "undefined");
-		if (cmds->has_quote == 1)
-		{
-			token = ft_strtok(NULL, "\0", 0);
-			cmds->has_quote = 0;
-		}
-		else
-			token = ft_strtok(NULL, " ", 0);
+		token = ft_strtok(NULL, " ", 0);
 	}
 	classify_tk_nodes(list_tokens);
 	concat_tk_nodes(cmds, list_tokens);
