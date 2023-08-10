@@ -34,7 +34,7 @@ void	check_less(t_cmds *cmds)
 
 	if (ft_strcmp(cmds->current->type, "LESS") == 0)
 	{
-		msg = read_from_file();
+		msg = read_from_file(cmds);
 		if (!msg)
 		{
 			cmds->exit_code.code = 1;
