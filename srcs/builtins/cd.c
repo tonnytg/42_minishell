@@ -6,7 +6,7 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 10:13:53 by caalbert          #+#    #+#             */
-/*   Updated: 2023/08/09 01:17:19 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/08/10 10:22:40 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,7 @@ int	cd_adapter(t_cmds *cmds)
 	if (cmds->current->phrase_parsed != NULL)
 	{
 		if (cmds->current->phrase_parsed[1] != NULL)
-		{
 			temp = ft_strdup(cmds->current->phrase_parsed[1]);
-		}
 		else
 			temp = ft_strdup(".");
 	}
