@@ -27,11 +27,12 @@ void	run_strategy(t_cmds *cmds)
 		}
 		if (cmds->current->strategy == S_SKIP_NEXT_FD)
 		{
-			if (ft_strcmp(cmds->current->next->next->type, "WORD") == 0)
-			{
-				dup2(cmds->current->next->fd[0], STDIN_FILENO);
-				dup2(cmds->current->next->next->next->fd[1], STDOUT_FILENO);
-			}
+			dup2(cmds->current->next->fd[0], STDIN_FILENO);
+			dup2(cmds->current->next->next->next->fd[1], STDOUT_FILENO);
+		}
+		if (cmds->current->strategy == S_DLESS_CURRENT)
+		{
+			dup2(cmds->current->next->fd[0], STDIN_FILENO);
 		}
 		run_strategy_piped(cmds);
 	}

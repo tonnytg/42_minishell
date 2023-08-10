@@ -50,10 +50,12 @@
 # define APPEND 2
 # define HEREDOC 3
 
+# define S_DEFAULT 0
 # define S_RECEIVER 1
 # define S_SENDER 2
 # define S_SKIP_NEXT_FD 3
 # define S_PIPED 4
+# define S_DLESS_CURRENT 5
 
 /* Structs */
 struct	s_cmds;
