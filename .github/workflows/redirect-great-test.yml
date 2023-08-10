@@ -1,0 +1,43 @@
+name: Minishell Redirect Great Test
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: install valgrind
+      run: sudo apt install valgrind
+    - name: readline
+      run: sudo apt-get install libreadline-dev
+    - name: make
+      run: make      
+    - name: test redirect great 1
+      run: |
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
+        echo a b > file.txt
+        EOF
+
+    - name: test redirect great 2
+      run: |
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
+        cat /etc/passwd > passwd.txt
+        cat passwrd.txt
+        EOF
+
+    - name: test redirect great 3
+      run: |
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
+        echo "a b" > file2.txt
+        cat file2.txt
+        EOF
+
+    - name: test redirect great 4
+      run: |
+        valgrind --trace-children=yes --track-fds=yes --track-origins=yes --suppressions=readline.supp --leak-check=full --show-leak-kinds=all ./minishell << EOF
+        echo 'a b' > file3.txt
+        cat file3.txt
+        EOF
