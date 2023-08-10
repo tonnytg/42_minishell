@@ -44,12 +44,19 @@ int	minishell(t_cmds *cmds)
 
 	while (1)
 	{
+		cmds->exit_code.code = 0;
+		cmds->exit_code.msg = NULL;
 		if (read_keyboard(cmds))
 			continue ;
 		token_analysis(cmds);
 		syntax_analysis(cmds);
 		connect_nodes_with_pipes(cmds);
 		set_strategy(cmds);
+		if (cmds->exit_code.code != 0)
+		{
+			ft_printf("%s\n", cmds->exit_code.msg);
+			continue ;
+		}
 		execute_cmd(cmds);
 		free_cmd_nodes(cmds->cmd_list);
 		exit_code = cmds->exit_code.code;
