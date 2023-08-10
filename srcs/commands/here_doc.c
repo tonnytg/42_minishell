@@ -12,9 +12,15 @@
 
 #include "../../includes/minishell.h"
 
-void	initialize_here_doc_data(t_here_doc *data)
+void	initialize_here_doc_data(t_cmds *cmds, t_here_doc *data)
 {
-	data->eof_keyword = ft_strdup("EOF\n");
+	char	**words;
+
+	words = ft_split(cmds->current->next->phrase, ' ');
+	if (words != NULL)
+		data->eof_keyword = ft_strdup(words[0]);
+	else
+		data->eof_keyword = ft_strdup("EOF\n");
 	data->total_size = 0;
 	data->buffer_size = 1024;
 	data->content = ft_calloc(data->buffer_size, sizeof(char));
@@ -24,6 +30,7 @@ void	initialize_here_doc_data(t_here_doc *data)
 		exit(EXIT_FAILURE);
 	}
 	data->content[data->total_size] = '\0';
+	free_arr(words);
 }
 
 void	read_here_doc(t_here_doc *data)
@@ -77,7 +84,7 @@ void	here_doc(t_cmds *cmds)
 	t_here_doc	*data;
 
 	data = ft_calloc(1, sizeof(t_here_doc));
-	initialize_here_doc_data(data);
+	initialize_here_doc_data(cmds, data);
 	read_here_doc(data);
 	write_here_doc(data, cmds->current->fd[1]);
 	close(cmds->current->fd[1]);
