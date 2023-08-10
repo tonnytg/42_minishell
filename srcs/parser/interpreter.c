@@ -6,11 +6,12 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/08/09 20:27:05 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/08/10 10:29:58 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
+
 char	*ft_strsub(char const *s, unsigned int start, size_t len)
 {
 	char	*substring;
