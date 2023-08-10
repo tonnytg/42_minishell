@@ -35,6 +35,12 @@ void	check_less(t_cmds *cmds)
 	if (ft_strcmp(cmds->current->type, "LESS") == 0)
 	{
 		msg = read_from_file();
+		if (!msg)
+		{
+			cmds->exit_code.code = 1;
+			cmds->exit_code.msg = ft_strdup("No such file or directory");
+			return ;
+		}
 		write_in_fd(cmds, msg);
 		if (ft_strcmp(cmds->current->type, "WORD") != 0)
 		{

@@ -44,7 +44,11 @@ char	*read_from_file(void)
 	char	buffer[1024];
 	int		bytes_read;
 	int		file;
+	int		result;
 
+	result = access("file.txt", F_OK);
+	if (result != 0)
+		return (NULL);
 	file = open("file.txt", O_RDONLY);
 	if (file < 1)
 		perror("error: file descriptor not opened!\n");
@@ -75,6 +79,8 @@ void	set_strategy(t_cmds *cmds)
 		check_less(cmds);
 		check_dless(cmds);
 		check_pipe(cmds);
+		if (cmds->exit_code.code != 0)
+			return ;
 		cmds->current = cmds->current->next;
 	}
 	cmds->strategy = 0;
