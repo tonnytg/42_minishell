@@ -38,20 +38,33 @@ void	run_strategy(t_cmds *cmds)
 	}
 }
 
-char	*read_from_file(void)
+int	get_file(t_cmds *cmds)
+{
+	char	**words;
+	int		result;
+	int		file;
+
+	words = ft_split(cmds->current->next->phrase, ' ');
+	if (words == NULL)
+		return (-1);
+	result = access(words[0], F_OK);
+	if (result != 0)
+		return (result);
+	file = open(words[0], O_RDONLY);
+	free_arr(words);
+	return (file);
+}
+
+char	*read_from_file(t_cmds *cmds)
 {
 	char	*msg;
 	char	buffer[1024];
 	int		bytes_read;
 	int		file;
-	int		result;
 
-	result = access("file.txt", F_OK);
-	if (result != 0)
-		return (NULL);
-	file = open("file.txt", O_RDONLY);
+	file = get_file(cmds);
 	if (file < 1)
-		perror("error: file descriptor not opened!\n");
+		return (NULL);
 	bytes_read = read(file, buffer, sizeof(buffer) - 1);
 	if (bytes_read < 0)
 		exit(EXIT_FAILURE);

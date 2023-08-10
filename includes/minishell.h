@@ -244,7 +244,7 @@ void		check_dless(t_cmds *cmds);
 void		check_less(t_cmds *cmds);
 void		check_pipe(t_cmds *cmds);
 void		write_in_fd(t_cmds *cmds, char *msg);
-char		*read_from_file(void);
+char		*read_from_file(t_cmds *cmds);
 void		run_strategy_piped(t_cmds *cmds);
 
 /* Export Command Utils srcs/builtins/export_utils.c */
