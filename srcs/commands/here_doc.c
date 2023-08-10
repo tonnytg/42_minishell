@@ -80,6 +80,8 @@ void	here_doc(t_cmds *cmds)
 	initialize_here_doc_data(data);
 	read_here_doc(data);
 	write_here_doc(data, cmds->current->fd[1]);
+	close(cmds->current->fd[1]);
 	cleanup_here_doc_data(data);
+	cmds->exit_code.code = 0;
 	free(data);
 }

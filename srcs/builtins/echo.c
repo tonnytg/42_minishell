@@ -38,7 +38,7 @@ char	**filter_echo_words(char **words)
 	j = 0;
 	count = count_words(words);
 	filtered_words = ft_calloc(count + 1, sizeof(char *));
-	i = 0;
+	i = 1;
 	while (words[i] != NULL)
 	{
 		if (ft_strcmp(words[i], "-n") != 0 && ft_strcmp(words[i], "-e") != 0)
@@ -56,7 +56,7 @@ char	**set_echo_settings(t_cmds *cmds, int *settings)
 	int		i;
 	char	**filter_words;
 
-	i = 0;
+	i = 1;
 	*settings = 0;
 	if (cmds->current->phrase_parsed == NULL)
 		return (NULL);
