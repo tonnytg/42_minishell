@@ -6,7 +6,7 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/07/27 20:57:53 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/08/11 00:50:18 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,6 +195,7 @@ typedef struct s_cmds
 	int			signal;
 	int			new;
 	void		(*signal_handler)(int);
+	char		*previous_dir;
 }	t_cmds;
 
 /* file */
@@ -258,6 +259,7 @@ void		init_interpreter(t_cmds *cmds);
 
 /* Interpreter */
 void		parse_values_args(t_cmds *cmds);
+char		*parse_to_folder(t_cmds *cmds, char *str);
 
 /* Command Echo echo_utils2.c */
 int			echo_arg_with_quotes(t_cmds *cmds);
@@ -295,6 +297,7 @@ char		*getvarenv(t_cmds *cmds, char *var);
 void		syntax_analysis(t_cmds *cmds);
 void		build_struct_to_exec(t_cmds *cmds, t_tk_node *list_tokens);
 void		free_cmd_nodes(t_cmd_node *list_cmds);
+char		*get_env_value(t_cmds *cmds, char *name);
 
 /* Token Analysis */
 int			token_analysis(t_cmds *cmds);
@@ -320,4 +323,15 @@ char		*concatenate_strings(char **arr, char c);
 
 /* Minishell  main.c */
 int			minishell(t_cmds *cmds);
+
+char		*get_correct_path(t_cmds *cmds, char *input_path);
+int			change_directory(t_cmds *cmds, char *path, char *temp);
+int			cd_adapter(t_cmds *cmds);
+char		*ft_strsub(char const *s, unsigned int start, size_t len);
+char		*parse_to_folder(t_cmds *cmds, char *str);
+void		parse_values_args(t_cmds *cmds);
+void		prepare_phrase(t_cmds *cmds);
+void		init_interpreter(t_cmds *cmds);
+char		*handle_tilde_path(t_cmds *cmds, char *str);
+char		*handle_relative_path(t_cmds *cmds, char *str);
 #endif
