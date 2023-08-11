@@ -86,8 +86,10 @@ char	*create_cmd_nodes(t_cmd_node **list_cmds, t_tk_node **list_tokens)
 	while (cmds->actual_tk != NULL)
 	{
 		check_quote(cmds->actual_tk->token, cmds);
-		if (ft_strcmp(cmds->actual_tk->tk_type, "WORD") == 0 || cmds->has_quote == 1)
-			cmds->str = copy_if_firstword(&cmds->first_word, cmds->str, cmds->actual_tk);
+		if (ft_strcmp(cmds->actual_tk->tk_type, "WORD") == 0
+			|| cmds->has_quote == 1)
+			cmds->str = copy_if_firstword(
+					&cmds->first_word, cmds->str, cmds->actual_tk);
 		else
 			save_node_cmd(list_cmds, cmds);
 		cmds->actual_tk = cmds->actual_tk->next;
