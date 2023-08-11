@@ -41,8 +41,8 @@ void	new_node_cmd(t_cmd_node **head, char *str, char *type)
 
 char	*copy_if_firstword(int *firstword2, char *str, t_tk_node *actual_tk)
 {
-	int		first_word;
 	char	*temp;
+	int		first_word;
 
 	first_word = *firstword2;
 	if (!first_word)
@@ -59,14 +59,18 @@ char	*copy_if_firstword(int *firstword2, char *str, t_tk_node *actual_tk)
 	return (str);
 }
 
-void	save_node_cmd(t_cmd_node **list_cmds, t_cmd_build	*cmds)
+void	save_node_cmd(t_cmd_node **list_cmds, t_cmd_build *cmds)
 {
-	cmds->temp = cmds->str;
-	new_node_cmd(list_cmds, cmds->temp, "WORD");
+	if (cmds->str[0] != '\0')
+	{
+		cmds->temp = cmds->str;
+		new_node_cmd(list_cmds, cmds->temp, "WORD");
+		cmds->temp = NULL;
+	}
 	if (cmds->actual_tk->next != NULL)
 		new_node_cmd(list_cmds, " ", cmds->actual_tk->tk_type);
+	free(cmds->str);
 	cmds->str = ft_strdup("");
-	free(cmds->temp);
 	cmds->first_word = 1;
 }
 
