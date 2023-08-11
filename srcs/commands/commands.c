@@ -6,7 +6,7 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/06/06 10:21:31 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/08/10 22:58:29 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	set_commands(t_cmds *cmds)
 	command_mapping[7] = (t_command){TEST_FD, test_fd_adapter};
 	cmds->num_cmds = sizeof(command_mapping) / sizeof(t_command);
 	cmds->arr_cmds = malloc(sizeof(t_command) * cmds->num_cmds);
+	cmds->previous_dir = NULL;
 	i = 0;
 	while (i < cmds->num_cmds)
 	{
