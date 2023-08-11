@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_analysis.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antthoma <antthoma@student.42sp.org.br>    +#+  +:+       +#+        */
-/*       calbert  <calbert@student.42sp.org.br>   +#+#+#+#+#+   +#+           */
+/*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/04/26 00:17:13 by antthoma         ###   ########.fr       */
+/*   Updated: 2023/08/10 21:13:09 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,21 @@ void	syntax_analysis(t_cmds *cmds)
 		i++;
 	}
 	free(cmds->lexical);
+}
+
+char	*get_env_value(t_cmds *cmds, char *name)
+{
+	int	i;
+
+	i = 0;
+	while (cmds->envs[i])
+	{
+		if (ft_strncmp(cmds->envs[i], name, ft_strlen(name)) == \
+		0 && cmds->envs[i][ft_strlen(name)] == '=')
+		{
+			return (cmds->envs[i] + ft_strlen(name) + 1);
+		}
+		i++;
+	}
+	return (NULL);
 }
