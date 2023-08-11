@@ -22,9 +22,11 @@ void	check_dless(t_cmds *cmds)
 			&& ft_strcmp(cmds->current->next->next->type, "WORD") != 0)
 			cmds->current->prev->strategy = S_SKIP_NEXT_FD;
 		else
-			cmds->current->prev->strategy = S_DLESS_CURRENT;
+			if (cmds->current->prev != NULL)
+				cmds->current->prev->strategy = S_DLESS_CURRENT;
 		cmds->current->disabled = 1;
-		cmds->current->next->disabled = 1;
+		if (cmds->current->next != NULL)
+			cmds->current->next->disabled = 1;
 	}
 }
 
