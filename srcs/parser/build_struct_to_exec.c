@@ -12,25 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-void	free_cmd_nodes(t_cmd_node *list_cmds)
-{
-	t_cmd_node	*temp;
-
-	while (list_cmds != NULL)
-	{
-		temp = list_cmds;
-		list_cmds = list_cmds->next;
-		if (temp->phrase != NULL)
-			free(temp->phrase);
-		if (temp->phrase_temp != NULL)
-			free(temp->phrase_temp);
-		if (temp->type != NULL)
-			free(temp->type);
-		if (temp != NULL)
-			free(temp);
-	}
-}
-
 void	new_node_cmd(t_cmd_node **head, char *str, char *type)
 {
 	t_cmd_node	*actual;
@@ -60,8 +41,8 @@ void	new_node_cmd(t_cmd_node **head, char *str, char *type)
 
 char	*copy_if_firstword(int *firstword2, char *str, t_tk_node *actual_tk)
 {
-	int		first_word;
 	char	*temp;
+	int		first_word;
 
 	first_word = *firstword2;
 	if (!first_word)
@@ -78,36 +59,47 @@ char	*copy_if_firstword(int *firstword2, char *str, t_tk_node *actual_tk)
 	return (str);
 }
 
+void	save_node_cmd(t_cmd_node **list_cmds, t_cmd_build *cmds)
+{
+	if (cmds->str[0] != '\0')
+	{
+		cmds->temp = cmds->str;
+		new_node_cmd(list_cmds, cmds->temp, "WORD");
+		cmds->temp = NULL;
+	}
+	if (cmds->actual_tk->next != NULL)
+		new_node_cmd(list_cmds, " ", cmds->actual_tk->tk_type);
+	free(cmds->str);
+	cmds->str = ft_strdup("");
+	cmds->first_word = 1;
+}
+
 char	*create_cmd_nodes(t_cmd_node **list_cmds, t_tk_node **list_tokens)
 {
-	t_tk_node	*actual_tk;
-	char		*temp;
-	int			first_word;
+	t_cmd_build	*cmds;
 	char		*str;
 
-	first_word = 1;
-	str = ft_strdup("");
-	actual_tk = *list_tokens;
-	while (actual_tk != NULL)
+	cmds = ft_calloc(1, sizeof(t_cmd_build));
+	cmds->first_word = 1;
+	cmds->str = ft_strdup("");
+	cmds->actual_tk = *list_tokens;
+	while (cmds->actual_tk != NULL)
 	{
-		if (ft_strcmp(actual_tk->tk_type, "WORD") == 0)
-			str = copy_if_firstword(&first_word, str, actual_tk);
+		check_quote(cmds->actual_tk->token, cmds);
+		if (ft_strcmp(cmds->actual_tk->tk_type, "WORD") == 0
+			|| cmds->has_quote == 1)
+			cmds->str = copy_if_firstword(
+					&cmds->first_word, cmds->str, cmds->actual_tk);
 		else
-		{
-			temp = str;
-			new_node_cmd(list_cmds, temp, "WORD");
-			if (actual_tk->next != NULL)
-				new_node_cmd(list_cmds, " ", actual_tk->tk_type);
-			str = ft_strdup("");
-			free(temp);
-			first_word = 1;
-		}
-		actual_tk = actual_tk->next;
+			save_node_cmd(list_cmds, cmds);
+		cmds->actual_tk = cmds->actual_tk->next;
 	}
+	str = ft_strdup(cmds->str);
+	free(cmds->str);
+	free(cmds);
 	return (str);
 }
 
-/* TODO: Aqui tem um bug com >> e > usando aspas duplas */
 void	build_struct_to_exec(t_cmds *cmds, t_tk_node *list_tokens)
 {
 	t_cmd_node	*list_cmds;

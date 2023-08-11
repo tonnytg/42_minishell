@@ -6,7 +6,7 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/08/11 00:50:18 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/08/11 01:23:29 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,6 +144,15 @@ typedef struct s_env_convert
 	int		w;
 	int		a;
 }	t_env_convert;
+
+typedef struct s_cmd_build
+{
+	t_tk_node	*actual_tk;
+	char		*temp;
+	int			first_word;
+	char		*str;
+	int			has_quote;
+}	t_cmd_build;
 
 typedef struct s_envs
 {
@@ -297,7 +306,7 @@ char		*getvarenv(t_cmds *cmds, char *var);
 void		syntax_analysis(t_cmds *cmds);
 void		build_struct_to_exec(t_cmds *cmds, t_tk_node *list_tokens);
 void		free_cmd_nodes(t_cmd_node *list_cmds);
-char		*get_env_value(t_cmds *cmds, char *name);
+void		check_quote(char *word, t_cmd_build *cmds);
 
 /* Token Analysis */
 int			token_analysis(t_cmds *cmds);
