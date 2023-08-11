@@ -6,7 +6,7 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/08/11 01:23:29 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/08/11 12:25:09 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -341,6 +341,7 @@ char		*parse_to_folder(t_cmds *cmds, char *str);
 void		parse_values_args(t_cmds *cmds);
 void		prepare_phrase(t_cmds *cmds);
 void		init_interpreter(t_cmds *cmds);
-char		*handle_tilde_path(t_cmds *cmds, char *str);
-char		*handle_relative_path(t_cmds *cmds, char *str);
+char		*get_env_value(t_cmds *cmds, char *name);
+// char		*handle_tilde_path(t_cmds *cmds, char *str);
+// char		*handle_relative_path(t_cmds *cmds, char *str);
 #endif

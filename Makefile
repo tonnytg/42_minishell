@@ -6,52 +6,53 @@
 #    By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/23 22:19:58 by caalbert          #+#    #+#              #
-#    Updated: 2023/07/27 21:18:52 by caalbert         ###   ########.fr        #
+#    Updated: 2023/08/11 11:19:30 by caalbert         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME	= minishell
 HEADER	= $(NAME).h
 FILES	= \
-			srcs/main.c								\
-			srcs/utils/utils.c						\
-			srcs/utils/utils2.c						\
-			srcs/read_keyboard/input.c				\
-			srcs/read_keyboard/check_data_input.c	\
-			srcs/commands/commands.c				\
-			srcs/commands/nodes.c					\
-			srcs/commands/type_commands.c 			\
-			srcs/commands/strategy.c	 			\
-			srcs/commands/strategy_set_utils.c		\
-			srcs/commands/strategy_run_utils.c		\
-			srcs/commands/exec_builtin.c 			\
-			srcs/commands/exec_external.c 			\
-			srcs/commands/exec_redirect.c 			\
-			srcs/commands/here_doc.c				\
-			srcs/commands/file.c			 		\
-			srcs/pipes/pipes.c 						\
-			srcs/pipes/pipes_utils.c				\
-			srcs/path/path.c						\
-			srcs/builtins/cd.c						\
-			srcs/builtins/echo.c					\
-			srcs/builtins/test_fd.c					\
-			srcs/builtins/env.c						\
-			srcs/builtins/exit.c					\
-			srcs/builtins/export.c					\
-			srcs/builtins/export_utils.c			\
-			srcs/builtins/pwd.c						\
-			srcs/builtins/unset.c					\
-			srcs/signals/signals.c					\
-			srcs/envs/envs.c						\
-			srcs/envs/envs_utils.c					\
-			srcs/parser/interpreter.c				\
-			srcs/parser/token_analysis.c 			\
-			srcs/parser/syntax_analysis.c 			\
-			srcs/parser/build_struct_to_exec.c 		\
+			srcs/main.c										\
+			srcs/utils/utils.c								\
+			srcs/utils/utils2.c								\
+			srcs/read_keyboard/input.c						\
+			srcs/read_keyboard/check_data_input.c			\
+			srcs/commands/commands.c						\
+			srcs/commands/nodes.c							\
+			srcs/commands/type_commands.c 					\
+			srcs/commands/strategy.c	 					\
+			srcs/commands/strategy_set_utils.c				\
+			srcs/commands/strategy_run_utils.c				\
+			srcs/commands/exec_builtin.c 					\
+			srcs/commands/exec_external.c 					\
+			srcs/commands/exec_redirect.c 					\
+			srcs/commands/here_doc.c						\
+			srcs/commands/file.c			 				\
+			srcs/pipes/pipes.c 								\
+			srcs/pipes/pipes_utils.c						\
+			srcs/path/path.c								\
+			srcs/builtins/cd.c								\
+			srcs/builtins/echo.c							\
+			srcs/builtins/test_fd.c							\
+			srcs/builtins/env.c								\
+			srcs/builtins/exit.c							\
+			srcs/builtins/export.c							\
+			srcs/builtins/export_utils.c					\
+			srcs/builtins/pwd.c								\
+			srcs/builtins/unset.c							\
+			srcs/signals/signals.c							\
+			srcs/envs/envs.c								\
+			srcs/envs/envs_utils.c							\
+			srcs/parser/interpreter.c						\
+			srcs/parser/token_analysis.c 					\
+			srcs/parser/syntax_analysis.c 					\
+			srcs/parser/build_struct_to_exec.c 				\
 			srcs/parser/build_struct_to_exec_utils.c 		\
-			srcs/parser/redirects.c					\
-			srcs/quotes/quotes.c					\
-			srcs/quotes/quotes_utils.c
+			srcs/parser/redirects.c							\
+			srcs/quotes/quotes.c							\
+			srcs/quotes/quotes_utils.c						\
+			srcs/parser/directory_handler.c
 
 OBJS	= $(FILES:.c=.o)
 CC		= gcc

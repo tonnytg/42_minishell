@@ -6,13 +6,13 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/06 10:13:53 by caalbert          #+#    #+#             */
-/*   Updated: 2023/08/11 00:38:13 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/08/11 12:36:23 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-static char	*get_correct_path(t_cmds *cmds, char *input_path)
+char	*get_correct_path(t_cmds *cmds, char *input_path)
 {
 	char	*result_path;
 	char	*home;
@@ -55,6 +55,7 @@ int	change_directory(t_cmds *cmds, char *path, char *temp)
 	}
 	free(temp);
 	free(path);
+	free(cmds->previous_dir);
 	return (0);
 }
 
