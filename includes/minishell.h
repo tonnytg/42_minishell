@@ -145,6 +145,15 @@ typedef struct s_env_convert
 	int		a;
 }	t_env_convert;
 
+typedef struct s_cmd_build
+{
+	t_tk_node	*actual_tk;
+	char		*temp;
+	int			first_word;
+	char		*str;
+	int			has_quote;
+}	t_cmd_build;
+
 typedef struct s_envs
 {
 	char	*name;
@@ -295,6 +304,7 @@ char		*getvarenv(t_cmds *cmds, char *var);
 void		syntax_analysis(t_cmds *cmds);
 void		build_struct_to_exec(t_cmds *cmds, t_tk_node *list_tokens);
 void		free_cmd_nodes(t_cmd_node *list_cmds);
+void		check_quote(char *word, t_cmd_build *cmds);
 
 /* Token Analysis */
 int			token_analysis(t_cmds *cmds);

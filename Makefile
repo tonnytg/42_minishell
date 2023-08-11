@@ -48,6 +48,7 @@ FILES	= \
 			srcs/parser/token_analysis.c 			\
 			srcs/parser/syntax_analysis.c 			\
 			srcs/parser/build_struct_to_exec.c 		\
+			srcs/parser/build_struct_to_exec_utils.c 		\
 			srcs/parser/redirects.c					\
 			srcs/quotes/quotes.c					\
 			srcs/quotes/quotes_utils.c
