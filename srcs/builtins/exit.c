@@ -28,16 +28,9 @@ int	count_args(const char *arg)
 	return (count + 1);
 }
 
-int	check_errors_exit(const char *arg, int count)
+int	check_start_dash(const char *arg)
 {
-	if (count > 1)
-	{
-		ft_printf("minishell: exit: too many arguments\n");
-		return (1);
-	}
-	if (arg == NULL)
-		return (0);
-	if (arg[0] != '-' && ft_isdigit(arg[0]) == 0)
+	if (arg[0] == '-' && ft_isdigit(arg[1]) == 0)
 	{
 		ft_printf("minishell: exit: %s: numeric argument required\n", arg);
 		return (2);
@@ -45,6 +38,28 @@ int	check_errors_exit(const char *arg, int count)
 	if (arg[0] == '-' && ft_isdigit(arg[1]) == 1)
 		return (ft_atoi(arg));
 	if (arg[0] == '-' && arg[1] == '\0')
+	{
+		ft_printf("minishell: exit: %s: numeric argument required\n", arg);
+		return (2);
+	}
+	return (0);
+}
+
+int	check_errors_exit(const char *arg, int count)
+{
+	int	result;
+
+	if (count > 1)
+	{
+		ft_printf("minishell: exit: too many arguments\n");
+		return (1);
+	}
+	if (arg == NULL)
+		return (0);
+	result = check_start_dash(arg);
+	if (result != 0)
+		return (result);
+	if (arg[0] != '-' && ft_isdigit(arg[0]) == 0)
 	{
 		ft_printf("minishell: exit: %s: numeric argument required\n", arg);
 		return (2);
