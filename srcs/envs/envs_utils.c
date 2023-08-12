@@ -15,16 +15,20 @@
 char	*getvarenv(t_cmds *cmds, char *var)
 {
 	char	*found_env;
+	char	**temp;
 	int		i;
 
 	i = 0;
+	temp = NULL;
 	if (cmds->envs == NULL)
 		return (NULL);
 	while (cmds->envs[i] != NULL)
 	{
 		if (ft_strncmp(cmds->envs[i], var, ft_strlen(var)) == 0)
 		{
-			found_env = ft_strdup(cmds->envs[i]);
+			temp = ft_split(cmds->envs[i], '=');
+			found_env = ft_strdup(temp[1]);
+			free_arr(temp);
 			return (found_env);
 		}
 		i++;
