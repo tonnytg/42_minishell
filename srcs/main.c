@@ -46,17 +46,15 @@ int	minishell(t_cmds *cmds)
 
 	while (1)
 	{
-		cmds->exit_code.code = 0;
-		cmds->exit_code.msg = NULL;
 		if (read_keyboard(cmds))
 			continue ;
 		token_analysis(cmds);
 		syntax_analysis(cmds);
 		connect_nodes_with_pipes(cmds);
 		set_strategy(cmds);
-		if (cmds->exit_code.code != 0)
+		if (cmds->strategy_error.code != 0)
 		{
-			ft_printf("%s\n", cmds->exit_code.msg);
+			ft_printf("%s\n", cmds->strategy_error.msg);
 			continue ;
 		}
 		execute_cmd(cmds);
@@ -78,6 +76,7 @@ int	main(int argc, char **argv, char **envp)
 	cmds->input = ft_calloc(1, sizeof(t_input));
 	cmds->cmd_finded = ft_calloc(1, sizeof(t_command));
 	cmds->exit_code.code = 0;
+	cmds->exit_code.msg = NULL;
 	cmds->signal_exit = -1;
 	cmds->envs = ft_calloc(count_envp(envp) + 2, sizeof(char *));
 	cmds->has_quote = 0;

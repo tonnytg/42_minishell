@@ -95,12 +95,14 @@ int	export_adapter(t_cmds *cmds)
 	char	**args;
 	int		result;
 
-	if (cmds->envs == NULL && cmds->current->full_args == NULL)
+	if ((cmds->envs == NULL && cmds->current->full_args == NULL)
+		|| cmds->current->phrase_parsed[1] == NULL)
+	{
+		cmds->exit_code.code = 1;
 		return (1);
+	}
 	if (cmds->current->full_args == NULL)
 		env_adapter(cmds);
-	if (cmds->current->phrase_parsed[1] == NULL)
-		return (1);
 	args = ft_split(cmds->current->phrase_parsed[1], '=');
 	if (args[0] == NULL || args[1] == NULL)
 	{

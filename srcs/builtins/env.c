@@ -27,5 +27,6 @@ int	env_adapter(t_cmds *cmds)
 		}
 		i++;
 	}
+	cmds->exit_code.code = 0;
 	return (0);
 }

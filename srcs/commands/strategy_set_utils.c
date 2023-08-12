@@ -39,8 +39,8 @@ void	check_less(t_cmds *cmds)
 		msg = read_from_file(cmds);
 		if (!msg)
 		{
-			cmds->exit_code.code = 1;
-			cmds->exit_code.msg = ft_strdup("No such file or directory");
+			cmds->strategy_error.code = 1;
+			cmds->strategy_error.msg = ft_strdup("No such file or directory");
 			return ;
 		}
 		write_in_fd(cmds, msg);

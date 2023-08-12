@@ -49,12 +49,15 @@ int	change_directory(t_cmds *cmds, char *path, char *temp)
 	cmds->previous_dir = getcwd(NULL, 0);
 	if (chdir((const char *)path) != 0)
 	{
+		printf("minishell: No such file or directory\n");
+		cmds->exit_code.code = 1;
 		free(temp);
 		free(path);
 		return (1);
 	}
 	free(temp);
 	free(path);
+	cmds->exit_code.code = 0;
 	return (0);
 }
 
