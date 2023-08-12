@@ -12,6 +12,23 @@
 
 #include "../../includes/minishell.h"
 
+void	set_piped_stdout(t_cmds *cmds)
+{
+	if (cmds->current->strategy == S_PIPED)
+	{
+		cmds->current->fd_backup_out = dup(STDOUT_FILENO);
+		dup2(cmds->current->next->fd[1], STDOUT_FILENO);
+	}
+}
+
+void	set_restore_stdout(t_cmds *cmds)
+{
+	if (cmds->current->strategy == S_PIPED)
+	{
+		dup2(cmds->current->fd_backup_out, STDOUT_FILENO);
+	}
+}
+
 void	run_strategy_piped(t_cmds *cmds)
 {
 	if (cmds->current->strategy == S_PIPED)

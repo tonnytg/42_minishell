@@ -23,7 +23,8 @@ int	env_adapter(t_cmds *cmds)
 	{
 		if (cmds->envs[i] != NULL)
 		{
-			printf("%s\n", cmds->envs[i]);
+			write(STDOUT_FILENO, cmds->envs[i], ft_strlen(cmds->envs[i]));
+			write(STDOUT_FILENO, "\n", 1);
 		}
 		i++;
 	}

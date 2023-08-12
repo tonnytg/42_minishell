@@ -17,10 +17,6 @@ void	run_strategy(t_cmds *cmds)
 {
 	if (ft_strcmp(cmds->current->type, "WORD") == 0)
 	{
-		if (cmds->current->next && cmds->current->strategy != S_RECEIVER)
-		{
-			dup2(cmds->current->fd_ptr_output[1], STDOUT_FILENO);
-		}
 		if (cmds->current->strategy == S_RECEIVER)
 		{
 			dup2(cmds->current->next->fd[0], STDIN_FILENO);
@@ -92,7 +88,7 @@ void	set_strategy(t_cmds *cmds)
 		check_less(cmds);
 		check_dless(cmds);
 		check_pipe(cmds);
-		if (cmds->exit_code.code != 0)
+		if (cmds->strategy_error.code != 0)
 			return ;
 		cmds->current = cmds->current->next;
 	}
