@@ -97,7 +97,7 @@ int	export_adapter(t_cmds *cmds)
 
 	if (cmds->current->full_args == NULL
 		|| (cmds->current->phrase_parsed == NULL
-		&& cmds->current->phrase_parsed[1] == NULL))
+			&& cmds->current->phrase_parsed[1] == NULL))
 		env_adapter(cmds);
 	args = ft_split(cmds->current->phrase_parsed[1], '=');
 	if (args != NULL && (args[0] == NULL || args[1] == NULL))

@@ -261,7 +261,8 @@ void		run_strategy_piped(t_cmds *cmds);
 /* Export Command Utils srcs/builtins/export_utils.c */
 void		save_converted_word(t_cmds *cmds, t_env_convert *env_c);
 void		save_rest(t_env_convert *env_c);
-void		search_for_word(t_cmds *cmds, t_env_convert *env_c, const char *value);
+void		search_for_word(t_cmds *cmds, t_env_convert *env_c,
+				const char *value);
 void		search_for_rest(t_env_convert *env_c, const char *value);
 
 /* Commands */
