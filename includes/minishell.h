@@ -257,6 +257,8 @@ void		check_pipe(t_cmds *cmds);
 void		write_in_fd(t_cmds *cmds, char *msg);
 char		*read_from_file(t_cmds *cmds);
 void		run_strategy_piped(t_cmds *cmds);
+void		set_piped_stdout(t_cmds *cmds);
+void		set_restore_stdout(t_cmds *cmds);
 
 /* Export Command Utils srcs/builtins/export_utils.c */
 void		save_converted_word(t_cmds *cmds, t_env_convert *env_c);

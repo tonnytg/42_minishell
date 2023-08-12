@@ -53,6 +53,13 @@ int	skip_commands_child(t_cmds *cmds)
 	return (0);
 }
 
+void	exec_local_builtin(t_cmds *cmds)
+{
+	set_piped_stdout(cmds);
+	cmds->current->cmd_builtin->execute(cmds);
+	set_restore_stdout(cmds);
+}
+
 void	exec_builtin(t_cmds *cmds)
 {
 	pid_t	pid;
@@ -60,7 +67,7 @@ void	exec_builtin(t_cmds *cmds)
 
 	define_cmd_to_exec(cmds);
 	if (skip_commands_child(cmds) == 1)
-		cmds->current->cmd_builtin->execute(cmds);
+		exec_local_builtin(cmds);
 	else
 	{
 		pid = fork();
