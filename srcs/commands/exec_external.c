@@ -18,6 +18,7 @@ void	exec_external(t_cmds *cmds)
 	char	*path;
 	int		child_return_status;
 
+	child_return_status = 0;
 	cmds->exit_code.code = 0;
 	if (ft_strcmp(cmds->current->type, "WORD") == 0)
 	{

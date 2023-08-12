@@ -63,6 +63,7 @@ int	cd_adapter(t_cmds *cmds)
 	char	*temp;
 	char	*path;
 
+	temp = NULL;
 	if (cmds->current->phrase_parsed != NULL)
 	{
 		if (cmds->current->phrase_parsed[1] != NULL)
