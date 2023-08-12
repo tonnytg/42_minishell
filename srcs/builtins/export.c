@@ -41,7 +41,7 @@ void	save_envs(t_cmds *cmds, char **envs, char *key, char *key_and_value)
 	envs[i] = NULL;
 }
 
-char	*convert_values(const char *value)
+char	*convert_values(t_cmds *cmds, const char *value)
 {
 	t_env_convert	*env_c;
 	char			*result;
@@ -50,14 +50,14 @@ char	*convert_values(const char *value)
 	env_c->arr = ft_calloc(256, sizeof(char *) + 5);
 	while (value[env_c->i] != '\0')
 	{
-		search_for_word(env_c, value);
+		search_for_word(cmds, env_c, value);
 		search_for_rest(env_c, value);
 		env_c->i++;
 	}
 	if (env_c->rest_active == 1)
 		save_rest(env_c);
 	if (env_c->trigger == 1)
-		save_converted_word(env_c);
+		save_converted_word(cmds, env_c);
 	env_c->arr[env_c->a] = NULL;
 	env_c->converted_arr = concatenate_strings(env_c->arr, ':');
 	free_arr(env_c->arr);
@@ -74,7 +74,7 @@ int	set_env_var(t_cmds *cmds, char *key, char *value)
 	char	*key_and_value;
 	char	*new_value;
 
-	new_value = convert_values(value);
+	new_value = convert_values(cmds, value);
 	if (cmds->envs == NULL && cmds->current->full_args == NULL)
 		return (1);
 	envs = ft_calloc(count_arr(cmds->envs) + 2, sizeof(char *));
@@ -95,21 +95,19 @@ int	export_adapter(t_cmds *cmds)
 	char	**args;
 	int		result;
 
-	if ((cmds->envs == NULL && cmds->current->full_args == NULL)
-		|| cmds->current->phrase_parsed[1] == NULL)
-	{
-		cmds->exit_code.code = 1;
-		return (1);
-	}
-	if (cmds->current->full_args == NULL)
+	if (cmds->current->full_args == NULL
+		|| (cmds->current->phrase_parsed == NULL
+			&& cmds->current->phrase_parsed[1] == NULL))
 		env_adapter(cmds);
 	args = ft_split(cmds->current->phrase_parsed[1], '=');
-	if (args[0] == NULL || args[1] == NULL)
+	if (args != NULL && (args[0] == NULL || args[1] == NULL))
 	{
 		printf("minishell: export: `%s': not a valid identifier\n", args[0]);
 		free_arr(args);
 		return (1);
 	}
+	if (args == NULL)
+		return (1);
 	result = set_env_var(cmds, args[0], args[1]);
 	free_arr(args);
 	return (result);

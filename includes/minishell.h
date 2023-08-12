@@ -259,9 +259,10 @@ char		*read_from_file(t_cmds *cmds);
 void		run_strategy_piped(t_cmds *cmds);
 
 /* Export Command Utils srcs/builtins/export_utils.c */
-void		save_converted_word(t_env_convert *env_c);
+void		save_converted_word(t_cmds *cmds, t_env_convert *env_c);
 void		save_rest(t_env_convert *env_c);
-void		search_for_word(t_env_convert *env_c, const char *value);
+void		search_for_word(t_cmds *cmds, t_env_convert *env_c,
+				const char *value);
 void		search_for_rest(t_env_convert *env_c, const char *value);
 
 /* Commands */
@@ -300,7 +301,8 @@ void		set_envs(char **envp, t_cmds *cmds);
 int			count_envp(char **envp);
 int			append_envs(t_cmds *cmds, char *name, char *value);
 void		free_envs(t_cmds *cmds);
-char		*get_env(char *str, int config);
+//char		*get_env(char *str, int config);
+char		*get_env(t_cmds *cmds, char *str, int config);
 char		*getvarenv(t_cmds *cmds, char *var);
 
 /* Syntax Analysis */
