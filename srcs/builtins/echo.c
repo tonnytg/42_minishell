@@ -108,5 +108,6 @@ int	echo_adapter(t_cmds *cmds)
 	words = set_echo_settings(cmds, &settings);
 	exit_code = echo_print(words, &settings);
 	free_arr(words);
+	cmds->exit_code.code = exit_code;
 	return (exit_code);
 }

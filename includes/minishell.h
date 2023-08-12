@@ -201,6 +201,7 @@ typedef struct s_cmds
 	int			exit;
 	int			signal_exit;
 	int			redirects_count;
+	t_exit_code	strategy_error;
 	int			signal;
 	int			new;
 	void		(*signal_handler)(int);
