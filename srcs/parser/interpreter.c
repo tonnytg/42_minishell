@@ -6,7 +6,7 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/08/10 10:29:58 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/08/11 00:50:37 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,33 +32,6 @@ char	*ft_strsub(char const *s, unsigned int start, size_t len)
 	return (substring);
 }
 
-char	*parse_to_folder(char *str)
-{
-	char	*dir;
-	char	*temp_str;
-	char	*result;
-	char	*temp_result;
-
-	if (ft_strcmp(str, "..") == 0)
-		return (ft_strdup(".."));
-	dir = getcwd(NULL, 0);
-	if (ft_strncmp(str, "./", 2) == 0)
-	{
-		temp_str = ft_strsub(str, 2, ft_strlen(str) - 2);
-		result = ft_strjoin(dir, "/");
-		temp_result = result;
-		result = ft_strjoin(result, temp_str);
-		free(temp_str);
-		free(temp_result);
-	}
-	else
-	{
-		result = ft_strdup(str);
-	}
-	free(dir);
-	return (result);
-}
-
 void	parse_values_args(t_cmds *cmds)
 {
 	int		i;
@@ -79,7 +52,7 @@ void	parse_values_args(t_cmds *cmds)
 				cmds->current->phrase_parsed[i] = get_env(words[i], 1);
 		}
 		else if (ft_strncmp(words[i], ".", 1) == 0)
-			cmds->current->phrase_parsed[i] = parse_to_folder(words[i]);
+			cmds->current->phrase_parsed[i] = parse_to_folder(cmds, words[i]);
 		else
 			cmds->current->phrase_parsed[i] = ft_strdup(words[i]);
 		i++;
