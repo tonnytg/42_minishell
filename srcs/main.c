@@ -54,7 +54,9 @@ int	minishell(t_cmds *cmds)
 		set_strategy(cmds);
 		if (cmds->strategy_error.code != 0)
 		{
-			ft_printf("%s\n", cmds->strategy_error.msg);
+			if (cmds->strategy_error.msg != NULL)
+				ft_printf("%s\n", cmds->strategy_error.msg);
+			free_cmd_nodes(cmds->cmd_list);
 			continue ;
 		}
 		execute_cmd(cmds);

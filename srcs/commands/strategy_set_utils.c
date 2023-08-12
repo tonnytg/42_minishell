@@ -30,12 +30,39 @@ void	check_dless(t_cmds *cmds)
 	}
 }
 
+void	set_less_error_msg(t_cmds *cmds)
+{
+	char	*file;
+	char	**temp;
+
+	cmds->strategy_error.code = 1;
+	if (cmds->current->next == NULL)
+		return ;
+	temp = ft_split(cmds->current->next->phrase, ' ');
+	if (temp != NULL)
+	{
+		file = ft_strdup(temp[0]);
+		if (access(file, R_OK) != 0)
+		{
+			cmds->strategy_error.msg = ft_strdup("No such file or directory");
+		}
+		free(file);
+	}
+	free_arr(temp);
+}
+
 void	check_less(t_cmds *cmds)
 {
 	char		*msg;
 
 	if (ft_strcmp(cmds->current->type, "LESS") == 0)
 	{
+		if (cmds->current->prev == NULL
+			|| (cmds->current->next == NULL && cmds->current->prev != NULL))
+		{
+			set_less_error_msg(cmds);
+			return ;
+		}
 		msg = read_from_file(cmds);
 		if (!msg)
 		{
