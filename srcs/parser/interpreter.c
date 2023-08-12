@@ -49,7 +49,7 @@ void	parse_values_args(t_cmds *cmds)
 			if (ft_strncmp(words[i] + 1, "?", 1) == 0)
 				cmds->current->phrase_parsed[i] = ft_itoa(cmds->exit_code.code);
 			else
-				cmds->current->phrase_parsed[i] = get_env(words[i], 1);
+				cmds->current->phrase_parsed[i] = get_env(cmds, words[i], 1);
 		}
 		else if (ft_strncmp(words[i], ".", 1) == 0)
 			cmds->current->phrase_parsed[i] = parse_to_folder(cmds, words[i]);
