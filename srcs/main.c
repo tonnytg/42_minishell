@@ -14,6 +14,8 @@
 
 void	free_commands(t_cmds *cmds)
 {
+	if (cmds->previous_dir != NULL)
+		free(cmds->previous_dir);
 	if (cmds->input->datacpy != NULL)
 		free(cmds->input->datacpy);
 	free(cmds->input);

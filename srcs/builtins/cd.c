@@ -55,7 +55,6 @@ int	change_directory(t_cmds *cmds, char *path, char *temp)
 	}
 	free(temp);
 	free(path);
-	free(cmds->previous_dir);
 	return (0);
 }
 
