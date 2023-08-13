@@ -46,6 +46,7 @@ int	minishell(t_cmds *cmds)
 
 	while (1)
 	{
+		cmds->strategy_error.code = 0;
 		if (read_keyboard(cmds))
 			continue ;
 		token_analysis(cmds);
@@ -54,9 +55,7 @@ int	minishell(t_cmds *cmds)
 		set_strategy(cmds);
 		if (cmds->strategy_error.code != 0)
 		{
-			if (cmds->strategy_error.msg != NULL)
-				ft_printf("%s\n", cmds->strategy_error.msg);
-			free_cmd_nodes(cmds->cmd_list);
+			strategy_has_errors(cmds);
 			continue ;
 		}
 		execute_cmd(cmds);
