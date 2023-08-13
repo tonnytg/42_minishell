@@ -90,6 +90,25 @@ int	set_env_var(t_cmds *cmds, char *key, char *value)
 	return (0);
 }
 
+void	check_print_error(t_cmds *cmds, char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[0][i] != '\0')
+	{
+		if ((ft_isdigit(args[0][0]) == 1)
+			|| (ft_isalpha(args[0][i]) != 1 && args[0][i] != '_'))
+		{
+			printf("minishell: export: `%s': not a valid identifier\n", args[0]);
+			cmds->exit_code.code = 1;
+			return ;
+		}
+		i++;
+	}
+	return ;
+}
+
 int	export_adapter(t_cmds *cmds)
 {
 	char	**args;
@@ -102,7 +121,7 @@ int	export_adapter(t_cmds *cmds)
 	args = ft_split(cmds->current->phrase_parsed[1], '=');
 	if (args != NULL && (args[0] == NULL || args[1] == NULL))
 	{
-		printf("minishell: export: `%s': not a valid identifier\n", args[0]);
+		check_print_error(cmds, args);
 		free_arr(args);
 		return (1);
 	}
