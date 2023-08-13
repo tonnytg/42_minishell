@@ -51,6 +51,8 @@ void	open_pipe(t_cmds *cmds)
 
 void	connect_nodes_with_pipes(t_cmds *cmds)
 {
+	if (cmds->strategy_error.code == -1)
+		return ;
 	open_pipe(cmds);
 	cmds->current = cmds->cmd_list;
 	while (cmds->current != NULL)

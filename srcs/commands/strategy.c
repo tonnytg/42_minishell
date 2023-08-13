@@ -82,6 +82,8 @@ void	write_in_fd(t_cmds *cmds, char *msg)
 
 void	set_strategy(t_cmds *cmds)
 {
+	if (cmds->strategy_error.code == -1)
+		return ;
 	cmds->strategy_error.code = 0;
 	cmds->current = cmds->cmd_list;
 	while (cmds->current != NULL)

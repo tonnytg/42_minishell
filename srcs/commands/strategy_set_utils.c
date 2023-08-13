@@ -12,6 +12,20 @@
 
 #include "../../includes/minishell.h"
 
+void	strategy_has_errors(t_cmds *cmds)
+{
+	if (cmds->strategy_error.msg != NULL)
+	{
+		ft_printf("%s\n", cmds->strategy_error.msg);
+		if (cmds->strategy_error.msg != NULL)
+		{
+			free(cmds->strategy_error.msg);
+			cmds->strategy_error.msg = NULL;
+		}
+	}
+	free_cmd_nodes(cmds->cmd_list);
+}
+
 void	check_dless(t_cmds *cmds)
 {
 	if (ft_strcmp(cmds->current->type, "DLESS") == 0)
@@ -44,6 +58,7 @@ void	set_less_error_msg(t_cmds *cmds)
 		file = ft_strdup(temp[0]);
 		if (access(file, R_OK) != 0)
 		{
+			cmds->exit_code.code = 1;
 			cmds->strategy_error.msg = ft_strdup("No such file or directory");
 		}
 		free(file);

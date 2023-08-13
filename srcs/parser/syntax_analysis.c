@@ -28,7 +28,7 @@ void	print_error(char *word)
 		printf("minishell: syntax error near unexpected token `newline'\n");
 }
 
-int	check_lexical_errors(char **lexical_line)
+int	check_lexical_errors(t_cmds *cmds, char **lexical_line)
 {
 	int	i;
 
@@ -38,6 +38,7 @@ int	check_lexical_errors(char **lexical_line)
 	if (ft_strncmp(lexical_line[0], "PIPE", 4) == 0)
 	{
 		print_error("PIPE");
+		cmds->strategy_error.code = -1;
 		return (-1);
 	}
 	if (ft_strncmp(lexical_line[i - 1], "WORD", 4) != 0)
@@ -46,6 +47,7 @@ int	check_lexical_errors(char **lexical_line)
 			print_error(lexical_line[i - 1]);
 		else
 			print_error(lexical_line[i - 1]);
+		cmds->strategy_error.code = -1;
 		return (-1);
 	}
 	return (0);
@@ -56,11 +58,8 @@ void	syntax_analysis(t_cmds *cmds)
 {
 	int	i;
 
-	if (check_lexical_errors(cmds->lexical) == -1)
-	{
+	if (check_lexical_errors(cmds, cmds->lexical) == -1)
 		cmds->exit_code.code = 258;
-		return ;
-	}
 	i = 0;
 	while (cmds->lexical[i])
 	{
