@@ -91,7 +91,11 @@ void	set_envs(char **envp, t_cmds *cmds)
 			free(temp_itoa);
 		}
 		else
-			cmds->envs[i] = ft_strdup(envp[i]);
+		{
+			char *msg = ft_strnstr(envp[i], "WORKSPACE", ft_strlen("WORKSPACE") - 1);
+			if (msg == NULL)
+				cmds->envs[i] = ft_strdup(envp[i]);
+		}
 		i++;
 	}
 	cmds->envs[i] = NULL;
