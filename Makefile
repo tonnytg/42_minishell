@@ -23,6 +23,7 @@ FILES	= \
 			srcs/commands/type_commands.c 					\
 			srcs/commands/strategy.c	 					\
 			srcs/commands/strategy_set_utils.c				\
+			srcs/commands/strategy_set_utils2.c				\
 			srcs/commands/strategy_run_utils.c				\
 			srcs/commands/exec_builtin.c 					\
 			srcs/commands/exec_external.c 					\
