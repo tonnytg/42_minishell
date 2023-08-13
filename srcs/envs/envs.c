@@ -71,12 +71,15 @@ int	count_envp(char **envp)
 void	set_envs(char **envp, t_cmds *cmds)
 {
 	int		i;
+	int		j;
 	int		shlvl;
 	char	*shlvl_str;
 	char	*temp_itoa;
 	char	**temp;
+	char	*msg;
 
 	i = 0;
+	j = 0;
 	while (envp[i] != NULL)
 	{
 		if (ft_strncmp(envp[i], "SHLVL", 5) == 0)
@@ -92,9 +95,12 @@ void	set_envs(char **envp, t_cmds *cmds)
 		}
 		else
 		{
-			char *msg = ft_strnstr(envp[i], "WORKSPACE", ft_strlen("WORKSPACE") - 1);
+			msg = ft_strnstr(envp[i], "WORKSPACE", ft_strlen("WORKSPACE") - 1);
 			if (msg == NULL)
-				cmds->envs[i] = ft_strdup(envp[i]);
+			{
+				cmds->envs[j] = ft_strdup(envp[i]);
+				j++;
+			}
 		}
 		i++;
 	}
