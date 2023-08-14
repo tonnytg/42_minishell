@@ -41,57 +41,49 @@ char	*get_env(t_cmds *cmds, char *str, int config)
 	return (result);
 }
 
-void	free_envs(t_cmds *cmds)
+char	*get_shlvl(char *str)
 {
-	int	i;
+	char	*temp_itoa;
+	int		shlvl;
+	char	*new_var;
+	char	**temp;
+	char	*shlvl_str;
 
-	i = 0;
-	if (cmds->envs == NULL)
-		return ;
-	while (cmds->envs[i] != NULL)
-	{
-		free(cmds->envs[i]);
-		i++;
-	}
-	free(cmds->envs);
-}
-
-int	count_envp(char **envp)
-{
-	int	i;
-
-	i = 0;
-	if (envp == NULL)
-		return (0);
-	while (envp[i] != NULL)
-		i++;
-	return (i);
+	temp = ft_split(str, '=');
+	shlvl = ft_atoi(temp[1]);
+	temp_itoa = ft_itoa(shlvl + 1);
+	shlvl_str = ft_strjoin("SHLVL=", temp_itoa);
+	new_var = ft_strdup(shlvl_str);
+	free_arr(temp);
+	free(temp_itoa);
+	free(shlvl_str);
+	return (new_var);
 }
 
 void	set_envs(char **envp, t_cmds *cmds)
 {
 	int		i;
-	int		shlvl;
-	char	*shlvl_str;
-	char	*temp_itoa;
-	char	**temp;
+	int		j;
+	char	*msg;
 
 	i = 0;
+	j = 0;
 	while (envp[i] != NULL)
 	{
 		if (ft_strncmp(envp[i], "SHLVL", 5) == 0)
 		{
-			temp = ft_split(envp[i], '=');
-			shlvl = ft_atoi(temp[1]);
-			temp_itoa = ft_itoa(shlvl + 1);
-			shlvl_str = ft_strjoin("SHLVL=", temp_itoa);
-			cmds->envs[i] = ft_strdup(shlvl_str);
-			free_arr(temp);
-			free(shlvl_str);
-			free(temp_itoa);
+			cmds->envs[j] = get_shlvl(envp[i]);
+			j++;
 		}
 		else
-			cmds->envs[i] = ft_strdup(envp[i]);
+		{
+			msg = ft_strnstr(envp[i], "WORKSPACE", ft_strlen("WORKSPACE") - 1);
+			if (msg == NULL)
+			{
+				cmds->envs[j] = ft_strdup(envp[i]);
+				j++;
+			}
+		}
 		i++;
 	}
 	cmds->envs[i] = NULL;
