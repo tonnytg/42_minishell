@@ -12,6 +12,33 @@
 
 #include "../../includes/minishell.h"
 
+void	free_envs(t_cmds *cmds)
+{
+	int	i;
+
+	i = 0;
+	if (cmds->envs == NULL)
+		return ;
+	while (cmds->envs[i] != NULL)
+	{
+		free(cmds->envs[i]);
+		i++;
+	}
+	free(cmds->envs);
+}
+
+int	count_envp(char **envp)
+{
+	int	i;
+
+	i = 0;
+	if (envp == NULL)
+		return (0);
+	while (envp[i] != NULL)
+		i++;
+	return (i);
+}
+
 char	*getvarenv(t_cmds *cmds, char *var)
 {
 	char	*found_env;

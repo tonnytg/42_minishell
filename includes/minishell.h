@@ -305,7 +305,6 @@ void		set_envs(char **envp, t_cmds *cmds);
 int			count_envp(char **envp);
 int			append_envs(t_cmds *cmds, char *name, char *value);
 void		free_envs(t_cmds *cmds);
-//char		*get_env(char *str, int config);
 char		*get_env(t_cmds *cmds, char *str, int config);
 char		*getvarenv(t_cmds *cmds, char *var);
 
