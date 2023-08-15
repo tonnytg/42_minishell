@@ -90,6 +90,7 @@ void	set_strategy(t_cmds *cmds)
 		check_dless(cmds);
 		check_pipe(cmds);
 		check_great(cmds);
+		check_dgreat(cmds);
 		if (cmds->strategy_error.code != 0)
 			return ;
 		cmds->current = cmds->current->next;

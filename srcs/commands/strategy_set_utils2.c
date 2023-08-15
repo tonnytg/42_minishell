@@ -20,3 +20,12 @@ void	check_great(t_cmds *cmds)
 			cmds->current->prev->strategy = S_SENDER;
 	}
 }
+
+void	check_dgreat(t_cmds *cmds)
+{
+	if (ft_strcmp(cmds->current->type, "DGREAT") == 0)
+	{
+		if (cmds->current->prev != NULL)
+			cmds->current->prev->strategy = S_SENDER;
+	}
+}

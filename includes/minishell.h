@@ -253,6 +253,7 @@ void		set_strategy(t_cmds *cmds);
 void		run_strategy(t_cmds *cmds);
 void		check_dless(t_cmds *cmds);
 void		check_less(t_cmds *cmds);
+void		check_dgreat(t_cmds *cmds);
 void		check_pipe(t_cmds *cmds);
 void		write_in_fd(t_cmds *cmds, char *msg);
 char		*read_from_file(t_cmds *cmds);
