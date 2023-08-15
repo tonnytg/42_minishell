@@ -43,7 +43,10 @@ int	get_file(t_cmds *cmds)
 		return (-1);
 	result = access(words[0], F_OK);
 	if (result != 0)
+	{
+		free_arr(words);
 		return (result);
+	}
 	file = open(words[0], O_RDONLY);
 	free_arr(words);
 	return (file);
