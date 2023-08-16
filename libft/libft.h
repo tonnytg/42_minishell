@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antthoma <antthoma@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/14 22:43:27 by antthoma          #+#    #+#             */
-/*   Updated: 2023/02/21 00:55:29 by antthoma         ###   ########.fr       */
+/*   Updated: 2023/08/17 00:48:55 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,6 @@ int			max_arrary(int *arr, int len);
 
 /* Create for Minishell */
 char		*ft_strpbrk(const char *str, const char *delim);
-char		*ft_strtok(char *str, const char *delim, int tigger);
+char		*ft_strtok(char *str, const char *delim, int trigger, int *quote);
 
 #endif

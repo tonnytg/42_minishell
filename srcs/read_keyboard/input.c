@@ -6,20 +6,27 @@
 /*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/07/28 11:11:52 by caalbert         ###   ########.fr       */
+/*   Updated: 2023/08/17 00:57:29 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/minishell.h"
 
-void	extract_input_values(t_cmds *cmds)
+void extract_input_values(t_cmds *cmds)
 {
-	char	*temp;
+    char	*temp;
+    char	*rest_of_input;
+    int		is_quote;
 
-	temp = ft_strdup(cmds->input->datacpy);
-	cmds->input->cmd_name = ft_strtok(temp, " ", 1);
-	cmds->input->cmd_args = ft_strtok(NULL, "\0", 0);
-	free(temp);
+    temp = ft_strdup(cmds->input->datacpy);
+    cmds->input->cmd_name = ft_strtok(temp, " ", 1, &is_quote);
+    rest_of_input = temp + strlen(cmds->input->cmd_name);
+    if (is_quote)
+        rest_of_input++;
+    while (*rest_of_input == ' ')
+        rest_of_input++;
+    cmds->input->cmd_args = ft_strdup(rest_of_input);
+    free(temp);
 }
 
 int	ft_isspace(int c)

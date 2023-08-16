@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_analysis.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: antthoma <antthoma@student.42sp.org.br>    +#+  +:+       +#+        */
-/*       calbert  <calbert@student.42sp.org.br>   +#+#+#+#+#+   +#+           */
+/*   By: caalbert <caalbert@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/02/18 02:55:02 by antthoma          #+#    #+#             */
-/*   Updated: 2023/04/26 00:17:13 by antthoma         ###   ########.fr       */
+/*   Updated: 2023/08/17 00:58:44 by caalbert         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,19 +91,25 @@ void	concat_tk_nodes(t_cmds *cmds, t_tk_node *list_tokens)
 	}
 }
 
-int	token_analysis(t_cmds *cmds)
+int token_analysis(t_cmds *cmds)
 {
 	char		*token;
 	char		*data_copy;
 	t_tk_node	*list_tokens;
+	int			is_quote;
 
 	list_tokens = NULL;
 	data_copy = ft_strdup(cmds->input->datacpy);
-	token = ft_strtok(data_copy, " ", 1);
+	token = ft_strtok(data_copy, " ", 1, &is_quote);	
 	while (token != NULL)
 	{
-		add_tk_node(&list_tokens, token, "undefined");
-		token = ft_strtok(NULL, " ", 0);
+		if (is_quote)
+			add_tk_node(&list_tokens, token, "quote");
+		else
+		{
+			add_tk_node(&list_tokens, token, "undefined");
+			token = ft_strtok(NULL, " ", 0, &is_quote);
+		}
 	}
 	classify_tk_nodes(list_tokens);
 	concat_tk_nodes(cmds, list_tokens);
