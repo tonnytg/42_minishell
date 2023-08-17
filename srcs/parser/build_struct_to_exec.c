@@ -117,13 +117,13 @@ void	build_struct_to_exec(t_cmds *cmds, t_tk_node *list_tokens)
 	cmds->cmd_list = list_cmds;
 
 
-	t_cmd_node *temp;
-	printf("---\n");
-	temp = list_cmds;
-	while (temp != NULL)
-	{
-		printf("phrase: %s\n", temp->phrase);
-		printf("type: %s\n", temp->type);
-		temp = temp->next;
-	}
+//	t_cmd_node *temp;
+//	printf("---\n");
+//	temp = list_cmds;
+//	while (temp != NULL)
+//	{
+//		printf("phrase: %s\n", temp->phrase);
+//		printf("type: %s\n", temp->type);
+//		temp = temp->next;
+//	}
 }

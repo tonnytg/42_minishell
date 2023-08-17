@@ -51,9 +51,9 @@ void	parse_values_args(t_cmds *cmds)
 	char	**words;
 
 	i = 0;
-	printf("[parse_values_args] - phrase: %s\n", cmds->current->phrase);
+//	printf("[parse_values_args] - phrase: %s\n", cmds->current->phrase);
 	int result = check_quote_phrase(cmds->current->phrase);
-	printf("[parse_values_args] - result: %d\n", result);
+//	printf("[parse_values_args] - result: %d\n", result);
 	if (result == 1)
 	{
 //		words = ft_split(cmds->current->phrase, '\0');
@@ -83,7 +83,7 @@ void	parse_values_args(t_cmds *cmds)
 			}
 		}
 		words[k] = ft_strdup(new_word);
-		printf("NEW WORD: '%s'\n", new_word);
+//		printf("NEW WORD: '%s'\n", new_word);
 		k++;
 		j = 0;
 		while (cmds->current->phrase[i] != '\0')
@@ -100,7 +100,7 @@ void	parse_values_args(t_cmds *cmds)
 			}
 		}
 		new_word[j] = '\0';
-		printf("NEW WORD: '%s'\n", new_word);
+//		printf("NEW WORD: '%s'\n", new_word);
 		words[k] = ft_strdup(new_word);
 		k++;
 		words[k] = NULL;
@@ -112,13 +112,17 @@ void	parse_values_args(t_cmds *cmds)
 	cmds->current->phrase_parsed = ft_calloc(sizeof(char *),
 			count_arr(words) + 1);
 	i = 0;
+//	int j = 0;
 	while (words[i] != NULL)
 	{
-		printf("WORD CHEKING: '%s'\n", words[i]);
-		printf("WORD CHECKING SINGLE QUOTE: '%d'\n", is_single_quote(cmds->input->datacpy));
-		printf("WORD CHECKING DOUBLE QUOTE: '%d'\n", is_double_quote(cmds->input->datacpy));
+//		printf("\n---\n");
+//		printf("WORD CHEKING: '%s'\n", words[i]);
+//		printf("WORD CHECKING SINGLE QUOTE: '%d'\n", is_single_quote(cmds->input->datacpy));
+//		printf("WORD CHECKING DOUBLE QUOTE: '%d'\n", is_double_quote(cmds->input->datacpy));
+//		printf("Word Parsed: '%s'\n", cmds->current->phrase_parsed[j]);
+//		printf("\n---\n");
 		if (ft_strncmp(words[i], "$", 1) == 0
-			&& is_single_quote(cmds->input->datacpy) != 0)
+			&& check_quote_phrase(words[i]) == 1)
 		{
 			printf("WORD MUST BE PARSED: '%s'\n", words[i]);
 			if (ft_strncmp(words[i] + 1, "?", 1) == 0)
@@ -134,26 +138,26 @@ void	parse_values_args(t_cmds *cmds)
 		else
 		{
 			cmds->current->phrase_parsed[i] = ft_strdup(words[i]);
-			printf("2 - phrase_parsed: %s\n", cmds->current->phrase_parsed[i]);
+//			printf("2 - phrase_parsed: %s\n", cmds->current->phrase_parsed[i]);
 		}
 		i++;
 	}
 //	free_arr(words);
 
-	t_cmd_node *temp3;
-	printf("---\n[3 prepare_phrase]---\n");
-	temp3 = cmds->cmd_list;
-	while (temp3 != NULL)
-	{
-		printf("phrase: %s\n", temp3->phrase);
-		printf("type: %s\n", temp3->type);
-		temp3 = temp3->next;
-	}
+//	t_cmd_node *temp3;
+//	printf("---\n[3 prepare_phrase]---\n");
+//	temp3 = cmds->cmd_list;
+//	while (temp3 != NULL)
+//	{
+//		printf("phrase: %s\n", temp3->phrase);
+//		printf("type: %s\n", temp3->type);
+//		temp3 = temp3->next;
+//	}
 
 }
 
-void	prepare_phrase(t_cmds *cmds)
-{
+//void	prepare_phrase(t_cmds *cmds)
+//{
 //	char	**splited_phrase;
 //	char	**temp;
 //	char	*temp_str;
@@ -161,17 +165,17 @@ void	prepare_phrase(t_cmds *cmds)
 //	int		i;
 
 
-	t_cmd_node *temp1;
-	printf("---\n[1 prepare_phrase]---\n");
-	temp1 = cmds->cmd_list;
-	while (temp1 != NULL)
-	{
-		printf("phrase: %s\n", temp1->phrase);
-		printf("type: %s\n", temp1->type);
-		temp1 = temp1->next;
-	}
+//	t_cmd_node *temp1;
+//	printf("---\n[1 prepare_phrase]---\n");
+//	temp1 = cmds->cmd_list;
+//	while (temp1 != NULL)
+//	{
+//		printf("phrase: %s\n", temp1->phrase);
+//		printf("type: %s\n", temp1->type);
+//		temp1 = temp1->next;
+//	}
 
-	printf("Current Phrase: '%s'\n", cmds->current->phrase);
+//	printf("Current Phrase: '%s'\n", cmds->current->phrase);
 //	splited_phrase = ft_split(cmds->current->phrase, ' ');
 //	temp = ft_calloc(sizeof(char *), count_arr(splited_phrase) + 1);
 //	i = 0;
@@ -189,20 +193,20 @@ void	prepare_phrase(t_cmds *cmds)
 //	free_arr(temp);
 //	free_arr(splited_phrase);
 
-	t_cmd_node *temp2;
-	printf("---\n[2 prepare_phrase]---\n");
-	temp2 = cmds->cmd_list;
-	while (temp2 != NULL)
-	{
-		printf("phrase: %s\n", temp2->phrase);
-		printf("type: %s\n", temp2->type);
-		temp2 = temp2->next;
-	}
+//	t_cmd_node *temp2;
+//	printf("---\n[2 prepare_phrase]---\n");
+//	temp2 = cmds->cmd_list;
+//	while (temp2 != NULL)
+//	{
+//		printf("phrase: %s\n", temp2->phrase);
+//		printf("type: %s\n", temp2->type);
+//		temp2 = temp2->next;
+//	}
 
-}
+//}
 
 void	init_interpreter(t_cmds *cmds)
 {
-	prepare_phrase(cmds);
+//	prepare_phrase(cmds);
 	parse_values_args(cmds);
 }

@@ -119,11 +119,11 @@ int	token_analysis(t_cmds *cmds)
 		}
 		if (data_copy[i] == ' ' && close_quote == 0)
 		{
-			printf("\n");
+//			printf("\n");
 			new_word[j] = '\0';
 			if (ft_strlen(new_word) > 0)
 			{
-				printf("[%ld]Nova Palavra: '%s'\n",ft_strlen(new_word), new_word);
+//				printf("[%ld]Nova Palavra: '%s'\n",ft_strlen(new_word), new_word);
 				token = ft_strdup(new_word);
 				add_tk_node(&list_tokens, token, "undefined");
 			}
@@ -136,20 +136,20 @@ int	token_analysis(t_cmds *cmds)
 		}
 		else
 		{
-			printf("%c", data_copy[i]);
-			if (data_copy[i + 1] == '\0')
-				printf("\n");
+//			printf("%c", data_copy[i]);
+//			if (data_copy[i + 1] == '\0')
+//				printf("\n");
 			new_word[j] = data_copy[i];
 			j++;
 		}
 		i++;
 	}
 	new_word[j] = '\0';
-	printf("Ultima palavra: '%s'\n", new_word);
+//	printf("Ultima palavra: '%s'\n", new_word);
 	token = ft_strdup(new_word);
 	add_tk_node(&list_tokens, token, "undefined");
-	printf("\n");
-	printf("new_word: %s\n", new_word);
+//	printf("\n");
+//	printf("new_word: %s\n", new_word);
 
 
 
