@@ -65,8 +65,8 @@ void	parse_values_args(t_cmds *cmds)
 		int j = 0;
 		while (cmds->current->phrase[i] != '\0')
 		{
-			if (cmds->current->phrase[i] == ' ')
-			{
+			if (cmds->current->phrase[i] == ' ') // words[0]  = echo
+			{									 // woirds[1] = "a  b   c"
 				new_word[j] = '\0';
 				i++;
 				break ;
@@ -112,17 +112,18 @@ void	parse_values_args(t_cmds *cmds)
 	cmds->current->phrase_parsed = ft_calloc(sizeof(char *),
 			count_arr(words) + 1);
 	i = 0;
-//	int j = 0;
 	while (words[i] != NULL)
 	{
-//		printf("\n---\n");
-//		printf("WORD CHEKING: '%s'\n", words[i]);
-//		printf("WORD CHECKING SINGLE QUOTE: '%d'\n", is_single_quote(cmds->input->datacpy));
-//		printf("WORD CHECKING DOUBLE QUOTE: '%d'\n", is_double_quote(cmds->input->datacpy));
-//		printf("Word Parsed: '%s'\n", cmds->current->phrase_parsed[j]);
-//		printf("\n---\n");
+		int j = 0;
+		printf("\n\n");
+		printf("[parse_values_args] - word: '%s'\n", words[i]);
+		while(words[i][j] != '\0')
+		{
+			printf("[parse_values_args] - word[%d][%d]: '%c'\n", i, j, words[i][j]);
+			j++;
+		}
 		if (ft_strncmp(words[i], "$", 1) == 0
-			&& check_quote_phrase(words[i]) == 1)
+			&& is_single_quote(words[i]) != 1)
 		{
 			printf("WORD MUST BE PARSED: '%s'\n", words[i]);
 			if (ft_strncmp(words[i] + 1, "?", 1) == 0)
