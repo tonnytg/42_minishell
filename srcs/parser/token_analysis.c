@@ -99,16 +99,72 @@ int	token_analysis(t_cmds *cmds)
 
 	list_tokens = NULL;
 	data_copy = ft_strdup(cmds->input->datacpy);
-	token = ft_strtok(data_copy, " ", 1);
-	while (token != NULL)
+
+
+	int i = 0;
+	int j = 0;
+	int skip = 0;
+	int close_quote = 0;
+	char *new_word;
+	new_word = ft_calloc(1, sizeof(char));
+	while (data_copy[i] != '\0')
 	{
-		add_tk_node(&list_tokens, token, "undefined");
-		token = ft_strtok(NULL, " ", 0);
+		if ((data_copy[i] == '\'' || data_copy[i] == '\"') && close_quote == 0)
+		{
+			close_quote = 1;
+		}
+		else if ((data_copy[i] == '\'' || data_copy[i] == '\"') && close_quote == 1)
+		{
+			close_quote = 0;
+		}
+		if (data_copy[i] == ' ' && close_quote == 0)
+		{
+			printf("\n");
+			new_word[j] = '\0';
+			if (ft_strlen(new_word) > 0)
+			{
+				printf("[%ld]Nova Palavra: '%s'\n",ft_strlen(new_word), new_word);
+				token = ft_strdup(new_word);
+				add_tk_node(&list_tokens, token, "undefined");
+			}
+			j = 0;
+			skip = 1;
+		}
+		if (skip == 1)
+		{
+			skip = 0;
+		}
+		else
+		{
+			printf("%c", data_copy[i]);
+			if (data_copy[i + 1] == '\0')
+				printf("\n");
+			new_word[j] = data_copy[i];
+			j++;
+		}
+		i++;
 	}
+	new_word[j] = '\0';
+	printf("Ultima palavra: '%s'\n", new_word);
+	token = ft_strdup(new_word);
+	add_tk_node(&list_tokens, token, "undefined");
+	printf("\n");
+	printf("new_word: %s\n", new_word);
+
+
+
+
+
+//	token = ft_strtok(data_copy, " ", 1);
+//	while (token != NULL)
+//	{
+//		add_tk_node(&list_tokens, token, "undefined");
+//		token = ft_strtok(NULL, " ", 0);
+//	}
 	classify_tk_nodes(list_tokens);
 	concat_tk_nodes(cmds, list_tokens);
 	build_struct_to_exec(cmds, list_tokens);
-	free_tk_nodes(list_tokens);
+//	free_tk_nodes(list_tokens);
 	free(data_copy);
 	return (1);
 }
