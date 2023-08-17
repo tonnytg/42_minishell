@@ -56,7 +56,54 @@ void	parse_values_args(t_cmds *cmds)
 	printf("[parse_values_args] - result: %d\n", result);
 	if (result == 1)
 	{
-		words = ft_split(cmds->current->phrase, '\0');
+//		words = ft_split(cmds->current->phrase, '\0');
+		char *new_word;
+		new_word = malloc(sizeof(char) * 2);
+		words = malloc(sizeof(char *) * 2);
+		int k = 0;
+		int i = 0;
+		int j = 0;
+		while (cmds->current->phrase[i] != '\0')
+		{
+			if (cmds->current->phrase[i] == ' ')
+			{
+				new_word[j] = '\0';
+				i++;
+				break ;
+			}
+			if (cmds->current->phrase[i] == '\"' || cmds->current->phrase[i] == '\'')
+			{
+				i++;
+			}
+			else
+			{
+				new_word[j] = cmds->current->phrase[i];
+				j++;
+				i++;
+			}
+		}
+		words[k] = ft_strdup(new_word);
+		printf("NEW WORD: '%s'\n", new_word);
+		k++;
+		j = 0;
+		while (cmds->current->phrase[i] != '\0')
+		{
+			if (cmds->current->phrase[i] == '\"' || cmds->current->phrase[i] == '\'')
+			{
+				i++;
+			}
+			else
+			{
+				new_word[j] = cmds->current->phrase[i];
+				j++;
+				i++;
+			}
+		}
+		new_word[j] = '\0';
+		printf("NEW WORD: '%s'\n", new_word);
+		words[k] = ft_strdup(new_word);
+		k++;
+		words[k] = NULL;
 	}
 	else
 	{
@@ -64,11 +111,16 @@ void	parse_values_args(t_cmds *cmds)
 	}
 	cmds->current->phrase_parsed = ft_calloc(sizeof(char *),
 			count_arr(words) + 1);
+	i = 0;
 	while (words[i] != NULL)
 	{
+		printf("WORD CHEKING: '%s'\n", words[i]);
+		printf("WORD CHECKING SINGLE QUOTE: '%d'\n", is_single_quote(cmds->input->datacpy));
+		printf("WORD CHECKING DOUBLE QUOTE: '%d'\n", is_double_quote(cmds->input->datacpy));
 		if (ft_strncmp(words[i], "$", 1) == 0
-			&& is_single_quote(cmds->input->datacpy) == 0)
+			&& is_single_quote(cmds->input->datacpy) != 0)
 		{
+			printf("WORD MUST BE PARSED: '%s'\n", words[i]);
 			if (ft_strncmp(words[i] + 1, "?", 1) == 0)
 				cmds->current->phrase_parsed[i] = ft_itoa(cmds->exit_code.code);
 			else
@@ -86,7 +138,7 @@ void	parse_values_args(t_cmds *cmds)
 		}
 		i++;
 	}
-	free_arr(words);
+//	free_arr(words);
 
 	t_cmd_node *temp3;
 	printf("---\n[3 prepare_phrase]---\n");
