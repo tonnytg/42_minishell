@@ -72,7 +72,15 @@ int	get_env_in_str(t_cmds *cmds, char *str)
 				result = ft_itoa(cmds->exit_code.code);
 			}
 			else
+			{
 				result = getvarenv(cmds, temp_var);
+			}
+			if (result == NULL || ft_strlen(result) == 0)
+			{
+				free(temp_var);
+				return (0);
+			}
+			// echo "Ola $NAME voce esta em $PWD mas mora em $HOME, o result foi $?"
 			count =  count + ft_strlen(result);
 			if (result != NULL)
 			{
@@ -96,8 +104,11 @@ int	get_env_in_str(t_cmds *cmds, char *str)
 			result = ft_itoa(cmds->exit_code.code);
 		}
 		else
+		{
 			result = getvarenv(cmds, temp_var);
-		count =  count + ft_strlen(result);
+		}
+		if (result != NULL)
+			count =  count + ft_strlen(result);
 	}
 	free(temp_var);
 	if (result != NULL)
