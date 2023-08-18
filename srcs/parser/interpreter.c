@@ -195,12 +195,17 @@ void	parse_values_args(t_cmds *cmds)
 		int m = 0;
 		char *word_local;
 		int count = 0;
+
 		if (has_dolar(words[i]))
 			count = get_env_in_str(cmds, words[i]);
 		printf("Total de letras: %d\n", count);
-		word_local = ft_calloc(sizeof(char), (count + ft_strlen(words[i])) + 1);
+
+		int len_words = ft_strlen(words[i]) + 1;
+		int len_total = len_words  + count + 1;
+
+		word_local = ft_calloc(sizeof(char), len_total + 1);
 		char *new_word2;
-		new_word2 = ft_calloc(sizeof(char), ft_strlen(words[i]) + count + 1);
+		new_word2 = ft_calloc(sizeof(char), len_total + 1);
 		new_word2[0] = '\0';
 		int t_i = 0;
 		while (words[i][t_i] != '\0')
@@ -236,9 +241,10 @@ void	parse_values_args(t_cmds *cmds)
 				if (var_value != NULL)
 				{
 					printf("Total de espaço a alocar: %ld\n", (ft_strlen(new_word2) + ft_strlen(var_value) + count) + 1);
+					printf("Total de espaço a alocar: %d\n", len_total);
 					printf("var_value: %s\n", new_word2);
 					printf("var_value: %s\n", var_value);
-					ft_strlcat(new_word2, var_value, (sizeof(new_word2) + ft_strlen(var_value) + count) + 1);
+					ft_strlcat(new_word2, var_value, len_total);
 					m += ft_strlen(var_value);
 				}
 				free(var_value);
