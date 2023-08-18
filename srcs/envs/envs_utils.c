@@ -47,9 +47,7 @@ char	*getvarenv(t_cmds *cmds, char *var)
 
 	i = 0;
 	temp = NULL;
-	if (cmds->envs == NULL)
-		return (NULL);
-	if (var == NULL || ft_strlen(var) == 0)
+	if (cmds->envs == NULL || var == NULL || ft_strlen(var) == 0)
 		return (NULL);
 	while (cmds->envs[i] != NULL)
 	{

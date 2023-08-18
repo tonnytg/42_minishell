@@ -47,6 +47,7 @@ FILES	= \
 			srcs/envs/envs_utils.c							\
 			srcs/parser/interpreter.c						\
 			srcs/parser/token_analysis.c 					\
+			srcs/parser/token_analysis_utils.c 				\
 			srcs/parser/syntax_analysis.c 					\
 			srcs/parser/build_struct_to_exec.c 				\
 			srcs/parser/build_struct_to_exec_utils.c 		\

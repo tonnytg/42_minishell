@@ -181,6 +181,18 @@ typedef struct s_strategy
 	int	c_unknown;
 }	t_strategy;
 
+typedef struct s_tk_analysis
+{
+	char		*token;
+	char		*data_copy;
+	t_tk_node	*list_tokens;
+	int			i;
+	int			j;
+	int			skip;
+	int			close_quote;
+	char		*new_word;
+}	t_tk_analysis;
+
 /* Array of commands */
 typedef struct s_cmds
 {
@@ -317,6 +329,9 @@ void		check_quote(char *word, t_cmd_build *cmds);
 
 /* Token Analysis */
 int			token_analysis(t_cmds *cmds);
+void		add_tk_node(t_tk_node **head, char *token, char *tk_type);
+void		free_tk_nodes(t_tk_node *list_tokens);
+void		classify_tk_nodes(t_tk_node *list_tokens);
 
 /* Read Keyboard */
 int			read_keyboard(t_cmds *cmds);

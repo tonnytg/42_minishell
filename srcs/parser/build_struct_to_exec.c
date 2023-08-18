@@ -85,9 +85,9 @@ char	*create_cmd_nodes(t_cmd_node **list_cmds, t_tk_node **list_tokens)
 	cmds->actual_tk = *list_tokens;
 	while (cmds->actual_tk != NULL)
 	{
-//		check_quote(cmds->actual_tk->token, cmds);
 		if (ft_strcmp(cmds->actual_tk->tk_type, "WORD") == 0)
-			cmds->str = copy_if_firstword(&cmds->first_word, cmds->str, cmds->actual_tk);
+			cmds->str = copy_if_firstword(&cmds->first_word,
+					cmds->str, cmds->actual_tk);
 		else
 			save_node_cmd(list_cmds, cmds);
 		cmds->actual_tk = cmds->actual_tk->next;
@@ -115,15 +115,4 @@ void	build_struct_to_exec(t_cmds *cmds, t_tk_node *list_tokens)
 		new_node_cmd(&list_cmds, str, "WORD");
 	free(str);
 	cmds->cmd_list = list_cmds;
-
-
-//	t_cmd_node *temp;
-//	printf("---\n");
-//	temp = list_cmds;
-//	while (temp != NULL)
-//	{
-//		printf("phrase: %s\n", temp->phrase);
-//		printf("type: %s\n", temp->type);
-//		temp = temp->next;
-//	}
 }
