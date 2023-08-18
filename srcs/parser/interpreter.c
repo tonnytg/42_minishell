@@ -115,6 +115,29 @@ void	parse_values_args(t_cmds *cmds)
 		new_word = malloc(sizeof(char) * 100);
 		while (words[i][j] != '\0')
 		{
+			if (words[i][j] == '$')
+			{
+				int start = j + 1;
+				int end = start;
+				while (words[i][end] != '\0' && (isalnum(words[i][end]) || words[i][end] == '_')) {
+					end++;
+				}
+
+				// Extract the variable name
+				char var_name[end - start + 1];
+				strncpy(var_name, words[i] + start, end - start);
+				var_name[end - start] = '\0';
+
+				// Get the environment variable value
+				char *var_value = getenv(var_name);
+				if (var_value != NULL) {
+					strcat(new_word, var_value);
+					m += strlen(var_value);
+				}
+
+				j = end; // Move j to the end of the variable name
+
+			}
 			printf("[parse_values_args] - word[%d][%d]: '%c'\n", i, j, words[i][j]);
 			new_word[m] = words[i][j];
 			m++;
