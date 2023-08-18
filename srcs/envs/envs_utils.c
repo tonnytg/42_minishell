@@ -51,14 +51,11 @@ char	*getvarenv(t_cmds *cmds, char *var)
 		return (NULL);
 	if (var == NULL || ft_strlen(var) == 0)
 		return (NULL);
-	printf("procurando por: '%s'\n", var);
 	while (cmds->envs[i] != NULL)
 	{
 		if (ft_strcmp(var, "?") == 0)
 		{
-			printf("Achei status code: %d\n", cmds->exit_code.code);
 			found_env = ft_itoa(cmds->exit_code.code);
-			printf("Status code convertido: %s\n", found_env);
 			return (found_env);
 		}
 		else if (ft_strncmp(cmds->envs[i], var, ft_strlen(var)) == 0)

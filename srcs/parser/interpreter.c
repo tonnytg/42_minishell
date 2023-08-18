@@ -67,12 +67,9 @@ int	get_env_in_str(t_cmds *cmds, char *str)
 		{
 			trigger = 0;
 			temp_var[j] = '\0';
-			printf("Achei1: %s\n", temp_var);
 			if (ft_strcmp(temp_var, "?") == 0)
 			{
-				printf("Achei status code: %d\n", cmds->exit_code.code);
 				result = ft_itoa(cmds->exit_code.code);
-				printf("Achei status code: %s\n", result);
 			}
 			else
 				result = getvarenv(cmds, temp_var);
@@ -94,12 +91,9 @@ int	get_env_in_str(t_cmds *cmds, char *str)
 	if (trigger == 1)
 	{
 		temp_var[j] = '\0';
-		printf("Achei2: %s\n", temp_var);
 		if (ft_strcmp(temp_var, "?") == 0)
 		{
-			printf("Achei status code: %d\n", cmds->exit_code.code);
 			result = ft_itoa(cmds->exit_code.code);
-			printf("Achei status code em result: %s\n", result);
 		}
 		else
 			result = getvarenv(cmds, temp_var);
@@ -108,7 +102,6 @@ int	get_env_in_str(t_cmds *cmds, char *str)
 	free(temp_var);
 	if (result != NULL)
 		free(result);
-	printf("Retornando count: %d\n", count);
 	return (count);
 }
 
@@ -198,8 +191,6 @@ void	parse_values_args(t_cmds *cmds)
 
 		if (has_dolar(words[i]))
 			count = get_env_in_str(cmds, words[i]);
-		printf("Total de letras: %d\n", count);
-
 		int len_words = ft_strlen(words[i]) + 1;
 		int len_total = len_words  + count + 1;
 
@@ -235,15 +226,9 @@ void	parse_values_args(t_cmds *cmds)
 					ft_strlcpy(var_name, word_local + start, end - start);
 					var_name[end - start] = '\0';
 				}
-				printf("Nome da variavel: %s\n", var_name);
 				char *var_value = getvarenv(cmds, var_name);
-				printf("Valor obtido: %s\n", var_value);
 				if (var_value != NULL)
 				{
-					printf("Total de espaço a alocar: %ld\n", (ft_strlen(new_word2) + ft_strlen(var_value) + count) + 1);
-					printf("Total de espaço a alocar: %d\n", len_total);
-					printf("var_value: %s\n", new_word2);
-					printf("var_value: %s\n", var_value);
 					ft_strlcat(new_word2, var_value, len_total);
 					m += ft_strlen(var_value);
 				}
