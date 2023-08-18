@@ -45,6 +45,58 @@ int	check_quote_phrase(char *phrase)
 	return (0);
 }
 
+int	get_env_in_str(t_cmds *cmds, char *str)
+{
+	int i = 0;
+	int j = 0;
+	int count = 0;
+	int trigger = 0;
+	char *temp_var;
+	char *result;
+
+	result = NULL;
+	int len_str = ft_strlen(str);
+	temp_var = ft_calloc(sizeof(char), len_str + 1);
+	while (str[i] != '\0')
+	{
+		if (str[i] == '$')
+		{
+			trigger = 1;
+		}
+		else if (trigger == 1 && str[i] == ' ')
+		{
+			trigger = 0;
+			temp_var[j] = '\0';
+			printf("Achei: %s\n", temp_var);
+			result = getvarenv(cmds, temp_var);
+			count =  count + ft_strlen(result);
+			if (result != NULL)
+			{
+				free(result);
+				result = NULL;
+			}
+			j = 0;
+		}
+		else if (trigger == 1 && str[i] != ' ')
+		{
+			temp_var[j] = str[i];
+			j++;
+		}
+		i++;
+	}
+	if (trigger == 1)
+	{
+		temp_var[j] = '\0';
+		printf("Achei: %s\n", temp_var);
+		result = getvarenv(cmds, temp_var);
+		count =  count + ft_strlen(result);
+	}
+	free(temp_var);
+	if (result != NULL)
+		free(result);
+	return (count);
+}
+
 void	parse_values_args(t_cmds *cmds)
 {
 	int		i;
@@ -54,8 +106,8 @@ void	parse_values_args(t_cmds *cmds)
 	if (result == 1)
 	{
 		char *new_word;
-		new_word = malloc(sizeof(char) * 2);
-		words = malloc(sizeof(char *) * 2);
+		new_word = ft_calloc(sizeof(char), ft_strlen(cmds->current->phrase) + 1);
+		words = ft_calloc(sizeof(char *) , 3);
 		int k = 0;
 		i = 0;
 		int j = 0;
@@ -79,8 +131,11 @@ void	parse_values_args(t_cmds *cmds)
 			}
 		}
 		words[k] = ft_strdup(new_word);
+		free(new_word);
 		k++;
 		j = 0;
+		char *new_word3;
+		new_word3 = ft_calloc(sizeof(char), ft_strlen(cmds->current->phrase) + 1);
 		while (cmds->current->phrase[i] != '\0')
 		{
 			if (cmds->current->phrase[i] == '\"' || cmds->current->phrase[i] == '\'')
@@ -89,15 +144,16 @@ void	parse_values_args(t_cmds *cmds)
 			}
 			else
 			{
-				new_word[j] = cmds->current->phrase[i];
+				new_word3[j] = cmds->current->phrase[i];
 				j++;
 				i++;
 			}
 		}
-		new_word[j] = '\0';
-		words[k] = ft_strdup(new_word);
+		new_word3[j] = '\0';
+		words[k] = ft_strdup(new_word3);
 		k++;
 		words[k] = NULL;
+		free(new_word3);
 	}
 	else
 	{
@@ -109,45 +165,52 @@ void	parse_values_args(t_cmds *cmds)
 	{
 		int j = 0;
 		int m = 0;
-		printf("\n");
-		printf("[parse_values_args] - word: '%s'\n", words[i]);
-		char *new_word;
-		new_word = malloc(sizeof(char) * 100);
-		while (words[i][j] != '\0')
+		char *new_word2;
+		new_word2 = ft_calloc(sizeof(char), ft_strlen(words[i]) + 2);
+		new_word2[0] = '\0';
+		char *word_local;
+		int count = get_env_in_str(cmds, words[i]);
+		printf("Total de letras: %d\n", count);
+		word_local = ft_calloc(sizeof(char), (count + ft_strlen(words[i])) + 1);
+		int t_i = 0;
+		while (words[i][t_i] != '\0')
 		{
-			if (words[i][j] == '$')
+			word_local[t_i] = words[i][t_i];
+			t_i++;
+		}
+		word_local[t_i] = '\0';
+		while (word_local[j] != '\0')
+		{
+			if (word_local[j] == '$')
 			{
 				int start = j + 1;
 				int end = start;
-				while (words[i][end] != '\0' && (isalnum(words[i][end]) || words[i][end] == '_')) {
+				while (word_local[end] != '\0' && (ft_isalnum(word_local[end]) || word_local[end] == '_')) {
 					end++;
 				}
-
-				// Extract the variable name
 				char var_name[end - start + 1];
-				strncpy(var_name, words[i] + start, end - start);
+				ft_strlcpy(var_name, word_local + start, end - start);
 				var_name[end - start] = '\0';
-
-				// Get the environment variable value
-				char *var_value = getenv(var_name);
-				if (var_value != NULL) {
-					strcat(new_word, var_value);
-					m += strlen(var_value);
+				char *var_value = getvarenv(cmds, var_name);
+				if (var_value != NULL)
+				{
+					ft_strlcat(new_word2, var_value, (sizeof(new_word2) + sizeof(var_value) + count) + 1);
+					m += ft_strlen(var_value);
 				}
-
-				j = end; // Move j to the end of the variable name
-
+				free(var_value);
+				j = end;
 			}
-			printf("[parse_values_args] - word[%d][%d]: '%c'\n", i, j, words[i][j]);
-			new_word[m] = words[i][j];
+			new_word2[m] = word_local[j];
 			m++;
 			j++;
 		}
-		new_word[m] = '\0';
-		cmds->current->phrase_parsed[i] = ft_strdup(new_word);
-		printf("[parse_values_args] - new_word: '%s'\n", new_word);
+		new_word2[m] = '\0';
+		cmds->current->phrase_parsed[i] = ft_strdup(new_word2);
+		free(new_word2);
 		i++;
+		free(word_local);
 	}
+	free_arr(words);
 }
 
 void	init_interpreter(t_cmds *cmds)
