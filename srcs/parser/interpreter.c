@@ -67,8 +67,15 @@ int	get_env_in_str(t_cmds *cmds, char *str)
 		{
 			trigger = 0;
 			temp_var[j] = '\0';
-			printf("Achei: %s\n", temp_var);
-			result = getvarenv(cmds, temp_var);
+			printf("Achei1: %s\n", temp_var);
+			if (ft_strcmp(temp_var, "?") == 0)
+			{
+				printf("Achei status code: %d\n", cmds->exit_code.code);
+				result = ft_itoa(cmds->exit_code.code);
+				printf("Achei status code: %s\n", result);
+			}
+			else
+				result = getvarenv(cmds, temp_var);
 			count =  count + ft_strlen(result);
 			if (result != NULL)
 			{
@@ -87,14 +94,35 @@ int	get_env_in_str(t_cmds *cmds, char *str)
 	if (trigger == 1)
 	{
 		temp_var[j] = '\0';
-		printf("Achei: %s\n", temp_var);
-		result = getvarenv(cmds, temp_var);
+		printf("Achei2: %s\n", temp_var);
+		if (ft_strcmp(temp_var, "?") == 0)
+		{
+			printf("Achei status code: %d\n", cmds->exit_code.code);
+			result = ft_itoa(cmds->exit_code.code);
+			printf("Achei status code em result: %s\n", result);
+		}
+		else
+			result = getvarenv(cmds, temp_var);
 		count =  count + ft_strlen(result);
 	}
 	free(temp_var);
 	if (result != NULL)
 		free(result);
+	printf("Retornando count: %d\n", count);
 	return (count);
+}
+
+int has_dolar(char *str)
+{
+	int i = 0;
+
+	while (str[i] != '\0')
+	{
+		if (str[i] == '$')
+			return (1);
+		i++;
+	}
+	return (0);
 }
 
 void	parse_values_args(t_cmds *cmds)
@@ -165,13 +193,15 @@ void	parse_values_args(t_cmds *cmds)
 	{
 		int j = 0;
 		int m = 0;
-		char *new_word2;
-		new_word2 = ft_calloc(sizeof(char), ft_strlen(words[i]) + 2);
-		new_word2[0] = '\0';
 		char *word_local;
-		int count = get_env_in_str(cmds, words[i]);
+		int count = 0;
+		if (has_dolar(words[i]))
+			count = get_env_in_str(cmds, words[i]);
 		printf("Total de letras: %d\n", count);
 		word_local = ft_calloc(sizeof(char), (count + ft_strlen(words[i])) + 1);
+		char *new_word2;
+		new_word2 = ft_calloc(sizeof(char), ft_strlen(words[i]) + count + 1);
+		new_word2[0] = '\0';
 		int t_i = 0;
 		while (words[i][t_i] != '\0')
 		{
@@ -189,12 +219,26 @@ void	parse_values_args(t_cmds *cmds)
 					end++;
 				}
 				char var_name[end - start + 1];
-				ft_strlcpy(var_name, word_local + start, end - start);
-				var_name[end - start] = '\0';
+				if (word_local[j] == '$' && (word_local[j + 1] != '\0' && word_local[j + 1] == '?'))
+				{
+					var_name[0] = '?';
+					var_name[1] = '\0';
+					end++;
+				}
+				else
+				{
+					ft_strlcpy(var_name, word_local + start, end - start);
+					var_name[end - start] = '\0';
+				}
+				printf("Nome da variavel: %s\n", var_name);
 				char *var_value = getvarenv(cmds, var_name);
+				printf("Valor obtido: %s\n", var_value);
 				if (var_value != NULL)
 				{
-					ft_strlcat(new_word2, var_value, (sizeof(new_word2) + sizeof(var_value) + count) + 1);
+					printf("Total de espaço a alocar: %ld\n", (ft_strlen(new_word2) + ft_strlen(var_value) + count) + 1);
+					printf("var_value: %s\n", new_word2);
+					printf("var_value: %s\n", var_value);
+					ft_strlcat(new_word2, var_value, (sizeof(new_word2) + ft_strlen(var_value) + count) + 1);
 					m += ft_strlen(var_value);
 				}
 				free(var_value);
