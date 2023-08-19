@@ -95,6 +95,10 @@ void	check_print_error(t_cmds *cmds, char **args)
 	int	i;
 
 	i = 0;
+	if (args[0] == NULL)
+	{
+		return ;
+	}
 	while (args[0][i] != '\0')
 	{
 		if ((ft_isdigit(args[0][0]) == 1)
@@ -115,11 +119,12 @@ int	export_adapter(t_cmds *cmds)
 	char	**args;
 	int		result;
 
+	args = ft_split(cmds->current->phrase_parsed[1], '=');
 	if (cmds->current->full_args == NULL
+		|| args[0] == NULL
 		|| (cmds->current->phrase_parsed == NULL
 			&& cmds->current->phrase_parsed[1] == NULL))
 		env_adapter(cmds);
-	args = ft_split(cmds->current->phrase_parsed[1], '=');
 	if (args != NULL && (args[0] == NULL || args[1] == NULL))
 	{
 		check_print_error(cmds, args);
