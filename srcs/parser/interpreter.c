@@ -44,15 +44,11 @@ void	p1_build_word3(t_cmds *cmds, t_parse_1 *p1)
 			ft_strlen(cmds->current->phrase) + 1);
 	while (cmds->current->phrase[p1->i] != '\0')
 	{
-		if (cmds->current->phrase[p1->i] == '\"'
-			|| cmds->current->phrase[p1->i] == '\'')
+		if (cmds->current->phrase[p1->i] == '\"' || cmds->current->phrase[p1->i] == '\'')
 			p1->i++;
-		else
-		{
-			p1->new_word3[p1->j] = cmds->current->phrase[p1->i];
-			p1->j++;
-			p1->i++;
-		}
+		p1->new_word3[p1->j] = cmds->current->phrase[p1->i];
+		p1->j++;
+		p1->i++;
 	}
 	p1->new_word3[p1->j] = '\0';
 }
@@ -67,22 +63,19 @@ void	build_new_word(t_cmds *cmds, t_parse_1 *p1)
 			p1->i++;
 			break ;
 		}
-		if (cmds->current->phrase[p1->i] == '\"'
-			|| cmds->current->phrase[p1->i] == '\'')
+		if (cmds->current->phrase[p1->i] == '\"' || cmds->current->phrase[p1->i] == '\'')
 			p1->i++;
-		else
-		{
-			p1->new_word[p1->j] = cmds->current->phrase[p1->i];
-			p1->j++;
-			p1->i++;
-		}
+		p1->new_word[p1->j] = cmds->current->phrase[p1->i];
+		p1->j++;
+		p1->i++;
 	}
 	p1->words[p1->k] = ft_strdup(p1->new_word);
+	printf("nova palavra: '%s'\n", p1->words[p1->k]);
 	free(p1->new_word);
 	p1->k++;
 }
 
-void	parse_values_args(t_cmds *cmds)
+void	decide_split_or_not(t_cmds *cmds)
 {
 	t_parse_1	*p1;
 
@@ -110,5 +103,5 @@ void	parse_values_args(t_cmds *cmds)
 
 void	init_interpreter(t_cmds *cmds)
 {
-	parse_values_args(cmds);
+	decide_split_or_not(cmds);
 }
