@@ -105,7 +105,6 @@ int	echo_print(t_cmds *cmds, char **words, int *settings)
 	}
 	if ((*settings % 2) == 0)
 		write(STDOUT_FILENO, "\n", 1);
-	free_arr(words);
 	return (0);
 }
 
