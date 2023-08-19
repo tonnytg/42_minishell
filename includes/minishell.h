@@ -258,6 +258,7 @@ typedef struct s_cmds
 	int			new;
 	void		(*signal_handler)(int);
 	char		*previous_dir;
+	int			d_parse;
 }	t_cmds;
 
 /* file */
@@ -314,6 +315,9 @@ void		set_piped_stdout(t_cmds *cmds);
 void		set_restore_stdout(t_cmds *cmds);
 void		strategy_has_errors(t_cmds *cmds);
 void		check_great(t_cmds *cmds);
+
+/* Command Echo */
+int			count_words_echo(char **words);
 
 /* Export Command Utils srcs/builtins/export_utils.c */
 void		save_converted_word(t_cmds *cmds, t_env_convert *env_c);

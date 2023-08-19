@@ -12,22 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-int	count_words(char **words)
-{
-	int	i;
-	int	count;
-
-	i = 0;
-	count = 0;
-	while (words[i] != NULL)
-	{
-		if (ft_strcmp(words[i], "-n") != 0 && ft_strcmp(words[i], "-e") != 0)
-			count++;
-		i++;
-	}
-	return (count);
-}
-
 char	**filter_echo_words(char **words)
 {
 	char	**filtered_words;
@@ -36,7 +20,7 @@ char	**filter_echo_words(char **words)
 	int		count;
 
 	j = 0;
-	count = count_words(words);
+	count = count_words_echo(words);
 	filtered_words = ft_calloc(count + 1, sizeof(char *));
 	i = 1;
 	while (words[i] != NULL)
@@ -72,25 +56,56 @@ char	**set_echo_settings(t_cmds *cmds, int *settings)
 	return (filter_words);
 }
 
-int	echo_print(char **words, int *settings)
+void	replace_escape_chars(char *str)
+{
+	char	*src;
+	char	*dest;
+
+	src = str;
+	dest = str;
+	while (*src)
+	{
+		if (*src == '\\')
+		{
+			src++;
+			if (*src == 'n')
+				*dest = '\n';
+			else if (*src == 't')
+				*dest = '\t';
+			else
+				*dest = *src;
+		}
+		else
+			*dest = *src;
+		src++;
+		dest++;
+	}
+	*dest = '\0';
+}
+
+int	echo_print(t_cmds *cmds, char **words, int *settings)
 {
 	int	i;
 
-	i = 0;
 	if (words == NULL)
 	{
 		write(STDOUT_FILENO, "\n", 1);
 		return (0);
 	}
+	i = 0;
+	cmds->d_parse = 0;
 	while (words[i] != NULL)
 	{
+		if (((*settings == 2) || (*settings == 3)) && cmds->d_parse == 0)
+			replace_escape_chars(words[i]);
 		write(STDOUT_FILENO, words[i], ft_strlen(words[i]));
 		if (words[i + 1] != NULL)
 			write(STDOUT_FILENO, " ", 1);
 		i++;
 	}
-	if (*settings == 0)
+	if ((*settings % 2) == 0)
 		write(STDOUT_FILENO, "\n", 1);
+	free_arr(words);
 	return (0);
 }
 
@@ -106,7 +121,7 @@ int	echo_adapter(t_cmds *cmds)
 		return (0);
 	}
 	words = set_echo_settings(cmds, &settings);
-	exit_code = echo_print(words, &settings);
+	exit_code = echo_print(cmds, words, &settings);
 	free_arr(words);
 	cmds->exit_code.code = exit_code;
 	return (exit_code);
