@@ -35,6 +35,7 @@ FILES	= \
 			srcs/path/path.c								\
 			srcs/builtins/cd.c								\
 			srcs/builtins/echo.c							\
+			srcs/builtins/echo_utils.c						\
 			srcs/builtins/test_fd.c							\
 			srcs/builtins/env.c								\
 			srcs/builtins/exit.c							\
