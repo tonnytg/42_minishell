@@ -181,6 +181,45 @@ typedef struct s_strategy
 	int	c_unknown;
 }	t_strategy;
 
+typedef struct s_parse_2
+{
+	int		i;
+	int		j;
+	int		m;
+	char	*word_local;
+	int		count;
+	char	*new_word2;
+	int		len_words;
+	int		len_total;
+	int		t_i;
+	int		start;
+	int		end;
+	char	*var_value;
+	char	*var_name;
+}	t_parse_2;
+
+typedef struct s_parse_1
+{
+	int		i;
+	int		k;
+	int		j;
+	int		result;
+	char	**words;
+	char	*new_word;
+	char	*new_word3;
+}	t_parse_1;
+
+typedef struct s_get_env
+{
+	int		i;
+	int		j;
+	int		count;
+	int		trigger;
+	char	*temp_var;
+	char	*result;
+	int		len_str;
+}	t_get_env;
+
 typedef struct s_tk_analysis
 {
 	char		*token;
