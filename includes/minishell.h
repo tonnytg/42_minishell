@@ -323,6 +323,21 @@ void		search_for_rest(t_env_convert *env_c, const char *value);
 
 /* Commands */
 void		init_interpreter(t_cmds *cmds);
+void		parse_values_args(t_cmds *cmds);
+void		build_new_word(t_cmds *cmds, t_parse_1 *p1);
+void		p1_build_word3(t_cmds *cmds, t_parse_1 *p1);
+void		parse_values_args2(t_cmds *cmds, char **words);
+void		init_words_struct(t_parse_2 *p2, char **words);
+void		create_word2(t_cmds *cmds, t_parse_2	*p2, char **words);
+void		save_word2(t_cmds *cmds, t_parse_2	*p2);
+void		get_env_from_str(t_parse_2	*p2);
+void		concate_values(t_cmds *cmds, t_parse_2	*p2);
+int			has_dolar(char *str);
+int			get_env_in_str(t_cmds *cmds, char *str);
+int			search_env(t_cmds *cmds, t_get_env	*t_g, char *str);
+int			count_env(t_cmds *cmds, t_get_env	*t_g);
+int			check_quote_phrase(char *phrase);
+char		*ft_strsub(char const *s, unsigned int start, size_t len);
 
 /* Interpreter */
 void		parse_values_args(t_cmds *cmds);
