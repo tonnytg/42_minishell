@@ -36,34 +36,36 @@ void	convert_env_to_str(t_cmds *cmds, char **words)
 
 void	build_args(t_cmds *cmds, t_parse_1 *p1)
 {
-	int		i;
-	char	*word;
-
-	i = 0;
-	word = ft_calloc(sizeof(char), ft_strlen(cmds->current->phrase) + 1);
+	p1->j = 0;
+	p1->word = ft_calloc(sizeof(char), ft_strlen(cmds->current->phrase) + 1);
 	while (cmds->current->phrase[p1->i] != '\0')
 	{
 		if (cmds->current->phrase[p1->i] == ' ')
 		{
-			word[i] = '\0';
-			p1->words[p1->k] = ft_strdup(word);
-			printf("[build_args] - [%d]words: '%s'\n", p1->k, p1->words[p1->k]);
+			p1->word[p1->j] = '\0';
+			p1->words[p1->k] = ft_strdup(p1->word);
 			p1->k++;
 			p1->i++;
-			i = 0;
+			p1->j = 0;
 		}
-		word[i] = cmds->current->phrase[p1->i];
-		i++;
-		p1->i++;
+		if (cmds->current->phrase[p1->i] == '\''
+			|| cmds->current->phrase[p1->i] == '\"')
+			p1->i++;
+		else
+		{
+			p1->word[p1->j] = cmds->current->phrase[p1->i];
+			p1->i++;
+			p1->j++;
+		}
 	}
-	word[i] = '\0';
-	p1->words[p1->k] = ft_strdup(word);
-	printf("[build_args] - [%d]words: '%s'\n", p1->k, p1->words[p1->k]);
+	p1->word[p1->j] = '\0';
+	p1->words[p1->k] = ft_strdup(p1->word);
+	free(p1->word);
 }
 
 void	build_command_name(t_cmds *cmds, t_parse_1 *p1)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (cmds->current->phrase[p1->i] != '\0')
@@ -108,6 +110,5 @@ void	decide_split_or_not(t_cmds *cmds)
 
 void	init_interpreter(t_cmds *cmds)
 {
-	printf("[init_interpreter] - phrase: '%s'\n", cmds->current->phrase);
 	decide_split_or_not(cmds);
 }
