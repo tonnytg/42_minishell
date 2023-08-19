@@ -47,11 +47,16 @@ char	*getvarenv(t_cmds *cmds, char *var)
 
 	i = 0;
 	temp = NULL;
-	if (cmds->envs == NULL)
+	if (cmds->envs == NULL || var == NULL || ft_strlen(var) == 0)
 		return (NULL);
 	while (cmds->envs[i] != NULL)
 	{
-		if (ft_strncmp(cmds->envs[i], var, ft_strlen(var)) == 0)
+		if (ft_strcmp(var, "?") == 0)
+		{
+			found_env = ft_itoa(cmds->exit_code.code);
+			return (found_env);
+		}
+		else if (ft_strncmp(cmds->envs[i], var, ft_strlen(var)) == 0)
 		{
 			temp = ft_split(cmds->envs[i], '=');
 			found_env = ft_strdup(temp[1]);

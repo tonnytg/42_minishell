@@ -181,6 +181,57 @@ typedef struct s_strategy
 	int	c_unknown;
 }	t_strategy;
 
+typedef struct s_parse_2
+{
+	int		i;
+	int		j;
+	int		m;
+	char	*word_local;
+	int		count;
+	char	*new_word2;
+	int		len_words;
+	int		len_total;
+	int		t_i;
+	int		start;
+	int		end;
+	char	*var_value;
+	char	*var_name;
+}	t_parse_2;
+
+typedef struct s_parse_1
+{
+	int		i;
+	int		k;
+	int		j;
+	int		result;
+	char	**words;
+	char	*new_word;
+	char	*new_word3;
+}	t_parse_1;
+
+typedef struct s_get_env
+{
+	int		i;
+	int		j;
+	int		count;
+	int		trigger;
+	char	*temp_var;
+	char	*result;
+	int		len_str;
+}	t_get_env;
+
+typedef struct s_tk_analysis
+{
+	char		*token;
+	char		*data_copy;
+	t_tk_node	*list_tokens;
+	int			i;
+	int			j;
+	int			skip;
+	int			close_quote;
+	char		*new_word;
+}	t_tk_analysis;
+
 /* Array of commands */
 typedef struct s_cmds
 {
@@ -272,6 +323,21 @@ void		search_for_rest(t_env_convert *env_c, const char *value);
 
 /* Commands */
 void		init_interpreter(t_cmds *cmds);
+void		parse_values_args(t_cmds *cmds);
+void		build_new_word(t_cmds *cmds, t_parse_1 *p1);
+void		p1_build_word3(t_cmds *cmds, t_parse_1 *p1);
+void		parse_values_args2(t_cmds *cmds, char **words);
+void		init_words_struct(t_parse_2 *p2, char **words);
+void		create_word2(t_cmds *cmds, t_parse_2	*p2, char **words);
+void		save_word2(t_cmds *cmds, t_parse_2	*p2);
+void		get_env_from_str(t_parse_2	*p2);
+void		concate_values(t_cmds *cmds, t_parse_2	*p2);
+int			has_dolar(char *str);
+int			get_env_in_str(t_cmds *cmds, char *str);
+int			search_env(t_cmds *cmds, t_get_env	*t_g, char *str);
+int			count_env(t_cmds *cmds, t_get_env	*t_g);
+int			check_quote_phrase(char *phrase);
+char		*ft_strsub(char const *s, unsigned int start, size_t len);
 
 /* Interpreter */
 void		parse_values_args(t_cmds *cmds);
@@ -317,6 +383,9 @@ void		check_quote(char *word, t_cmd_build *cmds);
 
 /* Token Analysis */
 int			token_analysis(t_cmds *cmds);
+void		add_tk_node(t_tk_node **head, char *token, char *tk_type);
+void		free_tk_nodes(t_tk_node *list_tokens);
+void		classify_tk_nodes(t_tk_node *list_tokens);
 
 /* Read Keyboard */
 int			read_keyboard(t_cmds *cmds);

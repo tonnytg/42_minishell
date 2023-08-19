@@ -12,61 +12,6 @@
 
 #include "../../includes/minishell.h"
 
-void	add_tk_node(t_tk_node **head, char *token, char *tk_type)
-{
-	t_tk_node	*new_token;
-	t_tk_node	*actual;
-
-	new_token = ft_calloc(1, sizeof(t_tk_node));
-	strcpy(new_token->token, token);
-	strcpy(new_token->tk_type, tk_type);
-	new_token->next = NULL;
-	if (*head == NULL)
-		*head = new_token;
-	else
-	{
-		actual = *head;
-		while (actual->next != NULL)
-			actual = actual->next;
-		actual->next = new_token;
-	}
-}
-
-void	free_tk_nodes(t_tk_node *list_tokens)
-{
-	t_tk_node	*temp;
-
-	while (list_tokens != NULL)
-	{
-		temp = list_tokens;
-		list_tokens = list_tokens->next;
-		free(temp);
-	}
-}
-
-void	classify_tk_nodes(t_tk_node *list_tokens)
-{
-	t_tk_node	*actual;
-
-	actual = list_tokens;
-	while (actual != NULL)
-	{
-		if (strcmp(actual->token, "|") == 0)
-			ft_strlcpy(actual->tk_type, "PIPE", 5);
-		else if (strcmp(actual->token, "<") == 0)
-			ft_strlcpy(actual->tk_type, "LESS", 5);
-		else if (strcmp(actual->token, "<<") == 0)
-			ft_strlcpy(actual->tk_type, "DLESS", 6);
-		else if (strcmp(actual->token, ">") == 0)
-			ft_strlcpy(actual->tk_type, "GREAT", 6);
-		else if (strcmp(actual->token, ">>") == 0)
-			ft_strlcpy(actual->tk_type, "DGREAT", 7);
-		else
-			ft_strlcpy(actual->tk_type, "WORD", 5);
-		actual = actual->next;
-	}
-}
-
 void	concat_tk_nodes(t_cmds *cmds, t_tk_node *list_tokens)
 {
 	t_tk_node	*actual;
@@ -91,24 +36,66 @@ void	concat_tk_nodes(t_cmds *cmds, t_tk_node *list_tokens)
 	}
 }
 
-int	token_analysis(t_cmds *cmds)
+void	configure_trigger_quota(t_tk_analysis *t_a)
 {
-	char		*token;
-	char		*data_copy;
-	t_tk_node	*list_tokens;
+	if ((t_a->data_copy[t_a->i] == '\''
+			|| t_a->data_copy[t_a->i] == '\"') && t_a->close_quote == 0)
+		t_a->close_quote = 1;
+	else if ((t_a->data_copy[t_a->i] == '\''
+			|| t_a->data_copy[t_a->i] == '\"') && t_a->close_quote == 1)
+		t_a->close_quote = 0;
+}
 
-	list_tokens = NULL;
-	data_copy = ft_strdup(cmds->input->datacpy);
-	token = ft_strtok(data_copy, " ", 1);
-	while (token != NULL)
+void	process_token(t_tk_analysis *t_a, t_tk_node **list_tokens)
+{
+	t_a->new_word[t_a->j] = '\0';
+	if (ft_strlen(t_a->new_word) > 0)
 	{
-		add_tk_node(&list_tokens, token, "undefined");
-		token = ft_strtok(NULL, " ", 0);
+		t_a->token = ft_strdup(t_a->new_word);
+		add_tk_node(list_tokens, t_a->token, "undefined");
+		free(t_a->token);
 	}
+	t_a->j = 0;
+	t_a->skip = 1;
+}
+
+void	finalize_token(t_cmds *cmds,
+		t_tk_analysis	*t_a, t_tk_node *list_tokens)
+{
+	process_token(t_a, &list_tokens);
 	classify_tk_nodes(list_tokens);
 	concat_tk_nodes(cmds, list_tokens);
 	build_struct_to_exec(cmds, list_tokens);
+	free(t_a->data_copy);
+	free(t_a->new_word);
 	free_tk_nodes(list_tokens);
-	free(data_copy);
+	free(t_a);
+}
+
+int	token_analysis(t_cmds *cmds)
+{
+	t_tk_node		*list_tokens;
+	t_tk_analysis	*t_a;
+
+	t_a = ft_calloc(1, sizeof(t_tk_analysis));
+	list_tokens = NULL;
+	t_a->data_copy = ft_strdup(cmds->input->datacpy);
+	t_a->new_word = ft_calloc(1, sizeof(char)
+			* (ft_strlen(t_a->data_copy) + 1));
+	while (t_a->data_copy[t_a->i] != '\0')
+	{
+		configure_trigger_quota(t_a);
+		if (t_a->data_copy[t_a->i] == ' ' && t_a->close_quote == 0)
+			process_token(t_a, &list_tokens);
+		if (t_a->skip == 1)
+			t_a->skip = 0;
+		else
+		{
+			t_a->new_word[t_a->j] = t_a->data_copy[t_a->i];
+			t_a->j++;
+		}
+		t_a->i++;
+	}
+	finalize_token(cmds, t_a, list_tokens);
 	return (1);
 }
