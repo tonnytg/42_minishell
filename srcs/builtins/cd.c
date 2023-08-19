@@ -69,7 +69,19 @@ int	cd_adapter(t_cmds *cmds)
 	temp = NULL;
 	if (cmds->current->phrase_parsed != NULL)
 	{
-		if (cmds->current->phrase_parsed[1] != NULL)
+		if (cmds->current->phrase_parsed[1] == NULL)
+		{
+			path = getvarenv(cmds, "HOME");
+			if (path == NULL)
+			{
+				printf("minishell: cd: HOME not set\n");
+				cmds->exit_code.code = 1;
+				return (0);
+			}
+			else
+				return (change_directory(cmds, path, temp));
+		}
+		else if (cmds->current->phrase_parsed[1] != NULL)
 			temp = ft_strdup(cmds->current->phrase_parsed[1]);
 		else
 			temp = ft_strdup(".");
