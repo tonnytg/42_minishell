@@ -37,38 +37,50 @@ void	convert_env_to_str(t_cmds *cmds, char **words)
 void	build_args(t_cmds *cmds, t_parse_1 *p1)
 {
 	p1->j = 0;
-	p1->command_args = ft_calloc(sizeof(char),
-			ft_strlen(cmds->current->phrase) + 1);
-	while (cmds->current->phrase[p1->i] != '\0')
-	{
-		if (cmds->current->phrase[p1->i] == '\"'
-			|| cmds->current->phrase[p1->i] == '\'')
-			p1->i++;
-		else
-		{
-			p1->command_args[p1->j] = cmds->current->phrase[p1->i];
-			p1->j++;
-			p1->i++;
-		}
-	}
-	p1->command_args[p1->j] = '\0';
-}
-
-void	build_command_name(t_cmds *cmds, t_parse_1 *p1)
-{
+	p1->word = ft_calloc(sizeof(char), ft_strlen(cmds->current->phrase) + 1);
 	while (cmds->current->phrase[p1->i] != '\0')
 	{
 		if (cmds->current->phrase[p1->i] == ' ')
 		{
-			p1->command_name[p1->j] = '\0';
+			p1->word[p1->j] = '\0';
+			p1->words[p1->k] = ft_strdup(p1->word);
+			p1->k++;
+			p1->i++;
+			p1->j = 0;
+		}
+		if (cmds->current->phrase[p1->i] == '\''
+			|| cmds->current->phrase[p1->i] == '\"')
+			p1->i++;
+		else
+		{
+			p1->word[p1->j] = cmds->current->phrase[p1->i];
+			p1->i++;
+			p1->j++;
+		}
+	}
+	p1->word[p1->j] = '\0';
+	p1->words[p1->k] = ft_strdup(p1->word);
+	free(p1->word);
+}
+
+void	build_command_name(t_cmds *cmds, t_parse_1 *p1)
+{
+	int	i;
+
+	i = 0;
+	while (cmds->current->phrase[p1->i] != '\0')
+	{
+		if (cmds->current->phrase[p1->i] == ' ')
+		{
+			p1->command_name[i] = '\0';
 			p1->i++;
 			break ;
 		}
 		if (cmds->current->phrase[p1->i] == '\"'
 			|| cmds->current->phrase[p1->i] == '\'')
 			p1->i++;
-		p1->command_name[p1->j] = cmds->current->phrase[p1->i];
-		p1->j++;
+		p1->command_name[i] = cmds->current->phrase[p1->i];
+		i++;
 		p1->i++;
 	}
 	p1->words[p1->k] = ft_strdup(p1->command_name);
@@ -86,13 +98,9 @@ void	decide_split_or_not(t_cmds *cmds)
 	{
 		p1->command_name = ft_calloc(sizeof(char),
 				ft_strlen(cmds->current->phrase) + 1);
-		p1->words = ft_calloc(sizeof(char *), 3);
+		p1->words = ft_calloc(sizeof(char *), 10);
 		build_command_name(cmds, p1);
 		build_args(cmds, p1);
-		p1->words[p1->k] = ft_strdup(p1->command_args);
-		p1->k++;
-		p1->words[p1->k] = NULL;
-		free(p1->command_args);
 	}
 	else
 		p1->words = ft_split(cmds->current->phrase, ' ');

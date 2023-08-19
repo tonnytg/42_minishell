@@ -206,7 +206,8 @@ typedef struct s_parse_1
 	int		result;
 	char	**words;
 	char	*command_name;
-	char	*command_args;
+	char	**command_args;
+	char	*word;
 }	t_parse_1;
 
 typedef struct s_get_env
