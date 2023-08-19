@@ -64,6 +64,21 @@ int	clean_envs(t_cmds *cmds)
 	return (0);
 }
 
+int	key_exist(t_cmds *cmds, char *key)
+{
+	int	i;
+
+	i = 0;
+	while (cmds->envs[i] != NULL)
+	{
+		if (ft_strncmp(cmds->envs[i], key, ft_strlen(key)) == 0
+			&& cmds->envs[i][ft_strlen(key)] == '=')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	unset_adapter(t_cmds *cmds)
 {
 	int		result;
@@ -72,6 +87,8 @@ int	unset_adapter(t_cmds *cmds)
 	if (cmds->current->phrase_parsed[1] == NULL)
 		clean_envs(cmds);
 	key = cmds->current->phrase_parsed[1];
+	if (key_exist(cmds, key) != 1)
+		return (0);
 	result = del_env_var(cmds, key);
 	return (result);
 }

@@ -82,7 +82,7 @@ int	count_all_envs_in_str(t_cmds *cmds, char *str)
 	t_g = ft_calloc(sizeof(t_get_env), 1);
 	t_g->result = NULL;
 	t_g->len_str = ft_strlen(str);
-	t_g->temp_var = ft_calloc(sizeof(char *), t_g->len_str + 1); // o que é guardado aqui?
+	t_g->temp_var = ft_calloc(sizeof(char *), t_g->len_str + 1);
 	search_env(cmds, t_g, str);
 	if (t_g->trigger == 1)
 	{
