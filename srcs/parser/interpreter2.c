@@ -43,7 +43,7 @@ int	count_env(t_cmds *cmds, t_get_env	*t_g)
 		}
 		return (0);
 	}
-	t_g->count = t_g->count + ft_strlen(t_g->result);
+	t_g->count = t_g->count + (ft_strlen(t_g->result) + 1);
 	if (t_g->result != NULL)
 	{
 		free(t_g->result);
@@ -59,9 +59,12 @@ int	search_env(t_cmds *cmds, t_get_env	*t_g, char *str)
 	{
 		if (str[t_g->i] == '$')
 			t_g->trigger = 1;
-		if ((count_env(cmds, t_g)) == 0)
-			return (0);
-		if (t_g->trigger == 1 && str[t_g->i] != ' ')
+		else if (t_g->trigger == 1 && str[t_g->i] == ' ')
+		{
+			if ((count_env(cmds, t_g)) == 0)
+				return (0);
+		}
+		else if (t_g->trigger == 1 && str[t_g->i] != ' ')
 		{
 			t_g->temp_var[t_g->j] = str[t_g->i];
 			t_g->j++;
@@ -71,7 +74,7 @@ int	search_env(t_cmds *cmds, t_get_env	*t_g, char *str)
 	return (1);
 }
 
-int	get_env_in_str(t_cmds *cmds, char *str)
+int	count_all_envs_in_str(t_cmds *cmds, char *str)
 {
 	t_get_env	*t_g;
 	int			count;
@@ -79,7 +82,7 @@ int	get_env_in_str(t_cmds *cmds, char *str)
 	t_g = ft_calloc(sizeof(t_get_env), 1);
 	t_g->result = NULL;
 	t_g->len_str = ft_strlen(str);
-	t_g->temp_var = ft_calloc(sizeof(char), t_g->len_str + 1);
+	t_g->temp_var = ft_calloc(sizeof(char *), t_g->len_str + 1);
 	search_env(cmds, t_g, str);
 	if (t_g->trigger == 1)
 	{
@@ -89,7 +92,7 @@ int	get_env_in_str(t_cmds *cmds, char *str)
 		else
 			t_g->result = getvarenv(cmds, t_g->temp_var);
 		if (t_g->result != NULL)
-			t_g->count = t_g->count + ft_strlen(t_g->result);
+			t_g->count = t_g->count + (ft_strlen(t_g->result) + 1);
 	}
 	if (t_g->temp_var != NULL)
 		free(t_g->temp_var);
