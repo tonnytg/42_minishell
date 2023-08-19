@@ -12,7 +12,7 @@
 
 #include "../../includes/minishell.h"
 
-void	parse_values_args2(t_cmds *cmds, char **words)
+void	convert_env_to_str(t_cmds *cmds, char **words)
 {
 	t_parse_2	*p2;
 
@@ -22,56 +22,57 @@ void	parse_values_args2(t_cmds *cmds, char **words)
 	p2->i = 0;
 	while (words[p2->i] != NULL)
 	{
-		p2->j = 0;
-		p2->m = 0;
-		p2->count = 0;
 		if (has_dolar(words[p2->i]))
-			p2->count = get_env_in_str(cmds, words[p2->i]);
-		init_words_struct(p2, words);
-		create_word2(cmds, p2, words);
+			p2->count = count_all_envs_in_str(cmds, words[p2->i]);
+		define_size_words(p2, words);
+		merge_old_with_new_word(cmds, p2, words);
 		free(p2->new_word2);
-		p2->i++;
 		free(p2->word_local);
+		p2->i++;
 	}
 	free_arr(words);
 	free(p2);
 }
 
-void	p1_build_word3(t_cmds *cmds, t_parse_1 *p1)
+void	build_args(t_cmds *cmds, t_parse_1 *p1)
 {
 	p1->j = 0;
-	p1->new_word3 = ft_calloc(sizeof(char),
+	p1->command_args = ft_calloc(sizeof(char),
 			ft_strlen(cmds->current->phrase) + 1);
 	while (cmds->current->phrase[p1->i] != '\0')
 	{
-		if (cmds->current->phrase[p1->i] == '\"' || cmds->current->phrase[p1->i] == '\'')
+		if (cmds->current->phrase[p1->i] == '\"'
+			|| cmds->current->phrase[p1->i] == '\'')
 			p1->i++;
-		p1->new_word3[p1->j] = cmds->current->phrase[p1->i];
-		p1->j++;
-		p1->i++;
+		else
+		{
+			p1->command_args[p1->j] = cmds->current->phrase[p1->i];
+			p1->j++;
+			p1->i++;
+		}
 	}
-	p1->new_word3[p1->j] = '\0';
+	p1->command_args[p1->j] = '\0';
 }
 
-void	build_new_word(t_cmds *cmds, t_parse_1 *p1)
+void	build_command_name(t_cmds *cmds, t_parse_1 *p1)
 {
 	while (cmds->current->phrase[p1->i] != '\0')
 	{
 		if (cmds->current->phrase[p1->i] == ' ')
 		{
-			p1->new_word[p1->j] = '\0';
+			p1->command_name[p1->j] = '\0';
 			p1->i++;
 			break ;
 		}
-		if (cmds->current->phrase[p1->i] == '\"' || cmds->current->phrase[p1->i] == '\'')
+		if (cmds->current->phrase[p1->i] == '\"'
+			|| cmds->current->phrase[p1->i] == '\'')
 			p1->i++;
-		p1->new_word[p1->j] = cmds->current->phrase[p1->i];
+		p1->command_name[p1->j] = cmds->current->phrase[p1->i];
 		p1->j++;
 		p1->i++;
 	}
-	p1->words[p1->k] = ft_strdup(p1->new_word);
-	printf("nova palavra: '%s'\n", p1->words[p1->k]);
-	free(p1->new_word);
+	p1->words[p1->k] = ft_strdup(p1->command_name);
+	free(p1->command_name);
 	p1->k++;
 }
 
@@ -83,21 +84,19 @@ void	decide_split_or_not(t_cmds *cmds)
 	p1->result = check_quote_phrase(cmds->current->phrase);
 	if (p1->result == 1)
 	{
-		p1->new_word = ft_calloc(sizeof(char),
+		p1->command_name = ft_calloc(sizeof(char),
 				ft_strlen(cmds->current->phrase) + 1);
 		p1->words = ft_calloc(sizeof(char *), 3);
-		p1->k = 0;
-		p1->j = 0;
-		build_new_word(cmds, p1);
-		p1_build_word3(cmds, p1);
-		p1->words[p1->k] = ft_strdup(p1->new_word3);
+		build_command_name(cmds, p1);
+		build_args(cmds, p1);
+		p1->words[p1->k] = ft_strdup(p1->command_args);
 		p1->k++;
 		p1->words[p1->k] = NULL;
-		free(p1->new_word3);
+		free(p1->command_args);
 	}
 	else
 		p1->words = ft_split(cmds->current->phrase, ' ');
-	parse_values_args2(cmds, p1->words);
+	convert_env_to_str(cmds, p1->words);
 	free(p1);
 }
 
