@@ -100,9 +100,11 @@ void	decide_split_or_not(t_cmds *cmds)
 	{
 		p1->command_name = ft_calloc(sizeof(char),
 				ft_strlen(cmds->current->phrase) + 1);
-		p1->words = ft_calloc(sizeof(char *), 10);
+		p1->words = ft_calloc(sizeof(char *), 256);
 		build_command_name(cmds, p1);
 		build_args(cmds, p1);
+		if (cmds->d_parse == 1)
+			cmds->d_parse = 0;
 	}
 	else
 		p1->words = ft_split(cmds->current->phrase, ' ');
