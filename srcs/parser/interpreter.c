@@ -16,6 +16,8 @@ void	convert_env_to_str(t_cmds *cmds, char **words)
 {
 	t_parse_2	*p2;
 
+	if (is_single_quote(cmds->current->phrase))
+		cmds->d_parse = 1;
 	p2 = ft_calloc(sizeof(t_parse_2), 1);
 	cmds->current->phrase_parsed = ft_calloc(
 			sizeof(char *), count_arr(words) + 1);
