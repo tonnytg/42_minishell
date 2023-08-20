@@ -58,7 +58,7 @@ void	decide_concatenate(t_cmds *cmds, t_parse_2	*p2)
 	p2->m = 0;
 	while (p2->word_local[p2->j] != '\0')
 	{
-		if (p2->word_local[p2->j] == '$')
+		if (p2->word_local[p2->j] == '$' && cmds->d_parse == 0)
 		{
 			get_env_from_str(p2);
 			concatenate_values(cmds, p2);
