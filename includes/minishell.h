@@ -259,6 +259,7 @@ typedef struct s_cmds
 	void		(*signal_handler)(int);
 	char		*previous_dir;
 	int			d_parse;
+	int			t_quote;
 }	t_cmds;
 
 /* file */
@@ -343,6 +344,8 @@ int			search_env(t_cmds *cmds, t_get_env	*t_g, char *str);
 int			count_env(t_cmds *cmds, t_get_env	*t_g);
 int			check_quote_phrase(char *phrase);
 char		*ft_strsub(char const *s, unsigned int start, size_t len);
+int			trigger_quote(t_cmds *cmds, char c);
+void		save_command_name(t_cmds *cmds, t_parse_1 *p1);
 
 /* Interpreter */
 void		parse_values_args(t_cmds *cmds);
@@ -423,6 +426,4 @@ void		parse_values_args(t_cmds *cmds);
 void		prepare_phrase(t_cmds *cmds);
 void		init_interpreter(t_cmds *cmds);
 char		*get_env_value(t_cmds *cmds, char *name);
-// char		*handle_tilde_path(t_cmds *cmds, char *str);
-// char		*handle_relative_path(t_cmds *cmds, char *str);
 #endif

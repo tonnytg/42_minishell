@@ -72,22 +72,24 @@ void	build_command_name(t_cmds *cmds, t_parse_1 *p1)
 	i = 0;
 	while (cmds->current->phrase[p1->i] != '\0')
 	{
-		if (cmds->current->phrase[p1->i] == ' ')
+		trigger_quote(cmds, cmds->current->phrase[p1->i]);
+		if (cmds->current->phrase[p1->i] == ' ' && cmds->t_quote == 0)
 		{
 			p1->command_name[i] = '\0';
 			p1->i++;
 			break ;
 		}
-		if (cmds->current->phrase[p1->i] == '\"'
-			|| cmds->current->phrase[p1->i] == '\'')
+		if ((cmds->current->phrase[p1->i] == '\"'
+				|| cmds->current->phrase[p1->i] == '\'')
+			&& cmds->current->phrase[p1->i + 1] != '\0')
 			p1->i++;
 		p1->command_name[i] = cmds->current->phrase[p1->i];
 		i++;
 		p1->i++;
 	}
-	p1->words[p1->k] = ft_strdup(p1->command_name);
-	free(p1->command_name);
-	p1->k++;
+	if (cmds->current->phrase[p1->i] == '\0')
+		p1->command_name[i] = '\0';
+	save_command_name(cmds, p1);
 }
 
 void	decide_split_or_not(t_cmds *cmds)
