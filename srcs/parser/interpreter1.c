@@ -93,6 +93,12 @@ void	merge_old_with_new_word(t_cmds *cmds, t_parse_2	*p2, char **words)
 		cmds->current->phrase_parsed[p2->i] = ft_strdup(folder);
 		free(folder);
 	}
+	else if (ft_strncmp(p2->new_word2, "~", 1) == 0)
+	{
+		folder = parse_to_folder(cmds, p2->new_word2);
+		cmds->current->phrase_parsed[p2->i] = ft_strdup(folder);
+		free(folder);
+	}
 	else
 		cmds->current->phrase_parsed[p2->i] = ft_strdup(p2->new_word2);
 }
