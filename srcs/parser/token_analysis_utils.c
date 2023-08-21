@@ -51,15 +51,15 @@ void	classify_tk_nodes(t_tk_node *list_tokens)
 	actual = list_tokens;
 	while (actual != NULL)
 	{
-		if (strcmp(actual->token, "|") == 0)
+		if (ft_strcmp(actual->token, "|") == 0)
 			ft_strlcpy(actual->tk_type, "PIPE", 5);
-		else if (strcmp(actual->token, "<") == 0)
+		else if (ft_strcmp(actual->token, "<") == 0)
 			ft_strlcpy(actual->tk_type, "LESS", 5);
-		else if (strcmp(actual->token, "<<") == 0)
+		else if (ft_strlcpy(actual->token, "<<") == 0)
 			ft_strlcpy(actual->tk_type, "DLESS", 6);
-		else if (strcmp(actual->token, ">") == 0)
+		else if (ft_strlcpy(actual->token, ">") == 0)
 			ft_strlcpy(actual->tk_type, "GREAT", 6);
-		else if (strcmp(actual->token, ">>") == 0)
+		else if (ft_strlcpy(actual->token, ">>") == 0)
 			ft_strlcpy(actual->tk_type, "DGREAT", 7);
 		else
 			ft_strlcpy(actual->tk_type, "WORD", 5);

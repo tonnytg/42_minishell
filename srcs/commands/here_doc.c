@@ -65,7 +65,7 @@ void	read_here_doc(t_here_doc *data)
 void	write_here_doc(t_here_doc *data, int file_descriptor)
 {
 	data->bytes_written = write(file_descriptor,
-			data->content, strlen(data->content));
+			data->content, ft_strlen(data->content));
 	if (data->bytes_written == -1)
 	{
 		perror("[write_here_doc] - Error writing to file descriptor");
