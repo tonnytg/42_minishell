@@ -58,7 +58,7 @@ void	decide_concatenate(t_cmds *cmds, t_parse_2	*p2)
 	p2->m = 0;
 	while (p2->word_local[p2->j] != '\0')
 	{
-		if (p2->word_local[p2->j] == '$' && cmds->d_parse == 0)
+		if ((p2->word_local[p2->j] == '$') && cmds->d_parse == 0)
 		{
 			get_env_from_str(p2);
 			concatenate_values(cmds, p2);
@@ -73,6 +73,8 @@ void	decide_concatenate(t_cmds *cmds, t_parse_2	*p2)
 
 void	merge_old_with_new_word(t_cmds *cmds, t_parse_2	*p2, char **words)
 {
+	char	*folder;
+
 	p2->t_i = 0;
 	while (words[p2->i][p2->t_i] != '\0')
 	{
@@ -81,7 +83,14 @@ void	merge_old_with_new_word(t_cmds *cmds, t_parse_2	*p2, char **words)
 	}
 	p2->word_local[p2->t_i] = '\0';
 	decide_concatenate(cmds, p2);
-	cmds->current->phrase_parsed[p2->i] = ft_strdup(p2->new_word2);
+	if (ft_strncmp(p2->new_word2, ".", 1) == 0)
+	{
+		folder = parse_to_folder(cmds, p2->new_word2);
+		cmds->current->phrase_parsed[p2->i] = ft_strdup(folder);
+		free(folder);
+	}
+	else
+		cmds->current->phrase_parsed[p2->i] = ft_strdup(p2->new_word2);
 }
 
 void	define_size_words(t_parse_2 *p2, char **words)
