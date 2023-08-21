@@ -17,15 +17,15 @@ char	*get_correct_path(t_cmds *cmds, char *input_path)
 	char	*result_path;
 	char	*home;
 
-	if (strcmp(input_path, "~") == 0)
+	if (ft_strcmp(input_path, "~") == 0)
 	{
-		home = getenv("HOME");
+		home = getvarenv(cmds, "HOME");
 		if (home != NULL)
 			result_path = ft_strdup(home);
 		else
 			return (NULL);
 	}
-	else if (strcmp(input_path, "-") == 0)
+	else if (ft_strcmp(input_path, "-") == 0)
 	{
 		if (cmds->previous_dir == NULL)
 			return (NULL);

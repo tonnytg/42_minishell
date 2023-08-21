@@ -21,8 +21,8 @@ void	ft_pipe(const char *write_msg, char *read_buffer)
 		perror("pipe");
 		return ;
 	}
-	write(pipefd[1], write_msg, strlen(write_msg) + 1);
-	read(pipefd[0], read_buffer, strlen(write_msg) + 1);
+	write(pipefd[1], write_msg, ft_strlen(write_msg) + 1);
+	read(pipefd[0], read_buffer, ft_strlen(write_msg) + 1);
 	close(pipefd[0]);
 	close(pipefd[1]);
 }
