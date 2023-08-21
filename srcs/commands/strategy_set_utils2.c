@@ -12,12 +12,16 @@
 
 #include "../../includes/minishell.h"
 
+// tr a b < file.txt > converted.txt
+
 void	check_great(t_cmds *cmds)
 {
 	if (ft_strcmp(cmds->current->type, "GREAT") == 0)
 	{
 		if (cmds->current->prev != NULL)
+		{
 			cmds->current->prev->strategy = S_SENDER;
+		}
 	}
 }
 
