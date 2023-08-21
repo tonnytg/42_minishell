@@ -101,9 +101,10 @@ void	check_print_error(t_cmds *cmds, char **args)
 	}
 	while (args[0][i] != '\0')
 	{
-		if ((ft_isdigit(args[0][0]) == 1)
-			|| (ft_isalpha(args[0][i]) != 1 && args[0][i] != '_')
-			|| args[0][i] == '=' || args[0][0] == '+' || args[0][0] == '-')
+		if ((ft_isdigit(args[0][0]) == 1 && args[0][0] != '_')
+			|| (ft_isalnum(args[0][i]) != 1 && args[0][0] != '_')
+			|| (args[0][i] == '+' && args[0][0] != '_')
+			|| (args[0][i] == '-' && args[0][0] != '_'))
 		{
 			printf("minishell: export: `%s': not a valid identifier\n", args[0]);
 			cmds->exit_code.code = 1;
