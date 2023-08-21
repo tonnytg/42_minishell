@@ -49,7 +49,7 @@ int	check_errors_exit(const char *arg, int count)
 {
 	int	result;
 
-	if (count > 1)
+	if (count > 2)
 	{
 		ft_printf("minishell: exit: too many arguments\n");
 		return (1);
@@ -78,7 +78,7 @@ int	exit_adapter(t_cmds *cmds)
 	printf("exit\n");
 	if (cmds->current->phrase_parsed == NULL)
 		return (0);
-	count = count_args(cmds->current->phrase_parsed[1]);
+	count = count_args(cmds->current->phrase);
 	exit_code = check_errors_exit(cmds->current->phrase_parsed[1], count);
 	exit_code = (exit_code % 256 + 256) % 256;
 	cmds->exit_code.code = exit_code;
