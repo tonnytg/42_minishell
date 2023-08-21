@@ -78,6 +78,7 @@ typedef struct s_command
 
 typedef struct s_cmd_node
 {
+	int					c_pid;
 	char				*phrase;
 	int					disabled;
 	int					strategy;
@@ -426,4 +427,5 @@ void		parse_values_args(t_cmds *cmds);
 void		prepare_phrase(t_cmds *cmds);
 void		init_interpreter(t_cmds *cmds);
 char		*get_env_value(t_cmds *cmds, char *name);
+void		get_dolar_env_result(t_parse_2	*p2, char c);
 #endif
