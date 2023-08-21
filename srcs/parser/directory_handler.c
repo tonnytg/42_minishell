@@ -29,6 +29,8 @@ static char	*parse_special_folders(t_cmds *cmds, char *str)
 	if (str[0] == '~')
 	{
 		dir = get_env_value(cmds, "HOME");
+		if (dir == NULL)
+			return (NULL);
 		if (str[1] == '/')
 			result = ft_strjoin(dir, str + 1);
 		else
