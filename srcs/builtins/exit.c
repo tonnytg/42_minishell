@@ -49,7 +49,7 @@ int	check_errors_exit(const char *arg, int count)
 {
 	int	result;
 
-	if (count > 1)
+	if (count > 2)
 	{
 		ft_printf("minishell: exit: too many arguments\n");
 		return (1);
