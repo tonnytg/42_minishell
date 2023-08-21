@@ -71,6 +71,7 @@ void	exec_builtin(t_cmds *cmds)
 	else
 	{
 		pid = fork();
+		cmds->current->c_pid = pid;
 		if (pid == -1)
 			exit(EXIT_FAILURE);
 		else if (pid == 0)

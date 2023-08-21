@@ -12,6 +12,13 @@
 
 #include "../../includes/minishell.h"
 
+void	get_dolar_env_result(t_parse_2	*p2, char c)
+{
+	p2->var_name[0] = c;
+	p2->var_name[1] = '\0';
+	p2->end++;
+}
+
 void	save_command_name(t_cmds *cmds, t_parse_1 *p1)
 {
 	p1->words[p1->k] = ft_strdup(p1->command_name);

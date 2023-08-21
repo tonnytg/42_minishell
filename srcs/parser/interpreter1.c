@@ -36,14 +36,18 @@ void	get_env_from_str(t_parse_2	*p2)
 			|| p2->word_local[p2->end] == '_'))
 		p2->end++;
 	p2->var_name = ft_calloc(sizeof(char), p2->end - p2->start + 2);
-	if (p2->word_local[p2->j] == '$'
-		&& (p2->word_local[p2->j + 1] != '\0'
+	if (p2->word_local[p2->j] == '$' && (p2->word_local[p2->j + 1] != '\0'
 			&& p2->word_local[p2->j + 1] == '?'))
-	{
-		p2->var_name[0] = '?';
-		p2->var_name[1] = '\0';
-		p2->end++;
-	}
+		get_dolar_env_result(p2, '?');
+	else if (p2->word_local[p2->j] == '$' && (p2->word_local[p2->j + 1] != '\0'
+			&& p2->word_local[p2->j + 1] == '$'))
+		get_dolar_env_result(p2, '$');
+	else if (p2->word_local[p2->j] == '$' && (p2->word_local[p2->j + 1] != '\0'
+			&& p2->word_local[p2->j + 1] == '#'))
+		get_dolar_env_result(p2, '#');
+	else if (p2->word_local[p2->j] == '$' && (p2->word_local[p2->j + 1] != '\0'
+			&& p2->word_local[p2->j + 1] == '*'))
+		get_dolar_env_result(p2, '*');
 	else
 	{
 		ft_strlcpy(p2->var_name, p2->word_local

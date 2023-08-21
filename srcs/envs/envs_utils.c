@@ -39,6 +39,21 @@ int	count_envp(char **envp)
 	return (i);
 }
 
+char	*found_env_result(t_cmds *cmds, char *var)
+{
+	char	*result;
+
+	if (ft_strcmp(var, "?") == 0)
+		result = ft_itoa(cmds->exit_code.code);
+	else if (ft_strcmp(var, "$") == 0)
+		result = ft_itoa(cmds->current->c_pid);
+	else if (ft_strcmp(var, "#") == 0)
+		result = ft_itoa(count_arr(cmds->current->phrase_parsed + 1));
+	else if (ft_strcmp(var, "*") == 0)
+		result = ft_strdup(cmds->current->phrase);
+	return (result);
+}
+
 char	*getvarenv(t_cmds *cmds, char *var)
 {
 	char	*found_env;
@@ -51,11 +66,11 @@ char	*getvarenv(t_cmds *cmds, char *var)
 		return (NULL);
 	while (cmds->envs[i] != NULL)
 	{
-		if (ft_strcmp(var, "?") == 0)
-		{
-			found_env = ft_itoa(cmds->exit_code.code);
-			return (found_env);
-		}
+		if (ft_strcmp(var, "?") == 0
+			|| ft_strcmp(var, "$") == 0
+			|| ft_strcmp(var, "#") == 0
+			|| ft_strcmp(var, "*") == 0)
+			return (found_env_result(cmds, var));
 		else if (ft_strncmp(cmds->envs[i], var, ft_strlen(var)) == 0)
 		{
 			temp = ft_split(cmds->envs[i], '=');
