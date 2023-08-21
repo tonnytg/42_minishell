@@ -12,6 +12,23 @@
 
 #include "../../includes/minishell.h"
 
+void	save_command_name(t_cmds *cmds, t_parse_1 *p1)
+{
+	p1->words[p1->k] = ft_strdup(p1->command_name);
+	free(p1->command_name);
+	p1->k++;
+	cmds->t_quote = 0;
+}
+
+int	trigger_quote(t_cmds *cmds, char c)
+{
+	if ((c == '\'' || c == '\"') && cmds->t_quote == 0)
+		cmds->t_quote = 1;
+	else if ((c == '\'' || c == '\"') && cmds->t_quote == 1)
+		cmds->t_quote = 0;
+	return (0);
+}
+
 char	*ft_strsub(char const *s, unsigned int start, size_t len)
 {
 	char	*substring;
