@@ -45,7 +45,7 @@ void	set_commands(t_cmds *cmds)
 	command_mapping[6] = (t_command){EXIT_BUILTIN, exit_adapter};
 	command_mapping[7] = (t_command){TEST_FD, test_fd_adapter};
 	cmds->num_cmds = sizeof(command_mapping) / sizeof(t_command);
-	cmds->arr_cmds = malloc(sizeof(t_command) * cmds->num_cmds);
+	cmds->arr_cmds = ft_calloc(cmds->num_cmds, sizeof(t_command));
 	cmds->previous_dir = NULL;
 	i = 0;
 	while (i < cmds->num_cmds)
